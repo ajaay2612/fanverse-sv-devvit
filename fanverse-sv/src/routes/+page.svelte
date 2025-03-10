@@ -1,21 +1,31 @@
 <script>
-    import FanButton from '../lib/components/FanButton.svelte';
+    import CurrentFrame from '$lib/stores/CurrentFrame.js';
+    import Home from '../lib/frames/Home.svelte';
+    import RootLayout from '../lib/layout/RootLayout.svelte';
+    import PickemsLayout from '../lib/layout/PickemsLayout.svelte';
+    import Create from '../lib/frames/Create.svelte';
+    
+    
+    import Pickems from '../lib/frames/Pickems.svelte';
 
 
 </script>
 
+{#if $CurrentFrame === 'home' || $CurrentFrame === 'create'}
+    <RootLayout>
+        {#if $CurrentFrame === 'home'}
+            <Home/>
+        {:else if $CurrentFrame === 'create'}
+            <Create/>
+        {/if}
+    </RootLayout>
+{:else}
+    <PickemsLayout>
+        <Pickems/>
+    </PickemsLayout>
+{/if}
 
 
-<div class="homeScreenGradient h-screen w-full flex justify-center flex-col gap-[2.1em] items-center">
-    <div class="pt-[1.8em] text-[1.1em] rotate-[-5deg] origin-bottom-left ">
-        <h1 class="leading-[1em] font-inter-italic font-bold text-pri text-[2.8em]">FAN<span class="text-stroke text-black">VERSE</span></h1>
-        <p class="text-[0.75em] text-right leading-[1em] font-inter-italic font-bold text-pri">WHERE FANS <span class="text-sec">UNITE</span></p>
-    </div>
 
 
-    <div class="space-y-[1.3em]">
-        <FanButton>create</FanButton>
-        <FanButton>KNOW MORE</FanButton>
-    </div>
 
-</div>

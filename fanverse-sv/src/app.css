@@ -29,6 +29,7 @@
     --text-MqXLarge: min(max(0.7rem, 0.85vw),1.85rem);
     --text-MqXXLarge: min(max(0.7rem, 0.8vw),1.2rem);
 
+    /* color */
     --color-pri: #FA5610;
     --color-sec: white;
     --color-tert: black;
@@ -38,6 +39,19 @@
 
     --color-homeScreenGrad-one: rgba(65, 20, 0, 0);
     --color-homeScreenGrad-two: rgba(77, 23, 0, 0.43) ;
+
+    --color-preHover: #313131;
+
+    --color-pickem-left-box: #812300;
+    --color-pickem-right-box: #41190A;
+
+    --color-pickem-header-bg: #1C1C1C;
+    
+    --color-pickem-border-bottom: #761D00;
+    --color-pickem-title: #FF4200;
+
+
+    /* color end */
 
     --breakpoint-xsm: 500px;
     
@@ -128,5 +142,12 @@ body {
 .homeScreenGradient{
     background: linear-gradient(180deg, var(--color-pri) 0%, rgba(250, 86, 16, 0.8) 100%);
     background: linear-gradient(180deg, var(--color-homeScreenGrad-one) 60.71%,var(--color-homeScreenGrad-two) 100%);
+
+}
+
+.orange-button-two{
+    background: linear-gradient(182.24deg, var(--color-buttonGrad-one) 1.88%, var(--color-buttonGrad-two) 97.22%);
+    
+    @apply relative text-[0.72em] font-inter-italic font-bold uppercase w-full py-[.5em];
 
 }

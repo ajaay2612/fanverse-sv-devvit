@@ -2,4 +2,9 @@
     import "../app.css";
 </script>
 
-<div class=" sectionController"><slot/></div>
+
+<div class="sectionController">
+    <slot/>
+</div>
+
+

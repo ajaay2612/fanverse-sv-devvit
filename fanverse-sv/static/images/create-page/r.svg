@@ -1,0 +1,18 @@
+<svg width="263" height="123" viewBox="0 0 263 123" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M60 26.5H221C221.828 26.5 222.5 27.1716 222.5 28V61.5H58.5V28C58.5 27.1716 59.1716 26.5 60 26.5Z" stroke="#313131"/>
+<path d="M58 44H222" stroke="#313131"/>
+<rect x="40" y="28" width="14" height="14" transform="rotate(-0.942823 40 28)" fill="#FA5610" fill-opacity="0.17"/>
+<rect x="40" y="46" width="14" height="14" fill="#313131"/>
+<path d="M58.5 61.5H222.5V95C222.5 95.8284 221.828 96.5 221 96.5H60C59.1716 96.5 58.5 95.8284 58.5 95V61.5Z" stroke="#313131"/>
+<path d="M58 79H222" stroke="#313131"/>
+<rect x="40" y="63" width="14" height="14" transform="rotate(-0.942823 40 63)" fill="#FA5610" fill-opacity="0.17"/>
+<rect x="40" y="81" width="14" height="14" fill="#313131"/>
+<path d="M203 38L199 34L195 38" stroke="#34180C"/>
+<path d="M203 55L199 51L195 55" stroke="#34180C"/>
+<path d="M203 72L199 68L195 72" stroke="#34180C"/>
+<path d="M203 89L199 85L195 89" stroke="#34180C"/>
+<path d="M217 51L213 55L209 51" stroke="#34180C"/>
+<path d="M217 34L213 38L209 34" stroke="#34180C"/>
+<path d="M217 68L213 72L209 68" stroke="#34180C"/>
+<path d="M217 85L213 89L209 85" stroke="#34180C"/>
+</svg>
