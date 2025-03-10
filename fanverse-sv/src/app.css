@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/* First, add the @font-face declaration for Inter Italic */
+@font-face {
+    font-family: "Inter Italic";
+    font-style: italic;
+    font-weight: 100 900;
+    /* Variable font weight range */
+    font-display: swap;
+    src: url("/fonts/Inter/Inter-Italic-VariableFont_opsz\,wght.ttf") format("truetype-variations");
+}
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 100 900;
+    /* Variable font weight range */
+    font-display: swap;
+    src: url("/fonts/Inter/Inter-VariableFont_opsz\,wght.ttf") format("truetype-variations");
+}
+
+/* Then update your theme */
+@theme {
+    --font-inter: "Inter", "serif";
+    --font-inter-italic: "Inter Italic", "serif";
+
+    --text-MqSmall: min(max(0rem, 3.5vw),1rem);
+    --text-MqMedium: min(max(0rem, 4vw),1rem);
+    --text-MqLarge: min(max(0.5rem, 2vw),1rem);
+    --text-MqXLarge: min(max(0.7rem, 0.85vw),1.85rem);
+    --text-MqXXLarge: min(max(0.7rem, 0.8vw),1.2rem);
+
+    --color-pri: #FA5610;
+    --color-sec: white;
+    --color-tert: black;
+
+    --color-buttonGrad-one: #FF4900;
+    --color-buttonGrad-two: #992C00;
+
+    --color-homeScreenGrad-one: rgba(65, 20, 0, 0);
+    --color-homeScreenGrad-two: rgba(77, 23, 0, 0.43) ;
+
+    --breakpoint-xsm: 500px;
+    
+    --spacing-0hem: 0.5em;
+    --spacing-1em: 1em;
+    --spacing-1hem: 1.5em;
+    --spacing-2em: 2em;
+    --spacing-2hem: 2.5em;
+    --spacing-3em: 3em;
+    --spacing-3hem: 3.5em;
+    --spacing-4em: 4em;
+    --spacing-4hem: 4.5em;
+    --spacing-5em: 5em;
+    --spacing-5hem: 5.5em;
+    --spacing-6em: 6em;
+    --spacing-6hem: 6.5em;
+    --spacing-7em: 7em;
+    --spacing-7hem: 7.5em;
+    --spacing-8em: 8em;
+    --spacing-8hem: 8.5em;
+    --spacing-9em: 9em;
+    --spacing-9hem: 9.5em;
+    --spacing-10em: 10em;
+    --spacing-10hem: 10.5em;
+}
+
+@layer theme {
+    .dark {
+        --color-pri: #104efa;
+        --color-sec: black;
+        --color-tert: white;
+    } 
+}
+
+html {
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    text-size-adjust: none;
+    @apply text-[5vw] xsm:text-[3.15vw] md:text-[1.98vw] lg:text-[1.15vw] xl:text-[0.99vw] 2xl:text-[0.905vw];
+}
+
+svg{
+    width:100%;
+    height:100%;
+}
+  
+
+body {
+    @apply bg-(--color-tert) text-(--color-sec) font-inter
+}
+
+.sectionController{
+    @apply text-MqSmall md:text-MqMedium lg:text-MqLarge xl:text-MqXLarge 2xl:text-MqXXLarge;
+}
+
+.displayNone{
+    @apply opacity-0 pointer-events-none;
+}
+
+.text-stroke {
+    text-shadow: 
+    -1px -1px 0 var(--color-sec),
+    1px -1px 0 var(--color-sec),
+    -1px 1px 0 var(--color-sec),
+    1px 1px 0 var(--color-sec);
+}
+
+.orange-button{
+    background: linear-gradient(182.24deg, var(--color-buttonGrad-one) 1.88%, var(--color-buttonGrad-two) 97.22%);
+    
+    @apply relative text-[0.72em] font-inter-italic font-bold uppercase w-full py-[.5em];
+
+}
+
+.orange-button::before {
+    content: "";
+    position: absolute;
+    top: -0.5px;
+    right: -0.5px;
+    bottom: -0.5px;
+    left: -0.5px;
+    background: linear-gradient(to bottom, var(--color-sec), var(--color-tert));
+    z-index: -1;
+    border-radius: inherit;
+}
+
+.homeScreenGradient{
+    background: linear-gradient(180deg, var(--color-pri) 0%, rgba(250, 86, 16, 0.8) 100%);
+    background: linear-gradient(180deg, var(--color-homeScreenGrad-one) 60.71%,var(--color-homeScreenGrad-two) 100%);
+
+}
