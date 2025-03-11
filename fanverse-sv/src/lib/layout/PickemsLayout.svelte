@@ -18,7 +18,7 @@
 
     
     <div class="relative h-full w-full">
-        <Header/>
+        <!-- <Header/> -->
         <slot/>
     </div>
 </div>

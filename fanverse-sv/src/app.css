@@ -24,10 +24,10 @@
     --font-inter-italic: "Inter Italic", "serif";
 
     --text-MqSmall: min(max(0rem, 3.5vw),1rem);
-    --text-MqMedium: min(max(0rem, 4vw),1rem);
-    --text-MqLarge: min(max(0.5rem, 2vw),1rem);
-    --text-MqXLarge: min(max(0.7rem, 0.85vw),1.85rem);
-    --text-MqXXLarge: min(max(0.7rem, 0.8vw),1.2rem);
+    --text-MqMedium: min(max(0rem, 4vw),1.2rem);
+    --text-MqLarge: min(max(0.5rem, 3vw),2rem);
+    --text-MqXLarge: min(max(0.7rem, 2vw),2.2rem);
+    /* --text-MqXXLarge: min(max(0.7rem, 1.8vw),1.9rem); */
 
     /* color */
     --color-pri: #FA5610;
@@ -49,6 +49,7 @@
     
     --color-pickem-border-bottom: #761D00;
     --color-pickem-title: #FF4200;
+    --color-pickem-box: #73737321;
 
 
     /* color end */
@@ -91,7 +92,7 @@ html {
     -moz-text-size-adjust: none;
     -ms-text-size-adjust: none;
     text-size-adjust: none;
-    @apply text-[5vw] xsm:text-[3.15vw] md:text-[1.98vw] lg:text-[1.15vw] xl:text-[0.99vw] 2xl:text-[0.905vw];
+    @apply text-[5vw] xsm:text-[3.15vw] md:text-[1.98vw] lg:text-[1.15vw] xl:text-[0.99vw] 2xl:text-[0.905vw] ;
 }
 
 svg{
@@ -105,7 +106,7 @@ body {
 }
 
 .sectionController{
-    @apply text-MqSmall md:text-MqMedium lg:text-MqLarge xl:text-MqXLarge 2xl:text-MqXXLarge;
+    @apply text-MqSmall md:text-MqMedium lg:text-MqLarge xl:text-MqXLarge ;
 }
 
 .displayNone{
