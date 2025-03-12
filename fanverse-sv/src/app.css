@@ -45,7 +45,8 @@
     --color-pickem-left-box: #812300;
     --color-pickem-right-box: #41190A;
 
-    --color-pickem-header-bg: #1C1C1C;
+    --color-pickem-header-bg: #1C1C1CA6;
+    --color-pickem-header-bg-block: #1C1C1C;
     
     --color-pickem-border-bottom: #761D00;
     --color-pickem-title: #FF4200;
