@@ -3,7 +3,7 @@ import { writable } from 'svelte/store';
 const DropDownData = writable([
     {
         name: 'select type',
-        options: ['single', 'double'],
+        options: ['single elim', 'double elim',"multi-bracket"],
         active:-1
     },
     {

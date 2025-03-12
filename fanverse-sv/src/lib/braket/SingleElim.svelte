@@ -103,49 +103,49 @@
         }
         
         // Clear champion if clearing after semifinals
-        if (startRound < rounds - 1) {
+        // if (startRound < rounds - 1) {
             champion = "...";
-        }
+        // }
     }
     
+    $:console.log(matches);
+
     // Default champion
     $: champion = "...";
 </script>
 
-<div class="w-full h-fit px-2 py-10 text-white">
-    <div class="text-xs lg:text-xs flex gap-8 justify-center items-center w-full h-full">
+<div class="customMatchFont-{noOfTeams} overflow-x-scroll  w-full h-fit px-4em xsm:px-2em py-[2.5em] text-white">
+    <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">
         {#each Array(rounds) as _, roundIndex}
-            <div class="flex flex-col gap-8 justify-around h-full w-56 relative">
-                <h3 class="text-center font-bold text-pickem-title">
-                    {roundIndex === 0 ? 'Round 1' : 
-                     roundIndex === rounds - 1 ? 'Finals' : 
-                     `Round ${roundIndex + 1}`}
-                </h3>
-                
+            <div class="flex flex-col gap-[2em] justify-around h-full w-[14em] relative">
                 {#each matches[roundIndex] as match, matchIndex}
                     <div class="relative">
                         <!-- Match container -->
                         <div class="flex flex-col w-full">
                             <!-- Team 1 -->
+                            <!-- svelte-ignore a11y_click_events_have_key_events -->
+                            <!-- svelte-ignore a11y_no_static_element_interactions -->
                             <div
-                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-base font-bold w-full border-l-1 border-pickem-title cursor-pointer transition-all duration-200 hover:brightness-125"
-                                class:border-l-4={match.winner === match.team1}
-                                class:border-green-500={match.winner === match.team1}
+                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer"
+                                class:winnerTeam={match.winner === match.team1 && match.winner}
+                                class:loserTeam={match.winner !== match.team1 && match.winner}
                                 on:click={() => selectWinner(roundIndex, matchIndex, match.team1)}
                             >
                                 {match.team1 || "..."}
                             </div>
                             <!-- vs divider -->
                             <div
-                                class="text-sm text-center text-gray-500 px-4"
+                                class="text-[0.8em] text-center text-[#666] px-[1em]"
                             >
                                 vs
                             </div>
                             <!-- Team 2 -->
+                            <!-- svelte-ignore a11y_click_events_have_key_events -->
+                            <!-- svelte-ignore a11y_no_static_element_interactions -->
                             <div
-                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-base font-bold w-full border-l-1 border-pickem-title cursor-pointer transition-all duration-200 hover:brightness-125"
-                                class:border-l-4={match.winner === match.team2}
-                                class:border-green-500={match.winner === match.team2}
+                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer"
+                                class:winnerTeam={match.winner === match.team2 && match.winner}
+                                class:loserTeam={match.winner !== match.team2 && match.winner}
                                 on:click={() => selectWinner(roundIndex, matchIndex, match.team2)}
                             >
                                 {match.team2 || "..."}
@@ -155,28 +155,24 @@
                         <!-- Connector lines (only for non-final rounds) -->
                         {#if roundIndex < rounds - 1}
                             <div
-                                class="absolute top-1/2 left-full w-16 h-px bg-pickem-title"
+                                class="absolute top-[calc(50%-0.5px)] left-full w-[4em] h-[1px] bg-pickem-title"
                             ></div>
 
                             <!-- Vertical connector (for every second match) -->
                             {#if matchIndex % 2 === 0 && matchIndex + 1 < matches[roundIndex].length}
                                 <div
-                                    class="absolute h-[calc(100%+2rem)] top-1/2 -right-16 w-px bg-pickem-title"
+                                    class="absolute h-[calc(100%+2em)] top-1/2 -right-[4em] w-[1px] bg-pickem-title"
                                 ></div>
                             {/if}
                         {/if}
-                        
-                        <!-- Right side connection point -->
-                        {#if roundIndex < rounds}
+                        {#if roundIndex < rounds }
                             <div
-                                class="absolute top-[calc(50%-0.5rem)] right-0 w-px h-4 bg-pickem-title"
+                                class="absolute top-[calc(50%-0.5em)] right-0 w-[1px] h-[1em] bg-pickem-title"
                             ></div>
                         {/if}
-                        
-                        <!-- Left side connection point (except first round) -->
                         {#if roundIndex < rounds && roundIndex !== 0}
                             <div
-                                class="absolute top-1/2 right-full w-16 h-px bg-pickem-title"
+                                class="absolute top-[calc(50%-0.5px)] right-full w-[4em] h-[1px] bg-pickem-title"
                             ></div>
                         {/if}
                     </div>
@@ -185,15 +181,14 @@
         {/each}
         
         <!-- Champion block at the end -->
-        <div class="flex flex-col items-center justify-center h-full w-56">
-            <h3 class="text-center font-bold text-yellow-500 mb-8">Champion</h3>
+        <div class="flex items-center justify-center h-full w-[14em]">
             <div class="w-full relative">
                 <!-- Champion container with trophy icon -->
                 <div
-                    class="bg-[#3d2424] aspect-[2/1] flex justify-center items-center text-xl font-bold w-full border-1 border-yellow-500 border text-center relative"
+                    class="bg-[#3d2424] aspect-[2/1] flex justify-center items-center text-[1.5em] font-bold w-full border-l-[0.25em] border-[#ff9500] border-[0.25em] text-center relative"
                 >
                     <!-- Trophy icon -->
-                    <div class="absolute top-[-1rem] left-1/2 transform -translate-x-1/2 text-yellow-400 text-xl">
+                    <div class="absolute top-[-1em] left-1/2 transform -translate-x-1/2 text-[#ffcc00] text-[1.25em]">
                         🏆
                     </div>
                     
@@ -205,7 +200,7 @@
                 
                 <!-- Connector line to final match -->
                 <div
-                    class="absolute top-1/2 right-full w-16 h-px bg-pickem-title"
+                    class="absolute top-[calc(50%-0.5px)] right-full w-[8em] h-[1px] bg-pickem-title"
                 ></div>
             </div>
         </div>

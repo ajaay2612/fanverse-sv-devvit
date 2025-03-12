@@ -1,6 +1,7 @@
 <script>
     import BoxButton from '../components/BoxButton.svelte';
-    import TournamentBracket from '../components/TournamentBracket.svelte';
+    import SingleElim from '../braket/SingleElim.svelte';
+    import DoubleElim from '../braket/DoubleElim.svelte';
 
     let teams = ["SEN", "DRX", "100T", "C9"];
     // let teams = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"];
@@ -8,6 +9,8 @@
 </script>
 
 <div class="h-screen w-full">
+    <div class="pickem-main-bg-gradient translate-y-[10%] h-full w-full absolute top-0 left-0 z-0 pointer-events-none"></div>
+
 
     <!-- title -->
     <div class="border-b py-2em xsm:py-1em border-pickem-border-bottom">
@@ -35,7 +38,8 @@
 
     <!-- bracket -->
     <div class="text-[0.5em] h-[80%] flex items-center">
-        <TournamentBracket />
+        <SingleElim />
+        <!-- <DoubleElim /> -->
     </div>
 
 
