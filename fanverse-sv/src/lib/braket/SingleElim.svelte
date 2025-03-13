@@ -1,208 +1,112 @@
 <script>
-    import DropDownData from '../stores/DropDownData';
 
-    // Input is now an array of teams instead of just a number
-    $: noOfTeams = $DropDownData[1].options[$DropDownData[1].active];
-    // $: noOfTeams = 8
+    export let noOfTeam = 4;
     
-    // Calculate number of rounds based on number of teams
-    $: rounds = Math.ceil(Math.log2(noOfTeams));
+    let rounds = Math.log2(noOfTeam) + 1
     
-    // Store previous team count to detect changes
-    let prevTeamCount = noOfTeams;
+    let TeamNames = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"]
     
-    // Generate match data for the bracket
-    $: matches = generateMatches(noOfTeams);
-
-    function generateMatches(teamCount) {
-        const totalRounds = Math.ceil(Math.log2(teamCount));
-        let allMatches = [];
-
-        // Generate initial round matches
-        let roundMatches = [];
-        for (let i = 0; i < teamCount; i += 2) {
-            if (i + 1 < teamCount) {
-                roundMatches.push({
-                    team1: `Team ${i + 1}`,
-                    team2: `Team ${i + 2}`,
-                    winner: null
-                });
-            } else {
-                roundMatches.push({
-                    team1: `Team ${i + 1}`,
-                    team2: null, // Bye
-                    winner: `Team ${i + 1}` // Automatic win for odd team
-                });
+    let brackets = []
+    
+    for (let i = 0; i < rounds; i++) {
+        if (i == 0) {
+            brackets.push([])
+            for (let j = 0; j < noOfTeam; j++) {
+                brackets[i].push({team : TeamNames[j], won : null})
+            }
+        } else {
+            brackets.push([])
+            for (let j = 0; j < noOfTeam / 2 ** i; j++) {
+                brackets[i].push({team : null, won : null})
             }
         }
-        allMatches.push(roundMatches);
-
-        // Generate subsequent rounds with empty matches
-        let matchCount = Math.ceil(teamCount / 2);
-        for (let round = 1; round < totalRounds; round++) {
-            matchCount = Math.ceil(matchCount / 2);
-            roundMatches = Array(matchCount)
-                .fill()
-                .map(() => ({
-                    team1: null,
-                    team2: null,
-                    winner: null
-                }));
-            allMatches.push(roundMatches);
-        }
-
-        // If we have matches from previous generation, try to preserve existing information
-        if (prevTeamCount !== teamCount && prevTeamCount > 0) {
-            prevTeamCount = teamCount;
-        }
-
-        return allMatches;
     }
     
-    // Update winner when a team is selected
-    function selectWinner(roundIndex, matchIndex, team) {
-        // Only allow selecting winners in completed matches
-        if (!matches[roundIndex][matchIndex].team1 || 
-            (!matches[roundIndex][matchIndex].team2 && roundIndex === 0)) {
-            return;
+    console.log(brackets)
+    
+    function handleAdvancement(roundIndex, matchIndex) {
+        if (roundIndex >= rounds - 1) return;
+    
+        const currentTeam = brackets[roundIndex][matchIndex].team;
+        if (!currentTeam) return;
+        
+        // Calculate the position in the next round
+        const nextRoundMatchIndex = Math.floor(matchIndex / 2);
+        
+        // Update the team in the next round
+        brackets[roundIndex + 1][nextRoundMatchIndex].team = currentTeam;
+        brackets[roundIndex][matchIndex].won = true;
+        
+        // Find the pair match and mark it as loser
+        const isPairEven = matchIndex % 2 === 0;
+        const pairMatchIndex = isPairEven ? matchIndex + 1 : matchIndex - 1;
+        
+        // Make sure the pair exists (for odd number of teams)
+        if (pairMatchIndex < brackets[roundIndex].length) {
+            brackets[roundIndex][pairMatchIndex].won = false;
         }
-        
-        matches[roundIndex][matchIndex].winner = team;
-        
-        // If not the final round, update the next match
-        if (roundIndex < rounds - 1) {
-            const nextMatchIndex = Math.floor(matchIndex / 2);
-            const isTopTeam = matchIndex % 2 === 0;
+    
+        // Clear affected matches in all subsequent rounds
+        for (let r = roundIndex + 1; r < rounds; r++) {
+            const affectedMatchIndex = Math.floor(nextRoundMatchIndex / (2 ** (r - (roundIndex + 1))));
             
-            // Update the next match with this winner
-            if (isTopTeam) {
-                matches[roundIndex + 1][nextMatchIndex].team1 = team;
-            } else {
-                matches[roundIndex + 1][nextMatchIndex].team2 = team;
+            // Only clear team name for rounds after the next round
+            if (r > roundIndex + 1) {
+                brackets[r][affectedMatchIndex].team = null;
             }
             
-            // Clear subsequent rounds
-            clearSubsequentRounds(roundIndex + 1);
-        } else if (roundIndex === rounds - 1) {
-            // Final round - update champion
-            champion = team;
-        }
-        
-        // Trigger reactivity
-        matches = [...matches];
-    }
-    
-    // Clear data in rounds after the specified round
-    function clearSubsequentRounds(startRound) {
-        for (let r = startRound + 1; r < rounds; r++) {
-            for (let m = 0; m < matches[r].length; m++) {
-                matches[r][m].team1 = null;
-                matches[r][m].team2 = null;
-                matches[r][m].winner = null;
+            // Clear won status for the match and its pair
+            brackets[r][affectedMatchIndex].won = null;
+            
+            const pairIndex = affectedMatchIndex - (affectedMatchIndex % 2 === 0 ? -1 : 1);
+            if (pairIndex < brackets[r].length) {
+                brackets[r][pairIndex].won = null;
             }
         }
         
-        // Clear champion if clearing after semifinals
-        // if (startRound < rounds - 1) {
-            champion = "...";
-        // }
+        console.log(`Advanced ${currentTeam} to round ${roundIndex + 1}, match ${nextRoundMatchIndex}`);
+        
     }
     
-    $:console.log(matches);
-
-    // Default champion
-    $: champion = "...";
-</script>
-
-<div class="customMatchFont-{noOfTeams} overflow-x-scroll  w-full h-fit px-4em xsm:px-2em py-[2.5em] text-white">
-    <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">
-        {#each Array(rounds) as _, roundIndex}
-            <div class="flex flex-col gap-[2em] justify-around h-full w-[14em] relative">
-                {#each matches[roundIndex] as match, matchIndex}
-                    <div class="relative">
-                        <!-- Match container -->
-                        <div class="flex flex-col w-full">
-                            <!-- Team 1 -->
-                            <!-- svelte-ignore a11y_click_events_have_key_events -->
-                            <!-- svelte-ignore a11y_no_static_element_interactions -->
-                            <div
-                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer"
-                                class:winnerTeam={match.winner === match.team1 && match.winner}
-                                class:loserTeam={match.winner !== match.team1 && match.winner}
-                                on:click={() => selectWinner(roundIndex, matchIndex, match.team1)}
-                            >
-                                {match.team1 || "..."}
+    function showTeamName(roundIndex, matchIndex) {
+        return brackets[roundIndex][matchIndex].team || "..."
+    }
+    $:console.log(brackets)
+    </script>
+    
+    <div class="customMatchFont-{noOfTeam} overflow-x-scroll xsm:overflow-visible w-full h-[fit] px-4em xsm:px-2em py-[2.5em] text-white">
+        <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">
+            {#each brackets as round, roundIndex}
+                <div class="flex flex-col justify-center h-full w-[14em]">
+                    {#each round as match, matchIndex }
+                        <div class="odd:mt-2em relative">
+                            <button 
+                            class:winnerTeam={brackets[roundIndex][matchIndex].won}
+                            class:loserTeam={!brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
+                            on:click={handleAdvancement(roundIndex,matchIndex) }
+                            class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
+                                {showTeamName(roundIndex, matchIndex)}
+                            </button>
+                            <div class:hidden={matchIndex % 2 != 0 || roundIndex == rounds - 1 } class="relative leading-0 py-[0.5em] text-center text-[#666]">
+                                <p class="text-[1.1em] ">vs</p>
+                                
+                                <div class="left-full absolute {roundIndex == rounds - 2  ? "w-8em" : "w-4em"} h-[1px] bg-pickem-title">                                
+                                </div>
+                                
+                                <div
+                                    class:hidden={roundIndex == 0}
+                                    class="right-full absolute w-4em h-[1px] bg-pickem-title">
+                                </div>
+                                
+                                
                             </div>
-                            <!-- vs divider -->
                             <div
-                                class="text-[0.8em] text-center text-[#666] px-[1em]"
-                            >
-                                vs
-                            </div>
-                            <!-- Team 2 -->
-                            <!-- svelte-ignore a11y_click_events_have_key_events -->
-                            <!-- svelte-ignore a11y_no_static_element_interactions -->
-                            <div
-                                class="text-center bg-pickem-box aspect-[5.8/2] flex justify-center items-center text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer"
-                                class:winnerTeam={match.winner === match.team2 && match.winner}
-                                class:loserTeam={match.winner !== match.team2 && match.winner}
-                                on:click={() => selectWinner(roundIndex, matchIndex, match.team2)}
-                            >
-                                {match.team2 || "..."}
+                                class:hidden={roundIndex > rounds - 3 || matchIndex % 4 != 0}
+                                class="left-[calc(100%+4em-1px)] top-[calc(100%-3px)] absolute w-[1px] h-[12.7em] bg-pickem-title">
                             </div>
                         </div>
-
-                        <!-- Connector lines (only for non-final rounds) -->
-                        {#if roundIndex < rounds - 1}
-                            <div
-                                class="absolute top-[calc(50%-0.5px)] left-full w-[4em] h-[1px] bg-pickem-title"
-                            ></div>
-
-                            <!-- Vertical connector (for every second match) -->
-                            {#if matchIndex % 2 === 0 && matchIndex + 1 < matches[roundIndex].length}
-                                <div
-                                    class="absolute h-[calc(100%+2em)] top-1/2 -right-[4em] w-[1px] bg-pickem-title"
-                                ></div>
-                            {/if}
-                        {/if}
-                        {#if roundIndex < rounds }
-                            <div
-                                class="absolute top-[calc(50%-0.5em)] right-0 w-[1px] h-[1em] bg-pickem-title"
-                            ></div>
-                        {/if}
-                        {#if roundIndex < rounds && roundIndex !== 0}
-                            <div
-                                class="absolute top-[calc(50%-0.5px)] right-full w-[4em] h-[1px] bg-pickem-title"
-                            ></div>
-                        {/if}
-                    </div>
-                {/each}
-            </div>
-        {/each}
-        
-        <!-- Champion block at the end -->
-        <div class="flex items-center justify-center h-full w-[14em]">
-            <div class="w-full relative">
-                <!-- Champion container with trophy icon -->
-                <div
-                    class="bg-[#3d2424] aspect-[2/1] flex justify-center items-center text-[1.5em] font-bold w-full border-l-[0.25em] border-[#ff9500] border-[0.25em] text-center relative"
-                >
-                    <!-- Trophy icon -->
-                    <div class="absolute top-[-1em] left-1/2 transform -translate-x-1/2 text-[#ffcc00] text-[1.25em]">
-                        🏆
-                    </div>
-                    
-                    <!-- Champion name -->
-                    <div>
-                        {champion}
-                    </div>
+                    {/each}
                 </div>
-                
-                <!-- Connector line to final match -->
-                <div
-                    class="absolute top-[calc(50%-0.5px)] right-full w-[8em] h-[1px] bg-pickem-title"
-                ></div>
-            </div>
+            {/each}
         </div>
     </div>
-</div>

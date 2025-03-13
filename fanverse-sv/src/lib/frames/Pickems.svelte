@@ -2,8 +2,12 @@
     import BoxButton from '../components/BoxButton.svelte';
     import SingleElim from '../braket/SingleElim.svelte';
     import DoubleElim from '../braket/DoubleElim.svelte';
+    import DropDownData from '../stores/DropDownData';
 
     let teams = ["SEN", "DRX", "100T", "C9"];
+
+    $: noOfTeam = $DropDownData[1].options[$DropDownData[1].active];
+
     // let teams = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"];
 
 </script>
@@ -38,7 +42,9 @@
 
     <!-- bracket -->
     <div class="text-[0.5em] h-[80%] flex items-center">
-        <SingleElim />
+        {#key noOfTeam}
+            <SingleElim  noOfTeam={noOfTeam}/>
+        {/key}
         <!-- <DoubleElim /> -->
     </div>
 
