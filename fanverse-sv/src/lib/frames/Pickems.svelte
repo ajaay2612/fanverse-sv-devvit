@@ -42,10 +42,10 @@
 
     <!-- bracket -->
     <div class="text-[0.5em] h-[80%] flex items-center">
-        {#key noOfTeam}
+        <!-- {#key noOfTeam}
             <SingleElim  noOfTeam={noOfTeam}/>
-        {/key}
-        <!-- <DoubleElim /> -->
+        {/key} -->
+        <DoubleElim />
     </div>
 
 
