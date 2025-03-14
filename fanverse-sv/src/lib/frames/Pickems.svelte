@@ -64,7 +64,11 @@
                 </div>
             {/if}
         {:else}
-            <MultiElim />
+            <div class="w-full">
+                {#key noOfTeam}
+                    <MultiElim  noOfTeam={noOfTeam}/>
+                {/key}
+            </div>
         {/if}
         
         
