@@ -1,12 +1,15 @@
 <script>
     import BoxButton from '../components/BoxButton.svelte';
-    import SingleElim from '../braket/SingleElim.svelte';
+    import DoubleElimEight from '../braket/DoubleElim-eight.svelte';
     import DoubleElim from '../braket/DoubleElim.svelte';
+    import SingleElim from '../braket/SingleElim.svelte';
+    import MultiElim from '../braket/MultiElim.svelte';
     import DropDownData from '../stores/DropDownData';
 
     let teams = ["SEN", "DRX", "100T", "C9"];
 
     $: noOfTeam = $DropDownData[1].options[$DropDownData[1].active];
+    $: elimMethod = $DropDownData[0].active;
 
     // let teams = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"];
 
@@ -42,10 +45,25 @@
 
     <!-- bracket -->
     <div class="text-[0.5em] h-[80%] flex items-center">
-        <!-- {#key noOfTeam}
-            <SingleElim  noOfTeam={noOfTeam}/>
-        {/key} -->
-        <DoubleElim />
+        {#if elimMethod === 0}
+            {#key noOfTeam}
+                <SingleElim  noOfTeam={noOfTeam}/>
+            {/key}
+        {:else if elimMethod === 1}
+            {#if noOfTeam === 8}
+                <div class="overflow-scroll h-[80vh] w-full lg:text-[1.3em]">
+                    <DoubleElimEight />
+                </div>
+            {:else}
+                <div class="h-[80vh] w-full">
+                    <DoubleElim />
+                </div>
+            {/if}
+        {:else}
+            <MultiElim />
+        {/if}
+        
+        
     </div>
 
 

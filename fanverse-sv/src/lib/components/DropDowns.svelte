@@ -31,12 +31,13 @@
         </p>
     </BoxButton>
     {#if drop.options && showDropDown}
-        <div class="z-[15] absolute top-full mt-[0.2em] left-[-5px] w-[calc(100%+10px)] backdrop-blur-[20px] bg-pickem-box">
-            <div class="pointer-events-none opacity-50 text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{drop.name}</div>
+        <div class="z-[15] absolute top-full mt-[0.2em] left-[-5px] w-[calc(100%+10px)] bg-header-hover">
+            
+            <div class="z-[17] relative pointer-events-none opacity-50 text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{drop.name}</div>
             {#each drop.options as option}
                 <!-- svelte-ignore a11y_no_static_element_interactions -->
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
-                <div on:click={()=>selectOption(option)} class="hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{option}</div>
+                <div on:click={()=>selectOption(option)} class="z-[17] relative  hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{option}</div>
             {/each}
         </div>
     {/if}
