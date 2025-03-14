@@ -46,8 +46,8 @@
 
     --color-preHover: #313131;
 
-    --color-pickem-left-box: #812300;
-    --color-pickem-right-box: #41190A;
+    --color-pickem-left-box: #331308;
+    --color-pickem-right-box: #331308;
 
     --color-pickem-header-bg: #1C1C1CA6;
     --color-pickem-header-bg-block: #1C1C1C;
@@ -86,11 +86,43 @@
     --spacing-10hem: 10.5em;
 }
 
+* {
+    transition: color 500ms ease-out, 
+    background-color 500ms ease-out,
+    border-color 500ms ease-out,
+    outline-color 500ms ease-out,
+    box-shadow 500ms ease-out;
+}
 @layer theme {
-    .dark {
-        --color-pri: #104efa;
-        --color-sec: black;
-        --color-tert: white;
+    .emerald {
+        --color-pickem-main-bg-gradient-one: rgba(0, 48, 40, 0);
+        --color-pickem-main-bg-gradient-two:  #003028 ;
+
+        --color-pickem-left-box: #08332D;
+        --color-pickem-right-box: #08332D;
+        
+        --color-pickem-border-bottom: #007A64;
+        --color-pickem-title: #00FFD0;
+    } 
+    .amethyst {
+        --color-pickem-main-bg-gradient-one: rgba(42, 8, 51, 0);
+        --color-pickem-main-bg-gradient-two:  #2D0833 ;
+
+        --color-pickem-left-box: #2A0833;
+        --color-pickem-right-box: #2A0833;
+        
+        --color-pickem-border-bottom: #68007A;
+        --color-pickem-title: #B200FF;
+    } 
+    .onyx {
+        --color-pickem-main-bg-gradient-one:  rgba(37, 37, 37, 0);
+        --color-pickem-main-bg-gradient-two:  #272727 ;
+
+        --color-pickem-left-box: #202020;
+        --color-pickem-right-box: #202020;
+        
+        --color-pickem-border-bottom: #363636;
+        --color-pickem-title: #d1d1d1;
     } 
 }
 

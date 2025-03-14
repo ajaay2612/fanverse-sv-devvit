@@ -5,6 +5,7 @@
     import SingleElim from '../braket/SingleElim.svelte';
     import MultiElim from '../braket/MultiElim.svelte';
     import DropDownData from '../stores/DropDownData';
+    import { fade } from 'svelte/transition';
 
     let teams = ["SEN", "DRX", "100T", "C9"];
 
@@ -13,10 +14,13 @@
 
     // let teams = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"];
 
+    $: console.log($DropDownData[3].active);
 </script>
 
 <div class="h-screen w-full">
-    <div class="pickem-main-bg-gradient translate-y-[10%] h-full w-full absolute top-0 left-0 z-0 pointer-events-none"></div>
+    {#key $DropDownData[3].active}
+        <div in:fade={{duration:500}} class=" pickem-main-bg-gradient  translate-y-[10%] h-full w-full absolute top-0 left-0 z-0 pointer-events-none"></div>
+    {/key}
 
 
     <!-- title -->
@@ -27,7 +31,7 @@
                     <img class="w-full h-full" src="/images/pickems/logo.svg" alt="">
                 </div>
                 <div class="">
-                    <p class="text-center font-inter leading-[1em] font-bold text-pickem-title text-[1.2em]">PICKE’EMS</p>
+                    <p class=" text-center font-inter leading-[1em] font-bold text-pickem-title text-[1.2em]">PICKE’EMS</p>
                     <p class="text-center font-inter font-bold text-[0.55em]">SUBTITLE</p>
                 </div>
             </div>

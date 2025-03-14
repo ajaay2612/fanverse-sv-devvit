@@ -4,7 +4,7 @@ const DropDownData = writable([
     {
         name: 'select type',
         options: ['single', 'double',"multi"],
-        active:0
+        active:2
     },
     {
         name: 'number of teams',
@@ -13,9 +13,12 @@ const DropDownData = writable([
     },
     {
         name: 'select style',
+        
     },
     {
-        name: 'select color'
+        name: 'select color',
+        options: ['crimson', 'emerald','amethyst ', 'onyx'],
+        active:0
     },
     {
         name: 'select category'
