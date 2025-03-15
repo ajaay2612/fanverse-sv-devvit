@@ -22,7 +22,7 @@
 <svelte:window on:click={(e) => {!dropDownElement.contains(e.target) ? showDropDown = false:'' } } />
 
 
-<button bind:this={dropDownElement} class=" w-[4.7em] text-center relative">
+<button bind:this={dropDownElement} class="  text-center relative">
     <div on:click={toggleDropDown}  class="pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative size-[0.72em] block ml-auto">
         <BoxButton>
             <div class="leading-0 text-[0.78em] size-[0.7em] absolute top-1/2 left-1/2 -translate-1/2"> 
@@ -33,7 +33,7 @@
         </BoxButton>
     </div>
     {#if drop.options && showDropDown}
-        <div class="pointer-events-auto z-[15] absolute top-full mt-[0.5em] left-[-5px] w-[calc(100%+10px)] bg-header-hover">
+        <div class="w-[4.7em] pointer-events-auto z-[15] absolute top-full mt-[0.5em] right-[-5px]  bg-header-hover">
             
             <div class="z-[17] relative pointer-events-none opacity-50 text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{drop.name}</div>
             {#if $DropDownData[2].active == 0}

@@ -54,7 +54,6 @@
     --color-pickem-header-bg-block: #1C1C1C;
     
     --color-pickem-border-bottom: #761D00;
-    --color-pickem-title: #FF4200;
     --color-pickem-box: #73737321;
     --color-header-hover: #2a2320;
     --color-pickem-box-champ: #ffbe24;
@@ -100,6 +99,9 @@
     fill 500ms ease-out;
 }
 @layer theme {
+    .crimson {
+        --color-pickem-title: #FF4200;
+    } 
     .emerald {
         --color-pickem-main-bg-gradient-one: #003028;
         --color-pickem-main-bg-gradient-two:  #003028 ;

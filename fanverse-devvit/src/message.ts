@@ -6,6 +6,7 @@ export type DevvitMessage =
 /** Message from the web view to Devvit. */
 export type WebViewMessage =
   | { type: 'webViewReady' }
+  | { type: 'addImage' }
   | { type: 'setCounter'; data: { newCounter: number } };
 
 /**
