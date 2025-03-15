@@ -18,13 +18,47 @@
 </script>
 
 <div class="h-screen w-full">
-    {#key $DropDownData[3].active}
+    <!-- {#key $DropDownData[3].active}
         <div in:fade={{duration:500}} class=" pickem-main-bg-gradient  translate-y-[10%] h-full w-full absolute top-0 left-0 z-0 pointer-events-none"></div>
-    {/key}
-
+        {/key} -->
+    
+    {#if $DropDownData[2].active == 0}
+        <div class="flex  items-end h-full w-full  absolute bottom-0  left-0 z-0 pointer-events-none">
+            <div class="w-full">
+                <div class="">
+                    <svg class="object-cover" width="100%" height="100%" viewBox="0 0 1919 908" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 0.269531H1919V907.27H0V0.269531Z" fill="url(#paint0_linear_2634_1674)"/>
+                        <defs>
+                        <linearGradient id="paint0_linear_2634_1674" x1="959.5" y1="550.898" x2="959.5" y2="907.27" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="var(--color-pickem-main-bg-gradient-one)" stop-opacity="0"/>
+                        <stop offset="1" stop-color="var(--color-pickem-main-bg-gradient-two)" stop-opacity="0.43"/>
+                        </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+    
+                <!-- <svg width="100%" height="100%" viewBox="0 0 1919 907" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_2632_834)">
+                    <path d="M0 152.07H1919V1059.07H0V152.07Z" fill="url(#paint0_linear_2632_834)"/>
+                    </g>
+                    <defs>
+                    <linearGradient id="paint0_linear_2632_834" x1="959.5" y1="702.699" x2="959.5" y2="1059.07" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="var(--color-pickem-main-bg-gradient-one)" stop-opacity="0"/>
+                    <stop offset="1" stop-color="var(--color-pickem-main-bg-gradient-two)" stop-opacity="0.43"/>
+                    </linearGradient>
+                    <clipPath id="clip0_2632_834">
+                    <rect width="100%" height="100%" fill="white"/>
+                    </clipPath>
+                    </defs>
+                </svg> -->
+            </div>                  
+        </div>
+    {/if}
 
     <!-- title -->
-    <div class="border-b py-2em xsm:py-1em border-pickem-border-bottom">
+    <div 
+    style="border-width:{$DropDownData[2].active == 0 ? "" : "0"}; padding-bottom:{$DropDownData[2].active == 0 ? "" : "0"}"
+    class="border-b py-2em xsm:py-1em border-pickem-border-bottom">
         <div class="text-[1.2em] xsm:text-[0.7em] lg:text-[0.62em] w-fit mx-auto  relative pr-1hem ">
             <div class="flex justify-center items-center gap-[1.1em]">
                 <div class="w-[2.8em]">
@@ -55,7 +89,7 @@
             {/key}
         {:else if elimMethod === 1}
             {#if noOfTeam === 8}
-                <div class="overflow-scroll h-[80vh] w-full lg:text-[1.3em]">
+                <div class="overflow-scroll h-[80vh] w-full text-[1.2em] lg:text-[1.4em]">
                     <DoubleElimEight />
                 </div>
             {:else}
@@ -64,7 +98,7 @@
                 </div>
             {/if}
         {:else}
-            <div class="w-full">
+            <div class="w-full h-full">
                 {#key noOfTeam}
                     <MultiElim  noOfTeam={noOfTeam}/>
                 {/key}

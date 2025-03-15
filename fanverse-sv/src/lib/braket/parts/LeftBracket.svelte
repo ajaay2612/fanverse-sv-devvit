@@ -81,7 +81,7 @@
     $:console.log(brackets)
 </script>
     
-<div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-start items-center  h-full">
+<div class="w-full text-[0.65em]  flex gap-[8em] justify-start items-center  h-full">
     {#each brackets as round, roundIndex}
         <div class="flex flex-col justify-center h-full w-[14em]">
             {#each round as match, matchIndex }

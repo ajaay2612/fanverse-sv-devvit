@@ -40,9 +40,10 @@
     --color-homeScreenGrad-one: rgba(65, 20, 0, 0);
     --color-homeScreenGrad-two: rgba(77, 23, 0, 0.43) ;
     
-    --color-pickem-main-bg-gradient-one:rgba(65, 20, 0, 0);
-    --color-pickem-main-bg-gradient-two: rgba(77, 23, 0, 0.43) ;
+    --color-pickem-main-bg-gradient-one:#411400;
+    --color-pickem-main-bg-gradient-two:#4D1700 ;
 
+    --color-pickem-main-bg: #0B0B0B;
 
     --color-preHover: #313131;
 
@@ -58,6 +59,10 @@
     --color-header-hover: #2a2320;
     --color-pickem-box-champ: #ffbe24;
 
+    --color-badge: #FF4200;
+    /* style 2 */
+    --color-circle-bg: #0F324B;
+    --color-pickem-title: #fff;
 
     /* color end */
 
@@ -91,11 +96,12 @@
     background-color 500ms ease-out,
     border-color 500ms ease-out,
     outline-color 500ms ease-out,
-    box-shadow 500ms ease-out;
+    box-shadow 500ms ease-out,
+    fill 500ms ease-out;
 }
 @layer theme {
     .emerald {
-        --color-pickem-main-bg-gradient-one: rgba(0, 48, 40, 0);
+        --color-pickem-main-bg-gradient-one: #003028;
         --color-pickem-main-bg-gradient-two:  #003028 ;
 
         --color-pickem-left-box: #08332D;
@@ -103,9 +109,11 @@
         
         --color-pickem-border-bottom: #007A64;
         --color-pickem-title: #00FFD0;
+
+        --color-badge: #00FFD0;
     } 
     .amethyst {
-        --color-pickem-main-bg-gradient-one: rgba(42, 8, 51, 0);
+        --color-pickem-main-bg-gradient-one: #2A0833;
         --color-pickem-main-bg-gradient-two:  #2D0833 ;
 
         --color-pickem-left-box: #2A0833;
@@ -113,9 +121,11 @@
         
         --color-pickem-border-bottom: #68007A;
         --color-pickem-title: #B200FF;
+
+        --color-badge: #B200FF;
     } 
     .onyx {
-        --color-pickem-main-bg-gradient-one:  rgba(37, 37, 37, 0);
+        --color-pickem-main-bg-gradient-one:  #252525;
         --color-pickem-main-bg-gradient-two:  #272727 ;
 
         --color-pickem-left-box: #202020;
@@ -123,6 +133,48 @@
         
         --color-pickem-border-bottom: #363636;
         --color-pickem-title: #d1d1d1;
+
+        --color-badge: #d1d1d1;
+    } 
+    /* style 2 */
+    .blue {
+
+
+        --color-circle-bg: #0F324B;
+        --color-pickem-box: #00243E;
+        --color-pickem-main-bg: #040E15;
+
+        --color-badge: #1094f2;
+    } 
+    .green {
+        --color-circle-bg: #194B0F;
+        --color-pickem-box: #0A3E00;
+        --color-pickem-main-bg: #051504;
+        --color-badge: #2dd00c;
+    } 
+    .lBlue {
+        --color-circle-bg: #0F434B;
+        --color-pickem-box: #00313E;
+        --color-pickem-main-bg: #041415;
+        --color-badge: #74e1ff;
+    } 
+    .lGreen {
+        --color-circle-bg: #414B0F;
+        --color-pickem-box: #3D3E00;
+        --color-pickem-main-bg: #121504;
+        --color-badge: #afb200;
+    } 
+    .purple {
+        --color-circle-bg: #420F4B;
+        --color-pickem-box: #39003E;
+        --color-pickem-main-bg: #140415;
+        --color-badge: #a700b6;
+    } 
+    .dark {
+        --color-circle-bg: #1E1E1E;
+        --color-pickem-box: #3B3B3B;
+        --color-pickem-main-bg: #161616;
+        --color-badge: #afafaf;
     } 
 }
 
@@ -207,4 +259,8 @@ body {
     var(--color-pickem-main-bg-gradient-one) 60.71%,
      var(--color-pickem-main-bg-gradient-two)  100%);
 
+}
+
+.activeTheme{
+    @apply bg-(--color-badge) text-black;
 }
