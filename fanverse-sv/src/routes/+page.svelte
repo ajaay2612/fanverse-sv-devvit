@@ -26,23 +26,25 @@
                 if(mounted) return;
 
                 mounted = true;
-                $General.userName = message.data.username;
+                $General.userName = message?.data?.username;
                 $General.mode = "create";
+
+                $General.allTeamData = message?.data?.allTeamData;
 
 
             }
         }
     };
     
-    const interval = setInterval(() => {
-        if (!mounted) {
-            window.parent.postMessage({
-                type: 'webViewReady'
-            }, '*');
-        } else {
-            clearInterval(interval); // Stop the interval once mounted is true
-        }
-    }, 500); 
+    // const interval = setInterval(() => {
+    //     if (!mounted) {
+    //         window.parent.postMessage({
+    //             type: 'webViewReady'
+    //         }, '*');
+    //     } else {
+    //         clearInterval(interval); // Stop the interval once mounted is true
+    //     }
+    // }, 500); 
    
 </script>
 <svelte:window on:message={handleMessage}/>

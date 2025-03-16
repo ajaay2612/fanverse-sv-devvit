@@ -7,6 +7,7 @@ export type DevvitMessage =
 export type WebViewMessage =
   | { type: 'webViewReady' }
   | { type: 'addImage' }
+  | { type: 'addTeamToUserData' }
   | { type: 'setCounter'; data: { newCounter: number } };
 
 /**

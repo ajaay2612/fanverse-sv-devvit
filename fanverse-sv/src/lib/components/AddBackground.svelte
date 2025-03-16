@@ -1,7 +1,11 @@
 <script>
     import BoxButton from './BoxButton.svelte';
-    import BackgroundImage from '$lib/stores/BackgroundImage';
+    import PostData from '$lib/stores/PostData';
+
+    let imageFetching = false;
+
     function addImage() {
+        imageFetching = true;
         console.log('Adding image...');
         window.parent.postMessage({
             type: 'addImage'
@@ -9,6 +13,7 @@
     }
 
     const handleMessage = (ev) => {
+        if (!imageFetching) return;
         const { type, data } = ev.data;
 
         if (type === 'devvit-message') {
@@ -26,7 +31,7 @@
                         } else {
 
                             console.log('Image exists:', message.data.imageUrl);
-                            $BackgroundImage.url = message.data.imageUrl;
+                            $PostData.BackgroundImageUrl = message.data.imageUrl;
                             // $ShowLoader = false
 
                         }
@@ -37,6 +42,7 @@
                 };
 
                 checkImageUrl();
+                imageFetching = false;
             }
             
         }

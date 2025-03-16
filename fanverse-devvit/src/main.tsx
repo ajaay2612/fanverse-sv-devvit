@@ -71,12 +71,26 @@ Devvit.addCustomPostType({
                     case 'addImage':
                         context.ui.showForm(imageUploadForm);
                         break;
+                    case 'addTeamToUserData':
+                        await context.redis.set(
+                            `allTeamData_${username}`,
+                            JSON.stringify(message.data.allTeamData)
+                        );
+                        
+                        break;
                     case 'webViewReady':
+                        // await context.redis.set(
+                        //     `allTeamData_${username}`,
+                        //     JSON.stringify([])
+                        // );
+                        let allTeamData = await context.redis.get(`allTeamData_${username}`);
+                        allTeamData = JSON.parse(allTeamData);
                         webView.postMessage({
                             type: 'initialData',
                             data: {
                                 username: username,
                                 currentCounter: counter,
+                                allTeamData : allTeamData || [],
                             },
                         });
                         break;

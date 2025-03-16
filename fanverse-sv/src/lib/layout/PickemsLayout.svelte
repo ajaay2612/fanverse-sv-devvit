@@ -2,16 +2,16 @@
     import Header from '../components/Header.svelte';
     import DropDownData from '$lib/stores/DropDownData';
     import { fade } from 'svelte/transition';
-    import BackgroundImage from '$lib/stores/BackgroundImage';
+    import PostData from '$lib/stores/PostData';
 </script>
 
 
 <div 
 class="{$DropDownData[2].active == 0 ? $DropDownData[3].options[$DropDownData[3].active] : $DropDownData[3].optionsTwo[$DropDownData[3].active].class       } bg-pickem-main-bg h-screen w-full overflow-hidden relative">
 
-    {#if $BackgroundImage.url}
+    {#if $PostData.BackgroundImageUrl}
         <div class="brightness-25 absolute top-0 left-0 w-full h-full object-cover">
-            <img src={$BackgroundImage.url} class="w-full h-full object-cover" alt="">
+            <img src={$PostData.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
         </div>
     {/if}
 
