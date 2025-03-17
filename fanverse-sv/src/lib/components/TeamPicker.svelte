@@ -4,6 +4,8 @@
     import General from "$lib/stores/General";
     import PostData from '$lib/stores/PostData';
     import { onMount } from "svelte";
+    import { fade, scale } from "svelte/transition";
+    import { cubicOut } from "svelte/easing";
 
     export let TeamPickerIndex = 0, showTeamPicker;
 
@@ -25,6 +27,9 @@
     };
    
     function addTeam() {
+        if (!teamData.teamName) {
+            return;
+        }
         // Check if a team with the same name already exists
         const existingTeamIndex = $General.allTeamData.findIndex(team => team.teamName === teamData.teamName);
 
@@ -99,10 +104,10 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div on:click|self={()=>showTeamPicker = false} class="z-[150] backdrop-blur-[5px] text-[2.8em] bg-pickem-header-bg absolute left-0 top-0 h-full w-full  mx-auto flex flex-col xsm:flex-row justify-center items-center gap-3hem
+<div transition:fade={{duration:400, easing: cubicOut}} on:click|self={()=>showTeamPicker = false} class="z-[150] backdrop-blur-[5px] text-[2.8em] bg-pickem-header-bg absolute left-0 top-0 h-full w-full  mx-auto flex flex-col xsm:flex-row justify-center items-center gap-3hem
     xsm:text-[1.5em]">
     
-    <div class="text-[2em] space-y-[0.52em]">
+    <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="text-[2em] space-y-[0.52em]">
         <div class=" flex justify-center  gap-[0.52em]">
             <button on:click={addImage} class="cursor-pointer relative size-[0.8em] block">
                 <BoxButton>
@@ -131,17 +136,17 @@
             </BoxButton>
         </button>
     </div>
-    <div class:hidden={$General.allTeamData.length == 0} class="w-[80%] h-[1px] xsm:w-[1px] xsm:h-[50%] bg-white"></div>
-    <div class:hidden={$General.allTeamData.length == 0} class="h-[50%] xsm:h-[80%] flex flex-col justify-between">
+    <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class:hidden={$General.allTeamData.length == 0} class="w-[80%] h-[1px] xsm:w-[1px] xsm:h-[50%] bg-white"></div>
+    <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class:hidden={$General.allTeamData.length == 0} class="h-[50%] xsm:h-[80%] flex flex-col justify-between">
         <p class="font-inter-italic font-bold uppercase text-[#b0b0b0]">History</p>
         <div class="h-[calc(100%-1em)] -mx-[0.2em] p-[0.2em] overflow-y-scroll text-[2em] space-y-[0.52em]">
             {#each $General.allTeamData as genTeamData, index}
                 <button
                 on:click={()=>{teamData = genTeamData}}
-                class="group flex justify-center  gap-[0.52em]">
+                class="group cursor-pointer flex justify-center  gap-[0.52em]">
                     <div
                     style="transition: none;"
-                    class="group-hover:bg-[#454545] cursor-pointer relative size-[0.8em] block">
+                    class=" group-hover:bg-[#454545]  relative size-[0.8em] block">
                         <BoxButton>
                             <div class="leading-0 text-[0.78em] size-[0.8em] absolute top-1/2 left-1/2 -translate-1/2">
                                 {#if genTeamData.teamImage}
@@ -156,9 +161,11 @@
                     </div>
                     <div
                     style="transition: none;"
-                    class="group-hover:bg-[#454545] flex justify-center items-center w-[4.7em] h-[0.8em] text-center relative">
+                    class=" group-hover:bg-[#454545] flex justify-center items-center w-[4.7em] h-[0.8em] text-center relative">
                         <BoxButton>
-                            <input value={genTeamData.teamName} type="text" placeholder="team Name" class="absolute text-center left-0 w-full h-full text-[0.35em] font-inter-italic font-bold uppercase" />
+                            <div class="flex justify-center items-center absolute text-center left-0 w-full h-full text-[0.35em] font-inter-italic font-bold uppercase" >
+                                {genTeamData.teamName}
+                            </div>
                         </BoxButton>
                     </div>
                 </button>

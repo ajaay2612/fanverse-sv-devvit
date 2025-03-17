@@ -24,7 +24,11 @@
     <BoxButton>
         <p class="text-[0.35em] py-[0.5em] font-inter-italic font-bold uppercase">
             {#if drop.active > -1}
-                {drop.options[drop.active]}
+                {#if drop.name == "select style" || drop.name == "number of teams"}
+                   <div class="flex items-center justify-center gap-[0.5em]">{drop.name} <span class="text-[0.9em]">&#62;</span> {drop.options[drop.active]}</div>
+                {:else}
+                    {drop.options[drop.active]}
+                {/if}
             {:else}
                 {drop.name}
             {/if}

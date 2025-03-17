@@ -1,6 +1,8 @@
 <script>    
     import BoxButton from './BoxButton.svelte';
     import DropDownData from '$lib/stores/DropDownData';
+    import { fade } from 'svelte/transition';
+    import { cubicOut } from 'svelte/easing';
     export let drop;
     
     let showDropDown = false;
@@ -33,7 +35,7 @@
         </BoxButton>
     </div>
     {#if drop.options && showDropDown}
-        <div class="w-[4.7em] pointer-events-auto z-[15] absolute top-full mt-[0.5em] right-[-5px]  bg-header-hover">
+        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[2.2em] xsm:text-[1em]  w-[4.7em] pointer-events-auto z-[15] absolute top-full mt-[0.5em] left-[-5px]  bg-header-hover">
             
             <div class="z-[17] relative pointer-events-none opacity-50 text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{drop.name}</div>
             {#if $DropDownData[2].active == 0}

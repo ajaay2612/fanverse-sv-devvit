@@ -4,7 +4,7 @@
     import TeamPicker from '../components/TeamPicker.svelte';
     import PostData from '$lib/stores/PostData';
     import { onMount } from 'svelte';
-
+    import VoteData from '$lib/stores/VoteData';
     export let noOfTeam = 4;
     
     let rounds = Math.log2(noOfTeam) + 1
@@ -26,7 +26,7 @@
 
     handleTeamNames()
 
-    console.log(teamDataImagefinder)
+    // console.log(teamDataImagefinder)
 
     let brackets = []
     
@@ -51,6 +51,8 @@
  
     function handleAdvancement(roundIndex, matchIndex) {
 
+        if($General.mode == "afterVote") return
+        
         if($General.mode == "create"){
             if (roundIndex != 0) return
             
@@ -100,7 +102,7 @@
             }
         }
         
-        console.log(`Advanced ${currentTeam} to round ${roundIndex + 1}, match ${nextRoundMatchIndex}`);
+        // console.log(`Advanced ${currentTeam} to round ${roundIndex + 1}, match ${nextRoundMatchIndex}`);
         
     }
     
@@ -115,15 +117,49 @@
         TeamPickerIndex = matchIndex
     }
 
-    $:if($PostData.allTeamLoadedData){
+    $:if($PostData?.allTeamLoadedData){
         handleTeamNames()
         initiateBracket()
     }
 
-    // $:console.table(JSON.stringify($PostData))
+
+    // $:console.table($PostData?.allTeamLoadedData)
 
     let showTeamPicker = false
     let TeamPickerIndex = 0
+
+    $: if(brackets){
+        $VoteData.bracketData = brackets
+
+        function checkBracketNull () {
+            let nullBracket = false
+            brackets.forEach((round, roundIndex) => {
+                round.forEach((matchup, matchIndex) => {
+                    if (matchup.team === null || matchup.team === undefined) {
+                        nullBracket = true
+                    }
+                });
+            });
+
+            return nullBracket
+        }
+
+        console.log(checkBracketNull())
+       
+        if(checkBracketNull()){
+            $VoteData.canVote = false
+        }else{
+            $VoteData.canVote = true
+        }
+    }
+
+    // $:console.log(JSON.stringify(brackets))
+    
+    $:if($VoteData.bracketData && $General.mode == "afterVote"){
+        brackets = $VoteData.bracketData
+    }
+
+
 </script>
 
 
