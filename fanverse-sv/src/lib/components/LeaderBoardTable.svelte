@@ -1,6 +1,6 @@
 <script>
     import General from "$lib/stores/General";
-
+    import VoteData from "$lib/stores/VoteData";
     export let showLeaderboard, leaderBoard, leaderBoardType, currentSelectedType;
 
     $: userRank = leaderBoard && leaderBoard.length > 0 
@@ -29,8 +29,8 @@
                     <button
                     style="transition: none;"
                     on:click={()=> currentSelectedType = i}
-                    class="{currentSelectedType == i  ? "text-white":""}  text-center text-[1em] my-[0.5em]">
-                        {lType.name}
+                    class="  text-center text-[1em] my-[0.5em]">
+                        <p class="{currentSelectedType != i  ? "opacity-50 ":"underline"}">{lType.name}</p>
                     </button>
                 {/each}
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -83,6 +83,13 @@
                 </div>
             </div>
         {/if}
+        <div class="bg-pickem-title border-pickem-main-bg border-t-[0.4em]">
+            <div class="text-[0.7em] uppercase font-inter-italic font-bold flex justify-center px-[1.5em] py-[0.4em] ">
+                <p class="">total votes: <span class="ml-0hem">{$VoteData.totalVotes}</span></p>
+            </div>
+        </div>
+
+
     </div>
 
     

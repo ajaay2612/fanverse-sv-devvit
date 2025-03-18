@@ -51,7 +51,7 @@
  
     function handleAdvancement(roundIndex, matchIndex) {
 
-        if($General.mode == "afterVote") return
+        if($General.mode == "afterVote" && !$PostData.isCreator) return
         
         if($General.mode == "create"){
             if (roundIndex != 0) return
@@ -64,6 +64,8 @@
         console.log("vote")
 
         if (roundIndex >= rounds - 1) return;
+
+       
     
         const currentTeam = brackets[roundIndex][matchIndex].team;
         if (!currentTeam) return;
@@ -72,9 +74,11 @@
         const nextRoundMatchIndex = Math.floor(matchIndex / 2);
         
         // Update the team in the next round
+       
         brackets[roundIndex + 1][nextRoundMatchIndex].team = currentTeam;
         brackets[roundIndex][matchIndex].won = true;
         
+        // console.table(brackets)
         // Find the pair match and mark it as loser
         const isPairEven = matchIndex % 2 === 0;
         const pairMatchIndex = isPairEven ? matchIndex + 1 : matchIndex - 1;
@@ -103,8 +107,12 @@
         }
         
         // console.log(`Advanced ${currentTeam} to round ${roundIndex + 1}, match ${nextRoundMatchIndex}`);
-        
+        if(roundIndex == rounds - 2){
+            brackets[roundIndex + 1][nextRoundMatchIndex].won = true
+        }
     }
+
+    // $:console.table(brackets)
     
     function showTeamName(roundIndex, matchIndex) {
         return brackets[roundIndex][matchIndex].team || null
@@ -153,12 +161,87 @@
         }
     }
 
+    $: if(brackets && $General.mode == "create"){
+        function checkBracketNull () {
+            let nullBracket = false
+            brackets[0].forEach((matchup, matchIndex) => {
+                if (matchup.team === null || matchup.team === undefined) {
+                    nullBracket = true
+                }
+            });
+
+            return nullBracket
+        }
+
+        console.log(checkBracketNull())
+       
+        if(checkBracketNull()){
+            $PostData.canPost = false
+        }else{
+            $PostData.canPost = true
+        }
+    }
+
     // $:console.log(JSON.stringify(brackets))
     
     $:if($VoteData.bracketData && $General.mode == "afterVote"){
         brackets = $VoteData.bracketData
     }
 
+    $: isAFterVote = $General.mode == "afterVote"
+    $: allRightBrackets = $General?.finalBracketData || []
+    $: afterVoteUi = []
+
+    function calculateMatchingPoints(userBrackets, finalBrackets) {
+        // Initialize points counter
+        let wonArray = [];
+        
+        // Check if both bracket arrays exist
+        if (!userBrackets || !finalBrackets) {
+            return 0;
+        }
+        
+        // Initialize wonArray with empty arrays for each round
+        for (let i = 0; i < Math.min(userBrackets.length, finalBrackets.length); i++) {
+            wonArray[i] = [];
+        }
+        
+        // Iterate through each round
+        for (let roundIndex = 0; roundIndex < Math.min(userBrackets.length, finalBrackets.length); roundIndex++) {
+            const userRound = userBrackets[roundIndex];
+            const finalRound = finalBrackets[roundIndex];
+            
+            // Iterate through each matchup in the round
+            for (let matchIndex = 0; matchIndex < Math.min(userRound.length, finalRound.length); matchIndex++) {
+                const userMatch = userRound[matchIndex];
+                const finalMatch = finalRound[matchIndex];
+                
+                // console.table(userMatch, finalMatch)
+                // Check if team names match
+                if (userMatch.team === finalMatch.team && userMatch.team !== null) {
+                    wonArray[roundIndex][matchIndex] = true;
+                    if(!finalMatch.won &&  finalMatch.won != null){
+                        wonArray[roundIndex][matchIndex] = false;
+                    }
+                } else {
+                    wonArray[roundIndex][matchIndex] = false;
+                }
+            }
+        }
+        
+        return wonArray;
+    }
+
+    let mounted = false
+    onMount(()=>{
+        mounted = true
+    })
+
+    $: if(mounted && $General.mode == "afterVote" && allRightBrackets && allRightBrackets.length > 0 && brackets && brackets.length > 0){
+        afterVoteUi = calculateMatchingPoints(brackets, allRightBrackets)
+
+        console.table(afterVoteUi)
+    }
 
 </script>
 
@@ -175,8 +258,11 @@
                             <div class="odd:mt-2em relative">
                                 
                                 
-    
+                                <!-- class:rightLoserTeam={true} -->
                                 <button 
+                                
+                                class:rightWinnerTeam={afterVoteUi && afterVoteUi.length > 0 ?  afterVoteUi[roundIndex][matchIndex] : false}
+
                                 class:winnerTeam={brackets[roundIndex][matchIndex].won}
                                 class:loserTeam={!brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
                                 on:click={()=> handleAdvancement(roundIndex,matchIndex) }

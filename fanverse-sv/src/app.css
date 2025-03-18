@@ -245,6 +245,7 @@ body {
     @apply relative text-[0.72em] font-inter-italic font-bold uppercase w-full py-[.5em];
 
 }
+
 .winnerTeam{
     @apply border-l-[0.5em] ;
 }
@@ -266,3 +267,8 @@ body {
 .activeTheme{
     @apply bg-(--color-badge) text-black;
 }
+
+.rightWinnerTeam{
+    @apply bg-[#00ff002e];
+}
+

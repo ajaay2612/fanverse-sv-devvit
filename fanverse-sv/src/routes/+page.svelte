@@ -14,11 +14,13 @@
     import { onMount } from 'svelte';
     import LeaderBoard from "$lib/stores/LeaderBoard"
     import LeaderBoardGlobal from '$lib/stores/LeaderBoardGlobal';
+    import { setContext } from 'svelte';
+
     let messageOutput = '';
     let mounted = false;
     $ShowLoader = true;
 
-
+    let isReinit = false;
 
     const handleMessage = (ev) => {
         const { type, data } = ev.data;
@@ -31,14 +33,17 @@
             // Load initial data
             if (message.type === 'initialData') {
 
-                if(mounted) return;
+                if(mounted && !isReinit) return;
 
                 $General.userName = message?.data?.username;
                 $General.mode = "create";
 
                 $General.allTeamData = message?.data?.allTeamData;
+                $General.finalBracketData = message?.data?.parsedGameData?.finalBracketData || [];
 
-
+                if(message?.data?.parsedGameData?.finalBracketData && message?.data?.parsedGameData?.finalBracketData.length > 0){
+                    $General.mode = "afterVote"
+                }
 
                 if (message?.data?.isGameData){
                     $General.mode = "vote"
@@ -71,13 +76,27 @@
                     $LeaderBoardGlobal = message?.data?.leaderBoardGlobal || {}; 
                 }
 
+                console.log("var updated")  
+
                 $PostData.isCreator = message?.data?.isCreator
                 mounted = true;
+                isReinit = false;
                 $ShowLoader = false;
 
             }
         }
     };
+
+    const refreshData = () => {
+        isReinit = true;
+        window.parent.postMessage({
+            type: 'webViewReady'
+        }, '*');
+
+    }
+
+    setContext('refreshData', refreshData);
+
 
     if (import.meta.env.PROD) {
         console.log("This is production build!");

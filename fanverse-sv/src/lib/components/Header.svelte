@@ -10,6 +10,11 @@
     import General from '$lib/stores/General';
     import VoteData from '$lib/stores/VoteData';
     import LeaderBoard from './leaderBoard.svelte';
+    import { getContext } from 'svelte';
+
+    const refreshData = getContext('refreshData');
+
+
     let showMenu = false;
 
     function toggleMenu() {
@@ -20,6 +25,7 @@
     }
 
     function handlePost() {
+        console.log("post sent");
         window.parent.postMessage({
             type: 'setPostData',
             data: { "allPostData" :{"postdata": $PostData, "dropDownData":$DropDownData} }
@@ -53,7 +59,9 @@
             if (message.type === 'voteDataUpdated') {
                 $VoteData = message.data.voteData;
                 $General.mode = "afterVote";
+                refreshData();
             }
+            
             
         }
     };
@@ -107,31 +115,33 @@
         {/if}
         {#if $General.mode != "create"}
             
-            <div class="flex flex-col gap-[0.8em]">
-                <button
+            <!-- <div class="flex flex-col gap-[0.8em]"> -->
+                <!-- <button
                 class=" h-[0.72em] group pointer-events-none z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
                     <BoxButton>
                         <div
                         style="transition: none;"
                         class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">total votes: <span class="ml-0hem">{$VoteData.totalVotes}</span></div>
                     </BoxButton>
-                </button>
+                </button> -->
                 
                 <button
                 on:click={toggleLeaderboard}
-                class=" h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
+                class="mr-auto h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
                     <BoxButton>
                         <div
                         style="transition: none;"
                         class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">leaderboard</div>
                     </BoxButton>
                 </button>
-            </div>
+            <!-- </div> -->
 
 
         {/if}
         {#if $General.mode === "create"}
-            <button on:click={handlePost} class="h-[0.72em]  group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
+            <button 
+            disabled={!$PostData.canPost}
+            on:click={$PostData.canPost ? handlePost : ""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em]  group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
                 <BoxButton>
                     <div
                     style="transition: none;"
