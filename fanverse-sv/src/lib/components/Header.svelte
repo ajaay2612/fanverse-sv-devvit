@@ -9,6 +9,7 @@
     import PostData from '$lib/stores/PostData';
     import General from '$lib/stores/General';
     import VoteData from '$lib/stores/VoteData';
+    import LeaderBoard from './leaderBoard.svelte';
     let showMenu = false;
 
     function toggleMenu() {
@@ -36,6 +37,7 @@
 
     function handleFinishOff() {
         console.log("finish off sent");
+        console.log($VoteData);
         window.parent.postMessage({
             type: 'finishOff',
             data: { "voteData" : $VoteData }
@@ -56,38 +58,42 @@
         }
     };
 
+    let showLeaderboard = false;
+    function toggleLeaderboard() {
+        showLeaderboard = !showLeaderboard;
+    }
+    function closeLeaderBoard(){
+        showLeaderboard = false
+    }
 
 </script>
 <svelte:window on:message={handleMessage}/>
 
+{#if showLeaderboard}
+    <button on:click|self={closeLeaderBoard} transition:fade={{duration:400, easing: cubicOut}} class="z-[10] h-screen backdrop-blur-[5px] absolute left-0 top-0 w-full bg-pickem-header-bg flex justify-center items-center">
+        <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="w-full">
+            <LeaderBoard bind:showLeaderboard={showLeaderboard}/>
+        </div>
+    </button>
+{/if}
+
 <div class="text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
     <div class="flex flex-row-reverse justify-between w-full gap-[1em]">
-        {#if $General.mode === "afterVote" || ($PostData.isCreator && $General.mode != "create")}
-          
+        
+        {#if $PostData.isCreator && $General.mode != "create"}
             <button
-             class="{$PostData.isCreator ? "order-1":""} h-[0.72em] group pointer-events-none z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
+            on:click={handleFinishOff}
+                class=" cursor-pointer h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
                 <BoxButton>
                     <div
                     style="transition: none;"
-                    class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">total votes: <span class="ml-0hem">{$VoteData.totalVotes}</span></div>
+                    class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">update bracket</div>
                 </BoxButton>
             </button>
-
         {/if}
+       
         {#if  $General.mode === "vote" }
-
-            {#if $PostData.isCreator}
-                <button
-                disabled={!$VoteData.canVote}
-                on:click={$VoteData.canVote ? handleFinishOff:""}
-                    class="disabled:opacity-50 disabled:cursor-not-allowed order-0 cursor-pointer h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
-                    <BoxButton>
-                        <div
-                        style="transition: none;"
-                        class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">finish off</div>
-                    </BoxButton>
-                </button>
-            {:else}
+            {#if !$PostData.isCreator}
                 <button
                 disabled={!$VoteData.canVote}
                 on:click={$VoteData.canVote ? handleVote:""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
@@ -98,6 +104,31 @@
                     </BoxButton>
                 </button>
             {/if}
+        {/if}
+        {#if $General.mode != "create"}
+            
+            <div class="flex flex-col gap-[0.8em]">
+                <button
+                class=" h-[0.72em] group pointer-events-none z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
+                    <BoxButton>
+                        <div
+                        style="transition: none;"
+                        class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">total votes: <span class="ml-0hem">{$VoteData.totalVotes}</span></div>
+                    </BoxButton>
+                </button>
+                
+                <button
+                on:click={toggleLeaderboard}
+                class=" h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
+                    <BoxButton>
+                        <div
+                        style="transition: none;"
+                        class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">leaderboard</div>
+                    </BoxButton>
+                </button>
+            </div>
+
+
         {/if}
         {#if $General.mode === "create"}
             <button on:click={handlePost} class="h-[0.72em]  group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">

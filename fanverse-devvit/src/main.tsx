@@ -65,11 +65,44 @@ Devvit.addCustomPostType({
             // URL of your web view content
             url: 'index.html',
 
+            
+
             // Handle messages sent from the web view
             async onMessage(message, webView) {
                 const postId = context?.postId;
                 const voteData = message?.data?.voteData;
                 let subredditNameString = (await context.reddit.getCurrentSubreddit()).name;
+
+                function calculateMatchingPoints(userBrackets, finalBrackets) {
+                    // Initialize points counter
+                    let points = 0;
+                    
+                    // Check if both bracket arrays exist
+                    if (!userBrackets || !finalBrackets) {
+                      return 0;
+                    }
+                    
+                    // Iterate through each round
+                    for (let roundIndex = 0; roundIndex < Math.min(userBrackets.length, finalBrackets.length); roundIndex++) {
+                      const userRound = userBrackets[roundIndex];
+                      const finalRound = finalBrackets[roundIndex];
+                      
+                      // Iterate through each matchup in the round
+                      for (let matchIndex = 0; matchIndex < Math.min(userRound.length, finalRound.length); matchIndex++) {
+                        const userMatch = userRound[matchIndex];
+                        const finalMatch = finalRound[matchIndex];
+                        
+                        // Check if team names match
+                        if (userMatch.team === finalMatch.team && userMatch.team !== null) {
+                          points += 1;
+                        }
+                      }
+                    }
+
+                    points = points - finalBrackets[0].length ;
+                    
+                    return points;
+                }
 
                 switch (message.type) {
                     case 'addImage':
@@ -89,6 +122,63 @@ Devvit.addCustomPostType({
                         
                         await context.redis.set(`postData_${postId}`, JSON.stringify(postDataStringFinish));
 
+                        let voteDataStringAdmin = await context.redis.get(`voteData_${postId}`);
+                        let voteDataFromStringAdmin = voteDataStringAdmin ? JSON.parse(voteDataStringAdmin) : [];
+
+                        
+                        let voteDataGLobalAdmin = await context.redis.get(`${subredditNameString}_VoteData_Global`);
+                        let voteDataGLobalStringAdmin = voteDataGLobalAdmin ? JSON.parse(voteDataGLobalAdmin) : {};
+
+                        if (voteDataFromStringAdmin && voteDataFromStringAdmin.length > 0 && voteData?.bracketData) {
+                            console.log("loop started")
+                           
+                            for (let i = 0; i < voteDataFromStringAdmin.length; i++) {
+                                if (voteDataFromStringAdmin[i] && voteDataFromStringAdmin[i]?.voteData?.bracketData) {
+                                  let points = calculateMatchingPoints(voteDataFromStringAdmin[i].voteData.bracketData, voteData.bracketData);
+                                  voteDataFromStringAdmin[i].points = points;
+                                  
+                                  // Get the username from the vote data
+                                  const username = voteDataFromStringAdmin[i].username;
+                                  
+                                  // Make sure the username exists in the global data
+                                  if (!voteDataGLobalStringAdmin[username]) {
+                                    voteDataGLobalStringAdmin[username] = { posts: [] };
+                                  }
+                                  
+                                  // Initialize posts array if it doesn't exist
+                                  voteDataGLobalStringAdmin[username].posts = voteDataGLobalStringAdmin[username].posts || [];
+                                  
+                                  // Check if a post with the same postId already exists
+                                  const existingPostIndex = voteDataGLobalStringAdmin[username].posts.findIndex(post => post.postId === postId);
+                                  
+                                  // Only push if the post doesn't already exist
+                                  if (existingPostIndex === -1) {
+                                    voteDataGLobalStringAdmin[username].posts.push({
+                                      postId: postId,
+                                      voteData: voteDataFromStringAdmin[i].voteData,
+                                      points: points
+                                    });
+                                  }
+                                  // Optional: Update existing post if needed
+                                  else {
+                                    voteDataGLobalStringAdmin[username].posts[existingPostIndex] = {
+                                      postId: postId,
+                                      voteData: voteDataFromStringAdmin[i].voteData,
+                                      points: points
+                                    };
+                                  }
+                                }
+                            }
+
+                            await context.redis.set(`voteData_${postId}`, JSON.stringify(voteDataFromStringAdmin));
+                            
+                            await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify(voteDataGLobalStringAdmin));
+
+                            console.log("voteDataGLobalStringAdmin",JSON.stringify(voteDataGLobalStringAdmin))
+
+                            
+                        }
+
                         webView.postMessage({
                             type: 'voteDataUpdated',
                             data: {
@@ -96,7 +186,7 @@ Devvit.addCustomPostType({
                             },
                         });
 
-                        context.ui.showToast('Winners Published!');
+                        context.ui.showToast('Bracket Updated!');
 
 
                         break;
@@ -193,42 +283,15 @@ Devvit.addCustomPostType({
                         
                         break;
                     case 'webViewReady':
+                        // await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify({}));
+
                         // await context.redis.set(
                         //     `allTeamData_${username}`,
                         //     JSON.stringify([])
                         // );
                         // await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify({}));
 
-                        function calculateMatchingPoints(userBrackets, finalBrackets) {
-                            // Initialize points counter
-                            let points = 0;
-                            
-                            // Check if both bracket arrays exist
-                            if (!userBrackets || !finalBrackets) {
-                              return 0;
-                            }
-                            
-                            // Iterate through each round
-                            for (let roundIndex = 0; roundIndex < Math.min(userBrackets.length, finalBrackets.length); roundIndex++) {
-                              const userRound = userBrackets[roundIndex];
-                              const finalRound = finalBrackets[roundIndex];
-                              
-                              // Iterate through each matchup in the round
-                              for (let matchIndex = 0; matchIndex < Math.min(userRound.length, finalRound.length); matchIndex++) {
-                                const userMatch = userRound[matchIndex];
-                                const finalMatch = finalRound[matchIndex];
-                                
-                                // Check if team names match
-                                if (userMatch.team === finalMatch.team && userMatch.team !== null) {
-                                  points += 1;
-                                }
-                              }
-                            }
-
-                            points = points - finalBrackets[0].length ;
-                            
-                            return points;
-                        }
+                      
 
                         let voteDataStringIni = await context.redis.get(`voteData_${postId}`);
                         let voteDataFromStringIni = voteDataStringIni ? JSON.parse(voteDataStringIni) : [];
@@ -240,20 +303,36 @@ Devvit.addCustomPostType({
                         allTeamData = allTeamData ? JSON.parse(allTeamData) : [];
 
                         // adding points to user
-                        parsedGameData.allPostData[username].bracketData
-                        let postDataStringIni = await context.redis.get(`postData_${postId}`);
-                        postDataStringIni = postDataStringIni ? JSON.parse(postDataStringIni) : {};
+                
+                        let localLeaderBoard = []
+                        let leaderBoardGlobal = {}
+
+                        async function getLeaderBoard() {
+                            let voteDataString = await context.redis.get(`voteData_${postId}`);
+                            let voteDataFromString = voteDataString ? JSON.parse(voteDataString) : [];
+                            
+                            if( voteDataFromString && voteDataFromString.length > 0) {
+                                voteDataFromString = voteDataFromString.sort((a, b) => b.points - a.points);
+                                voteDataFromString = voteDataFromString.map((vote, index) => {
+                                    vote.rank = index + 1;
+                                    return vote;
+                                });
+                                localLeaderBoard = voteDataFromString;
+                            }
 
 
-                        if (parsedGameData?.allPostData && parsedGameData?.allPostData[username]?.bracketData && parsedGameData?.allPostData[username]?.bracketData.length > 0 &&
-                            postDataStringIni && postDataStringIni?.finalBracketData && postDataStringIni.finalBracketData.length > 0) {
-                            let points = calculateMatchingPoints(parsedGameData.allPostData[username].bracketData, postDataStringIni.finalBracketData)
-                            console.log('points', points);
+                            let voteDataGLobal = await context.redis.get(`${subredditNameString}_VoteData_Global`);
+                            leaderBoardGlobal = voteDataGLobal ? JSON.parse(voteDataGLobal) : {};
                         }
+                        await getLeaderBoard()
+
+                    
 
                         webView.postMessage({
                             type: 'initialData',
                             data: {
+                                localLeaderBoard: localLeaderBoard,
+                                leaderBoardGlobal: leaderBoardGlobal,
                                 voteDataFromStringIni: voteDataFromStringIni,
                                 username: username,
                                 isCreator: parsedGameData?.creator_username === username,

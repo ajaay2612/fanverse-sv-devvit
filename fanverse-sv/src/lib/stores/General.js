@@ -1,8 +1,8 @@
 import { writable } from 'svelte/store';
 
 const General = writable({
-    userName:"",
-    mode:"create",
+    userName:"guest",
+    mode:"vote",
     allTeamData:[
         // {"teamName":"luufy","teamImage":"https://static.vecteezy.com/system/resources/thumbnails/023/596/383/small/generative-ai-an-neon-gamer-anime-fashion-boy-or-man-wearing-headphones-lost-in-his-music-abstract-background-that-evokes-the-feeling-of-different-genres-of-music-banner-music-concept-photo.jpg"},
         // {"teamName":"zoro","teamImage":"https://static.vecteezy.com/system/resources/thumbnails/033/662/051/small/cartoon-lofi-young-manga-style-girl-while-listening-to-music-in-the-rain-ai-generative-photo.jpg"},

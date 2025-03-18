@@ -12,7 +12,8 @@
     import ShowLoader from '$lib/stores/ShowLoader';
     import { fade, scale } from 'svelte/transition';
     import { onMount } from 'svelte';
-
+    import LeaderBoard from "$lib/stores/LeaderBoard"
+    import LeaderBoardGlobal from '$lib/stores/LeaderBoardGlobal';
     let messageOutput = '';
     let mounted = false;
     $ShowLoader = true;
@@ -62,6 +63,12 @@
                 
                 if(message?.data?.voteDataFromStringIni){
                     $VoteData.totalVotes = message?.data?.voteDataFromStringIni?.length || 0 ;
+                }
+                if(message?.data?.localLeaderBoard && message?.data?.localLeaderBoard.length > 0){
+                    $LeaderBoard = message?.data?.localLeaderBoard || []; 
+                }
+                if(message?.data?.leaderBoardGlobal){
+                    $LeaderBoardGlobal = message?.data?.leaderBoardGlobal || {}; 
                 }
 
                 $PostData.isCreator = message?.data?.isCreator
