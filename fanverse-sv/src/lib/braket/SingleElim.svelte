@@ -185,7 +185,20 @@
     // $:console.log(JSON.stringify(brackets))
     
     $:if($VoteData.bracketData && $General.mode == "afterVote"){
-        brackets = $VoteData.bracketData
+        let isNull = false
+
+        for(let i = 0; i < $VoteData.bracketData[0].length; i++){
+            if($VoteData.bracketData[0][i].team == null || $VoteData.bracketData[0][i].team == undefined){
+                isNull = true
+            }
+        }
+
+        if(!isNull){
+            brackets = $VoteData.bracketData
+        }
+
+        console.table($VoteData)
+
     }
 
     $: isAFterVote = $General.mode == "afterVote"

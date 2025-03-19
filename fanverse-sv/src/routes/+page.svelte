@@ -41,15 +41,17 @@
                 $General.allTeamData = message?.data?.allTeamData;
                 $General.finalBracketData = message?.data?.parsedGameData?.finalBracketData || [];
 
-                if(message?.data?.parsedGameData?.finalBracketData && message?.data?.parsedGameData?.finalBracketData.length > 0){
-                    $General.mode = "afterVote"
-                }
+               
 
                 if (message?.data?.isGameData){
                     $General.mode = "vote"
                     $PostData = {...message?.data?.parsedGameData?.allPostData?.postdata};
                     $DropDownData = [...message?.data?.parsedGameData?.allPostData?.dropDownData];
                 } 
+
+                if(message?.data?.parsedGameData?.finalBracketData && message?.data?.parsedGameData?.finalBracketData.length > 0){
+                    $General.mode = "afterVote"                    
+                }
                 
                 if (message?.data?.parsedGameData?.allPostData && message?.data?.parsedGameData?.allPostData[`${$General.userName}`]) {
                     $General.mode = "afterVote"
