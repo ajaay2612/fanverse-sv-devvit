@@ -15,7 +15,8 @@
     import LeaderBoard from "$lib/stores/LeaderBoard"
     import LeaderBoardGlobal from '$lib/stores/LeaderBoardGlobal';
     import { setContext } from 'svelte';
-
+    import PostDataMulti from '$lib/stores/PostDataMulti';
+    import VoteDataMulti from '$lib/stores/VoteDataMulti';
     let messageOutput = '';
     let mounted = false;
     $ShowLoader = true;
@@ -35,41 +36,100 @@
 
                 if(mounted && !isReinit) return;
 
+                if (message?.data?.isGameData){
+                    $DropDownData = [...message?.data?.parsedGameData?.allPostData?.dropDownData];
+                } 
+
+
+                let postData = $DropDownData[0].active == 2 ? PostDataMulti :  PostData;
+                let voteData = $DropDownData[0].active == 2 ? VoteDataMulti : VoteData
+
                 $General.userName = message?.data?.username;
                 $General.mode = "create";
 
                 $General.allTeamData = message?.data?.allTeamData;
-                $General.finalBracketData = message?.data?.parsedGameData?.finalBracketData || [];
-
+                
+                if($DropDownData[0].active == 2){
+                    $General.finalBracketDataLeft = message?.data?.parsedGameData?.finalBracketDataLeft || []
+                    $General.finalBracketDataRight = message?.data?.parsedGameData?.finalBracketDataRight || []
+                    $General.finalChampion = message?.data?.parsedGameData?.finalChampion || []
+                }else{
+                    $General.finalBracketData = message?.data?.parsedGameData?.finalBracketData || [];
+                }
                
 
                 if (message?.data?.isGameData){
                     $General.mode = "vote"
-                    $PostData = {...message?.data?.parsedGameData?.allPostData?.postdata};
-                    $DropDownData = [...message?.data?.parsedGameData?.allPostData?.dropDownData];
+                    postData.set({...message?.data?.parsedGameData?.allPostData?.postdata});
+                    // postData = {...message?.data?.parsedGameData?.allPostData?.postdata};
                 } 
 
                 if(message?.data?.parsedGameData?.finalBracketData && message?.data?.parsedGameData?.finalBracketData.length > 0){
                     $General.mode = "afterVote"                    
                 }
+
+                if(
+                    message?.data?.parsedGameData?.finalBracketDataLeft?.length > 0 &&
+                    message?.data?.parsedGameData?.finalChampion &&
+                    message?.data?.parsedGameData?.finalBracketDataRight?.length > 0
+                ){
+                    $General.mode = "afterVote"
+                }
+                
                 
                 if (message?.data?.parsedGameData?.allPostData && message?.data?.parsedGameData?.allPostData[`${$General.userName}`]) {
                     $General.mode = "afterVote"
-                    $VoteData = {...message?.data?.parsedGameData?.allPostData[`${$General.userName}`]};
+                    voteData.set({...message?.data?.parsedGameData?.allPostData[`${$General.userName}`]});
+                    // voteData = {...message?.data?.parsedGameData?.allPostData[`${$General.userName}`]};
                 }
                 
                 if(message?.data?.parsedGameData?.finalBracketData?.length > 0 && message?.data?.isCreator   ){
                     $General.mode = "afterVote"
-                    $VoteData.bracketData = message?.data?.parsedGameData?.finalBracketData
+                    
+                    if($DropDownData[0].active == 0){       
+                        
+                        voteData.update(store => ({...store, bracketData:message?.data?.parsedGameData?.finalBracketData}));  
+                    }
+
+                    
+                    // voteData.bracketData = message?.data?.parsedGameData?.finalBracketData
 
                 }
+
+                if(
+                    message?.data?.parsedGameData?.finalBracketDataLeft?.length > 0 &&
+                    message?.data?.parsedGameData?.finalChampion &&
+                    message?.data?.parsedGameData?.finalBracketDataRight?.length > 0 &&
+                    message?.data?.isCreator   
+                ){
+                
+                    $General.mode = "afterVote"
+
+
+                    if($DropDownData[0].active == 2){        
+                        voteData.update(store => (
+                            {...store, 
+                                bracketDataLeft:$General.finalBracketDataLeft,
+                                bracketDataRight:$General.finalBracketDataRight,
+                                champion:$General.finalChampion,
+                            })
+                        );
+                        console.log("voteData", voteData)
+                   
+                    }
+
+
+                }
+
+
             
 
 
                 // console.log("initialData", message?.data?.voteDataFromStringIni);
                 
                 if(message?.data?.voteDataFromStringIni){
-                    $VoteData.totalVotes = message?.data?.voteDataFromStringIni?.length || 0 ;
+                    // voteData.totalVotes = message?.data?.voteDataFromStringIni?.length || 0 ;
+                    voteData.update(store => ({...store, totalVotes:message?.data?.voteDataFromStringIni?.length || 0}));
                 }
                 if(message?.data?.localLeaderBoard && message?.data?.localLeaderBoard.length > 0){
                     $LeaderBoard = message?.data?.localLeaderBoard || []; 
@@ -80,7 +140,8 @@
 
                 console.log("var updated")  
 
-                $PostData.isCreator = message?.data?.isCreator
+                postData.update(store => ({...store, isCreator: message?.data?.isCreator}));
+                // postData.isCreator = message?.data?.isCreator
                 mounted = true;
                 isReinit = false;
                 $ShowLoader = false;

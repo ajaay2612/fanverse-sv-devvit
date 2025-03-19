@@ -116,9 +116,18 @@ Devvit.addCustomPostType({
                             console.error('Post data not found');
                             return;
                         }
-
                         postDataStringFinish = postDataStringFinish ? JSON.parse(postDataStringFinish) : [];
-                        postDataStringFinish.finalBracketData = voteData.bracketData;
+                        
+                        
+                        let bracketType = postDataStringFinish.allPostData.dropDownData[0].active
+                        
+                        if (bracketType == 0) {
+                            postDataStringFinish.finalBracketData = voteData?.bracketData;
+                        }else if(bracketType == 2){
+                            postDataStringFinish.finalBracketDataLeft = voteData?.bracketDataLeft;
+                            postDataStringFinish.finalBracketDataRight = voteData?.bracketDataRight;
+                            postDataStringFinish.finalChampion = voteData?.champion;
+                        }
                         
                         await context.redis.set(`postData_${postId}`, JSON.stringify(postDataStringFinish));
 
@@ -128,55 +137,115 @@ Devvit.addCustomPostType({
                         
                         let voteDataGLobalAdmin = await context.redis.get(`${subredditNameString}_VoteData_Global`);
                         let voteDataGLobalStringAdmin = voteDataGLobalAdmin ? JSON.parse(voteDataGLobalAdmin) : {};
+                        
 
-                        if (voteDataFromStringAdmin && voteDataFromStringAdmin.length > 0 && voteData?.bracketData) {
-                            console.log("loop started")
-                           
-                            for (let i = 0; i < voteDataFromStringAdmin.length; i++) {
-                                if (voteDataFromStringAdmin[i] && voteDataFromStringAdmin[i]?.voteData?.bracketData) {
-                                  let points = calculateMatchingPoints(voteDataFromStringAdmin[i].voteData.bracketData, voteData.bracketData);
-                                  voteDataFromStringAdmin[i].points = points;
-                                  
-                                  // Get the username from the vote data
-                                  const username = voteDataFromStringAdmin[i].username;
-                                  
-                                  // Make sure the username exists in the global data
-                                  if (!voteDataGLobalStringAdmin[username]) {
-                                    voteDataGLobalStringAdmin[username] = { posts: [] };
-                                  }
-                                  
-                                  // Initialize posts array if it doesn't exist
-                                  voteDataGLobalStringAdmin[username].posts = voteDataGLobalStringAdmin[username].posts || [];
-                                  
-                                  // Check if a post with the same postId already exists
-                                  const existingPostIndex = voteDataGLobalStringAdmin[username].posts.findIndex(post => post.postId === postId);
-                                  
-                                  // Only push if the post doesn't already exist
-                                  if (existingPostIndex === -1) {
-                                    voteDataGLobalStringAdmin[username].posts.push({
-                                      postId: postId,
-                                      voteData: voteDataFromStringAdmin[i].voteData,
-                                      points: points
-                                    });
-                                  }
-                                  // Optional: Update existing post if needed
-                                  else {
-                                    voteDataGLobalStringAdmin[username].posts[existingPostIndex] = {
-                                      postId: postId,
-                                      voteData: voteDataFromStringAdmin[i].voteData,
-                                      points: points
-                                    };
-                                  }
+                        if (bracketType == 0) {
+                            if (voteDataFromStringAdmin && voteDataFromStringAdmin.length > 0 && voteData?.bracketData) {
+                                console.log("loop started")
+                               
+                                for (let i = 0; i < voteDataFromStringAdmin.length; i++) {
+                                    if (voteDataFromStringAdmin[i] && voteDataFromStringAdmin[i]?.voteData?.bracketData) {
+                                      let points = calculateMatchingPoints(voteDataFromStringAdmin[i].voteData.bracketData, voteData.bracketData);
+                                      voteDataFromStringAdmin[i].points = points;
+                                      
+                                      // Get the username from the vote data
+                                      const username = voteDataFromStringAdmin[i].username;
+                                      
+                                      // Make sure the username exists in the global data
+                                      if (!voteDataGLobalStringAdmin[username]) {
+                                        voteDataGLobalStringAdmin[username] = { posts: [] };
+                                      }
+                                      
+                                      // Initialize posts array if it doesn't exist
+                                      voteDataGLobalStringAdmin[username].posts = voteDataGLobalStringAdmin[username].posts || [];
+                                      
+                                      // Check if a post with the same postId already exists
+                                      const existingPostIndex = voteDataGLobalStringAdmin[username].posts.findIndex(post => post.postId === postId);
+                                      
+                                      // Only push if the post doesn't already exist
+                                      if (existingPostIndex === -1) {
+                                        voteDataGLobalStringAdmin[username].posts.push({
+                                          postId: postId,
+                                          voteData: voteDataFromStringAdmin[i].voteData,
+                                          points: points
+                                        });
+                                      }
+                                      // Optional: Update existing post if needed
+                                      else {
+                                        voteDataGLobalStringAdmin[username].posts[existingPostIndex] = {
+                                          postId: postId,
+                                          voteData: voteDataFromStringAdmin[i].voteData,
+                                          points: points
+                                        };
+                                      }
+                                    }
                                 }
+    
+                                await context.redis.set(`voteData_${postId}`, JSON.stringify(voteDataFromStringAdmin));
+                                
+                                await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify(voteDataGLobalStringAdmin));
+    
+                                console.log("voteDataGLobalStringAdmin",JSON.stringify(voteDataGLobalStringAdmin))
+    
+                                
                             }
+                        }else if(bracketType == 2){
+                            console.log("voteData?.bracketData",voteData)
 
-                            await context.redis.set(`voteData_${postId}`, JSON.stringify(voteDataFromStringAdmin));
-                            
-                            await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify(voteDataGLobalStringAdmin));
-
-                            console.log("voteDataGLobalStringAdmin",JSON.stringify(voteDataGLobalStringAdmin))
-
-                            
+                            if (voteDataFromStringAdmin && voteDataFromStringAdmin.length > 0 && voteData?.bracketDataLeft && voteData?.bracketDataRight) {
+                                console.log("loop started")
+                               
+                                for (let i = 0; i < voteDataFromStringAdmin.length; i++) {
+                                    if (voteDataFromStringAdmin[i] && voteDataFromStringAdmin[i]?.voteData?.bracketDataLeft && voteDataFromStringAdmin[i]?.voteData?.bracketDataRight) {
+                                      let pointsL = calculateMatchingPoints(voteDataFromStringAdmin[i].voteData.bracketDataLeft, voteData.bracketDataLeft);
+                                      let pointsR = calculateMatchingPoints(voteDataFromStringAdmin[i].voteData.bracketDataRight, voteData.bracketDataRight);
+                                      
+                                      let pointsC =  voteDataFromStringAdmin[i]?.voteData?.champion?.champion == voteData?.champion?.champion ? 1 : 0;
+                                      
+                                      let points = pointsL + pointsR + pointsC;
+                                      voteDataFromStringAdmin[i].points = points;
+                                      
+                                      // Get the username from the vote data
+                                      const username = voteDataFromStringAdmin[i].username;
+                                      
+                                      // Make sure the username exists in the global data
+                                      if (!voteDataGLobalStringAdmin[username]) {
+                                        voteDataGLobalStringAdmin[username] = { posts: [] };
+                                      }
+                                      
+                                      // Initialize posts array if it doesn't exist
+                                      voteDataGLobalStringAdmin[username].posts = voteDataGLobalStringAdmin[username].posts || [];
+                                      
+                                      // Check if a post with the same postId already exists
+                                      const existingPostIndex = voteDataGLobalStringAdmin[username].posts.findIndex(post => post.postId === postId);
+                                      
+                                      // Only push if the post doesn't already exist
+                                      if (existingPostIndex === -1) {
+                                        voteDataGLobalStringAdmin[username].posts.push({
+                                          postId: postId,
+                                          voteData: voteDataFromStringAdmin[i].voteData,
+                                          points: points
+                                        });
+                                      }
+                                      // Optional: Update existing post if needed
+                                      else {
+                                        voteDataGLobalStringAdmin[username].posts[existingPostIndex] = {
+                                          postId: postId,
+                                          voteData: voteDataFromStringAdmin[i].voteData,
+                                          points: points
+                                        };
+                                      }
+                                    }
+                                }
+    
+                                await context.redis.set(`voteData_${postId}`, JSON.stringify(voteDataFromStringAdmin));
+                                
+                                await context.redis.set(`${subredditNameString}_VoteData_Global`, JSON.stringify(voteDataGLobalStringAdmin));
+    
+                                console.log("voteDataGLobalStringAdmin",JSON.stringify(voteDataGLobalStringAdmin))
+    
+                                
+                            }
                         }
 
                         webView.postMessage({

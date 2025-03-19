@@ -1,13 +1,13 @@
 
 <script>
+    import TeamPickerData from '$lib/stores/TeamPickerData';
     import BoxButton from "./BoxButton.svelte";
     import General from "$lib/stores/General";
     import PostData from '$lib/stores/PostData';
+    import PostDataMulti from '$lib/stores/PostDataMulti';
     import { onMount } from "svelte";
     import { fade, scale } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
-
-    export let TeamPickerIndex = 0, showTeamPicker;
 
     let imageFetching = false;
 
@@ -44,18 +44,27 @@
             $General.allTeamData = [...$General.allTeamData, teamData];
         }
 
-        $PostData.allTeamLoadedData[TeamPickerIndex] = teamData;
+        if($TeamPickerData.updateArray){
+            $PostDataMulti[$TeamPickerData.updateArray][$TeamPickerData.teamPickerIndex] = teamData;
+            // console.log("hereeee");
+        }else{
+            $PostData.allTeamLoadedData[$TeamPickerData.teamPickerIndex] = teamData;
+        }
 
         window.parent.postMessage({
             type: 'addTeamToUserData',
             data: { "allTeamData" :$General.allTeamData }
         }, '*');
 
-        showTeamPicker = false;
+        $TeamPickerData.showTeamPicker = false;
     }
 
     onMount(() => {
-        teamData = $PostData.allTeamLoadedData[TeamPickerIndex] || teamData;
+        if($TeamPickerData.updateArray){
+            teamData =  $PostDataMulti[$TeamPickerData.updateArray][$TeamPickerData.teamPickerIndex] || teamData;
+        }else{
+            teamData = $PostData.allTeamLoadedData[$TeamPickerData.teamPickerIndex] || teamData;
+        }
     });
 
     const handleMessage = (ev) => {
@@ -104,7 +113,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_static_element_interactions -->
-<div transition:fade={{duration:400, easing: cubicOut}} on:click|self={()=>showTeamPicker = false} class="z-[150] backdrop-blur-[5px] text-[2.8em] bg-pickem-header-bg absolute left-0 top-0 h-full w-full  mx-auto flex flex-col xsm:flex-row justify-center items-center gap-3hem
+<div transition:fade={{duration:400, easing: cubicOut}} on:click|self={()=>$TeamPickerData.showTeamPicker = false} class="z-[150] backdrop-blur-[5px] text-[2.8em] bg-pickem-header-bg fixed left-0 top-0 h-full w-full  mx-auto flex flex-col xsm:flex-row justify-center items-center gap-3hem
     xsm:text-[1.5em]">
     
     <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="text-[2em] space-y-[0.52em]">

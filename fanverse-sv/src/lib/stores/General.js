@@ -8,6 +8,11 @@ const General = writable({
         // {"teamName":"zoro","teamImage":"https://static.vecteezy.com/system/resources/thumbnails/033/662/051/small/cartoon-lofi-young-manga-style-girl-while-listening-to-music-in-the-rain-ai-generative-photo.jpg"},
         // {"teamName":"sanji ","teamImage":"https://img.freepik.com/premium-vector/vector-young-man-animestyle-character-vector-illustration-design-manga-anime-boy_147933-12515.jpg"},
         // {"teamName":"nami","teamImage":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiZfMBP2o22XbKR4zV3QtyV8CcQtguJRFjZg&s"},
+        // {"teamName":"Franky","teamImage":"https://static.wikia.nocookie.net/onepiece/images/8/8c/Franky_Anime_Post_Timeskip_Infobox.png"},
+        // {"teamName":"Brook","teamImage":"https://static.wikia.nocookie.net/onepiece/images/4/41/Brook_Anime_Post_Timeskip_Infobox.png"},
+        // {"teamName":"Jinbe","teamImage":"https://static.wikia.nocookie.net/onepiece/images/8/81/Jinbe_Anime_Infobox.png"},
+        
+        
     ],
     finalBracketData:[
         // [

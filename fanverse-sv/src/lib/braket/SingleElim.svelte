@@ -1,12 +1,13 @@
 <script>
     import BoxButton from '../components/BoxButton.svelte';
     import General from '$lib/stores/General';
-    import TeamPicker from '../components/TeamPicker.svelte';
     import PostData from '$lib/stores/PostData';
     import { onMount } from 'svelte';
     import VoteData from '$lib/stores/VoteData';
     export let noOfTeam = 4;
     
+    import TeamPickerData from '$lib/stores/TeamPickerData';
+
     let rounds = Math.log2(noOfTeam) + 1
     
     let teamData = []
@@ -121,8 +122,8 @@
 
 
     function handleCreate(matchIndex) {
-        showTeamPicker = true
-        TeamPickerIndex = matchIndex
+        $TeamPickerData.showTeamPicker = true
+        $TeamPickerData.teamPickerIndex = matchIndex
     }
 
     $:if($PostData?.allTeamLoadedData){
@@ -133,8 +134,7 @@
 
     // $:console.table($PostData?.allTeamLoadedData)
 
-    let showTeamPicker = false
-    let TeamPickerIndex = 0
+    // let $TeamPickerData.$TeamPickerData.teamPickerIndex = 0
 
     $: if(brackets){
         $VoteData.bracketData = brackets
@@ -259,10 +259,7 @@
 </script>
 
 
-    {#if showTeamPicker}
-        <TeamPicker bind:showTeamPicker={showTeamPicker} bind:TeamPickerIndex={TeamPickerIndex}/>
-    {/if}
-    {#key showTeamPicker}
+    {#key $TeamPickerData.showTeamPicker}
         <div class="customMatchFont-{noOfTeam} overflow-x-scroll xsm:overflow-visible w-full h-[fit] px-4em xsm:px-2em py-[2.5em] text-white">
             <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">
                 {#each brackets as round, roundIndex}

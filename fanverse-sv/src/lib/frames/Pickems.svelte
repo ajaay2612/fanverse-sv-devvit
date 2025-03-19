@@ -7,7 +7,8 @@
     import DropDownData from '../stores/DropDownData';
     import TitleEditor from '../components/TitleEditor.svelte';
     import { fade } from 'svelte/transition';
-
+    import TeamPicker from '$lib/components/TeamPicker.svelte';
+    import TeamPickerData from '$lib/stores/TeamPickerData';
     import PostData from '$lib/stores/PostData';
     import { cubicOut } from 'svelte/easing';
 
@@ -66,11 +67,17 @@
     style="border-width:{$DropDownData[2].active == 0 ? "" : "0"}; padding-bottom:{$DropDownData[2].active == 0 ? "" : "0"}"
     class="border-b py-2em xsm:py-1em border-pickem-border-bottom">
         
-        <TitleEditor/>
+         <TitleEditor/>
     </div>
 
     <!-- bracket -->
     <div class="text-[0.5em] h-[80%] flex items-center">
+       
+        {#if $TeamPickerData.showTeamPicker}
+            <TeamPicker/>
+        {/if}
+
+
         {#if elimMethod === 0}
             {#key noOfTeam}
                 <SingleElim  noOfTeam={noOfTeam}/>
