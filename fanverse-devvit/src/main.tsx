@@ -436,34 +436,100 @@ Devvit.addCustomPostType({
             },
         });
 
+        const isMobile = context.uiEnvironment?.client === 'mobile';
+
         // Render the custom post type
         return (
-            <vstack grow padding="small">
+
+            // <zstack width="100%" height="100%">
+            //     <image 
+            //         imageWidth={400} 
+            //         imageHeight={300} 
+            //         width="100%" 
+            //         height="100%" 
+            //         url={`data:image/svg+xml,
+            //             <svg 
+            //                 width="400" 
+            //                 height="300" 
+            //                 viewBox="0 0 400 300" 
+            //                 xmlns="http://www.w3.org/2000/svg"
+            //             >
+            //                 <defs>
+            //                     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            //                         <stop offset="0%" style="stop-color:red;stop-opacity:1" />
+            //                         <stop offset="100%" style="stop-color:green;stop-opacity:1" />
+            //                     </linearGradient>
+            //                 </defs>
+            //                 <rect width="400" height="300" fill="url(#grad)" />
+            //             </svg>
+            //         `}
+            //     />
+            //         <vstack grow alignment="middle center">
+            //             <image 
+            //                 url="intro.png" 
+            //                 imageWidth={350} 
+            //                 imageHeight={250} 
+            //                 description="Introduction image" 
+            //             />
+            //             <spacer />
+            //             {/* <vstack alignment="start middle">
+            //                 <hstack>
+            //                     <text size="medium">Username:</text>
+            //                     <text size="medium" weight="bold">
+            //                         {' '}
+            //                         {username ?? ''}
+            //                     </text>
+            //                 </hstack>
+            //                 <hstack>
+            //                     <text size="medium">Current counter:</text>
+            //                     <text size="medium" weight="bold">
+            //                         {' '}
+            //                         {counter ?? ''}
+            //                     </text>
+            //                 </hstack>
+            //             </vstack> */}
+
+            //             {/* <spacer /> */}
+            //             <button onPress={() => mount()}>Launch App</button>
+            //         </vstack>
+            // </zstack>
+
+            <zstack width="100%" height="100%" alignment="center middle">
+                <image 
+                imageWidth={1000} 
+                imageHeight={1000} 
+                width="100%" 
+                height="100%" 
+                url={`data:image/svg+xml,
+                    <svg width="100%" height="100%" viewBox="0 0 947 681" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.601562" y="0.09375" width="946.184" height="680.812" fill="#0B0B0B"/>
+                        <rect x="0.601562" y="0.09375" width="946.184" height="680.812" fill="url(#paint0_linear_2807_828)"/>
+                        <defs>
+                        <linearGradient id="paint0_linear_2807_828" x1="473.693" y1="427.932" x2="473.693" y2="680.906" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#411400" stop-opacity="0"/>
+                        <stop offset="1" stop-color="#411400" stop-opacity="0.43"/>
+                        </linearGradient>
+                        </defs>
+                    </svg>
+                `}
+                />
                 <vstack grow alignment="middle center">
-                    <text size="xlarge" weight="bold">
-                        Example App
-                    </text>
-                    <spacer />
-                    <vstack alignment="start middle">
-                        <hstack>
-                            <text size="medium">Username:</text>
-                            <text size="medium" weight="bold">
-                                {' '}
-                                {username ?? ''}
-                            </text>
-                        </hstack>
-                        <hstack>
-                            <text size="medium">Current counter:</text>
-                            <text size="medium" weight="bold">
-                                {' '}
-                                {counter ?? ''}
-                            </text>
-                        </hstack>
-                    </vstack>
-                    <spacer />
-                    <button onPress={() => mount()}>Launch App</button>
+                <image 
+                    url="intro.png" 
+                    // Adjust image size based on device
+                    imageWidth={isMobile ? 200 : 350} 
+                    imageHeight={isMobile ? 650 : 250} 
+                    description="Introduction image" 
+                />
+                <spacer />
+                <button 
+                    onPress={() => mount()} 
+                    appearance={isMobile ? "primary" : "bordered"} 
+                >
+                    {isMobile ? "Start" : "Launch App"}
+                </button>
                 </vstack>
-            </vstack>
+            </zstack>
         );
     },
 });
