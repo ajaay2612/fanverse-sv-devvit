@@ -122,10 +122,10 @@
     >
         <div
             class="{noOfTeam == 4
-                ? 'w-[66.3em]'
-                : 'w-[95em]'} flex justify-center items-center mx-auto"
+                ? 'w-[96em]'
+                : 'w-[125em]'} flex h-full justify-center items-center mx-auto"
         >
-            <div class="w-full">
+            <div class="w-full h-full gap-[6em] flex justify-center items-center">
                 <div class="shrink-0 translate-y-[-0.65em]">
                     <LeftBracket
                         bind:championImage
@@ -137,8 +137,8 @@
                     />
                 </div>
 
-                <div class={noOfTeam == 4 ? "" : "my-[-8.3em]"}>
-                    <div class=" text-[0.65em] relative mx-auto w-[14em]">
+                <div class={noOfTeam == 4 ? "" : ""}>
+                    <div class="text-[0.65em] relative mx-auto w-[14em]">
                         <button
                             class:rightWinnerTeam={isAFterVote && champion == $General?.finalChampion?.champion }
 
@@ -164,11 +164,17 @@
                             </div>
                         </button>
 
-                        <div
+                        <!-- <div
                             class="w-[1px] h-[10.2em] absolute left-1/2 top-full -translate-x-1/2 bg-pickem-title"
                         ></div>
                         <div
                             class="w-[1px] h-[10.2em] absolute left-1/2 bottom-full -translate-x-1/2 bg-pickem-title"
+                        ></div> -->
+                        <div
+                            class="w-[9.3em] h-[1px] absolute left-full top-1/2 -translate-y-1/2 bg-pickem-title"
+                        ></div>
+                        <div
+                            class="w-[9.3em] h-[1px] absolute right-full bottom-1/2 -translate-y-1/2 bg-pickem-title"
                         ></div>
                     </div>
                 </div>

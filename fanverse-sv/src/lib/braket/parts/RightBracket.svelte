@@ -303,7 +303,7 @@
                     class:winnerTeam={roundIndex == brackets.length-1 ? rightWon : brackets[roundIndex][matchIndex].won}
                     class:loserTeam={roundIndex == brackets.length-1 ? !rightWon && rightWon != null : !brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
                     on:click={() => handleAdvancement(roundIndex,matchIndex) }
-                    class="relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
+                    class="relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-r-[0.25em] border-pickem-title cursor-pointer">
                         {#if $General.mode == "create" && roundIndex == 0}
                             {#if showTeamName(roundIndex, matchIndex) == null}
                                 <div class="w-[1.45em]">
