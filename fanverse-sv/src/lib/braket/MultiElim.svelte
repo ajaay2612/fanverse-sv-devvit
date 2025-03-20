@@ -76,7 +76,7 @@
                 $VoteDataMulti.canVote = true;
             }
         }
-        console.log("$VoteDataMulti.canVote", $VoteDataMulti.canVote)
+        // console.log("$VoteDataMulti.canVote", $VoteDataMulti.canVote)
 
         if ($General.mode == "create") {
             function checkBracketNull(brackets) {

@@ -18,10 +18,20 @@
     src: url("/fonts/Inter/Inter-VariableFont_opsz\,wght.ttf") format("truetype-variations");
 }
 
+@font-face {
+    font-family: "bigShoulders";
+    font-style: normal;
+    font-weight: 100 900;
+    /* Variable font weight range */
+    font-display: swap;
+    src: url("/fonts/Big_Shoulders/BigShoulders-VariableFont_opsz\,wght.ttf") format("truetype-variations");
+}
+
 /* Then update your theme */
 @theme {
-    --font-inter: "Inter", "serif";
-    --font-inter-italic: "Inter Italic", "serif";
+    --font-inter: "Inter", "sans-serif";
+    --font-inter-italic: "Inter Italic", "sans-serif";
+    --font-bigShoulders: "bigShoulders", "sans-serif";
 
     --text-MqSmall: min(max(0rem, 3.5vw),1rem);
     --text-MqMedium: min(max(0rem, 4vw),1.2rem);
@@ -62,6 +72,10 @@
     /* style 2 */
     --color-circle-bg: #0F324B;
     --color-pickem-title: #fff;
+
+    /* ranking */
+    --color-ranking-blocks:#18407F;
+    --color-ranking-vote:#335993;
 
     /* color end */
 
@@ -178,6 +192,43 @@
         --color-pickem-main-bg: #161616;
         --color-badge: #afafaf;
     } 
+
+    /* ranking style 2 */
+
+    .secBlue{
+        --color-pickem-main-bg:#081E3F;
+        --color-ranking-blocks:#18407F;
+        --color-ranking-vote:#335993;
+        --color-badge: #1f5fc6;
+    }
+    .secPurple{
+        --color-pickem-main-bg:#13083F;
+        --color-ranking-blocks:#27187F;
+        --color-ranking-vote:#413393;
+        --color-badge: #7862f4;
+        
+    }
+    .secRed{
+        --color-pickem-main-bg:#3F1808;
+        --color-ranking-blocks:#7F2E18;
+        --color-ranking-vote:#6F2100;
+        --color-badge: #e86541;
+        
+    }
+    .secGreen{
+        --color-pickem-main-bg:#083F37;
+        --color-ranking-blocks:#187F64;
+        --color-ranking-vote:#083F37;
+        --color-badge: #17c9ae;
+        
+    }
+    .secDark{
+        --color-pickem-main-bg:#212121;
+        --color-ranking-blocks:#161616;
+        --color-ranking-vote:#2E2E2E;
+        --color-badge: #a9a9a9;
+
+    }
 }
 
 html {
@@ -271,4 +322,21 @@ body {
 .rightWinnerTeam{
     @apply bg-[#00ff002e];
 }
+
+
+
+/* Thin scrollbar for Chrome, Safari, and newer Edge */
+.thin-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+
+.ranking-style-two{
+    box-shadow: -4.5px -4.5px 0px rgba(255, 255, 255, 0.14), inset 0px 4px 62px #000000;
+}
+
 

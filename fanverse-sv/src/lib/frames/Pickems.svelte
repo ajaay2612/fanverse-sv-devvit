@@ -19,7 +19,7 @@
 
     // let teams = ["SEN", "DRX", "100T", "C9", "TSM", "EG", "T1", "GEN"];
 
-    $: console.log($DropDownData[3].active);
+    // $: console.log($DropDownData[3].active);
 
     
 </script>

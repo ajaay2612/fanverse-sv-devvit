@@ -1,30 +1,42 @@
 <script>
-    import Header from '../components/Header.svelte';
-    import DropDownData from '$lib/stores/DropDownData';
-    import { fade } from 'svelte/transition';
-    import PostData from '$lib/stores/PostData';
-    import PostDataMulti from '$lib/stores/PostDataMulti';
+    import HeaderRanking from '../components/HeaderRanking.svelte';
+    
+    import DropDownDataRanking from '../stores/DropDownDataRanking';
+    
+    import VoteDataRanking from '../stores/VoteDataRanking';
+    // console.log("VoteDataRanking",$VoteDataRanking);
+    
+    // let voteData = VoteDataRanking;
+    // setTimeout(() => {
+    //     voteData.canVote = true;
+    // }, 2000);
 
-    $: postData = $DropDownData[0].active == 2 ? $PostDataMulti :  $PostData;
-    $: console.log($DropDownData[0].active == 2);
-    console.log("hello");
+    // console.log("changed");
+    
+    // $:console.log("VoteDataRanking",$VoteDataRanking);
+
+
+
+
+    import { fade } from 'svelte/transition';
+    import PostDataRanking from '../stores/PostDataRanking';
 </script>
 
 
+<!-- <button on:click={()=> $voteData.canVote = !$voteData.canVote }>{$voteData.canVote}</button> -->
+
 <div 
-class="{$DropDownData[2].active == 0 ? $DropDownData[3].options[$DropDownData[3].active] : $DropDownData[3].optionsTwo[$DropDownData[3].active].class       } bg-pickem-main-bg h-screen w-full overflow-hidden relative">
+class="{ $DropDownDataRanking[0]?.active == 0 ? $DropDownDataRanking[1].active == 0 ? $DropDownDataRanking[2].options[$DropDownDataRanking[2].active] : $DropDownDataRanking[2].optionsTwo[$DropDownDataRanking[2].active].class  :  $DropDownDataRanking[2].secOptions[$DropDownDataRanking[2].active].class} bg-pickem-main-bg h-screen w-full overflow-hidden relative">
 
-    {#if postData.BackgroundImageUrl}
-        
+    {#if $PostDataRanking.BackgroundImageUrl}
         <div 
-        style="filter:brightness({postData.BackgroundImageUrlBrightness}%) blur({postData.BackgroundImageUrlBlur}px)"
+        style="filter:brightness({$PostDataRanking.BackgroundImageUrlBrightness}%) blur({$PostDataRanking.BackgroundImageUrlBlur}px)"
         class=" absolute top-0 left-0 w-full h-full object-cover">
-            <img src={postData.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
+            <img src={$PostDataRanking.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
         </div>
-
     {:else}
-        {#if $DropDownData[2].active == 0}
-            <div transition:fade={{duration:500}} class="absolute bottom-[-1.5em] left-[-7.5em] w-[15em] blur-[100px]">
+        {#if $DropDownDataRanking[1].active == 0 && $DropDownDataRanking[0]?.active == 0}
+            <div transition:fade={{duration:400}} class="absolute bottom-[-1.5em] left-[-7.5em] w-[15em] blur-[100px]">
                 <svg viewBox="0 0 531 667" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect class="transition-[fill] duration-500 fill-(--color-pickem-left-box)" x="343.363" y="0.132812" width="221" height="647.837" transform="rotate(32 343.363 0.132812)" />
                 </svg>            
@@ -37,8 +49,8 @@ class="{$DropDownData[2].active == 0 ? $DropDownData[3].options[$DropDownData[3]
             </div>
         {/if}
 
-        {#if $DropDownData[2].active == 1}
-            <div transition:fade={{duration:500}} class="brightness-75 scale-[4] xsm:scale-[1] lg:scale-[1.5] absolute top-0 left-0 w-full h-full object-cover">
+        {#if $DropDownDataRanking[1].active == 1 && $DropDownDataRanking[0]?.active == 0}
+            <div transition:fade={{duration:400}} class="brightness-75 scale-[4] xsm:scale-[1] lg:scale-[1.5] absolute top-0 left-0 w-full h-full object-cover">
                 <svg width="2347" height="1733" viewBox="0 0 2347 1733" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g filter="url(#filter0_f_2637_1714)">
                     <ellipse fill="var(--color-circle-bg)" cx="1173.5" cy="866.5" rx="679" ry="372.5" />
@@ -56,7 +68,7 @@ class="{$DropDownData[2].active == 0 ? $DropDownData[3].options[$DropDownData[3]
     {/if}
     
     <div class="relative h-full w-full">
-        <Header/>
+        <HeaderRanking/>
         <slot/>
     </div>
 </div>

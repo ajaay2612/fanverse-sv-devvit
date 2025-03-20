@@ -1,6 +1,12 @@
 <script>
     import General from "$lib/stores/General";
     import VoteData from "$lib/stores/VoteData";
+    import VoteDataMulti from "$lib/stores/VoteDataMulti";
+    import DropDownData from "$lib/stores/DropDownData";
+
+    $: voteData = $DropDownData[0].active == 2 ? VoteDataMulti : VoteData
+
+
     export let showLeaderboard, leaderBoard, leaderBoardType, currentSelectedType;
 
     $: userRank = leaderBoard && leaderBoard.length > 0 
@@ -85,7 +91,7 @@
         {/if}
         <div class="bg-pickem-title border-pickem-main-bg border-t-[0.4em]">
             <div class="text-[0.7em] uppercase font-inter-italic font-bold flex justify-center px-[1.5em] py-[0.4em] ">
-                <p class="">total votes: <span class="ml-0hem">{$VoteData.totalVotes}</span></p>
+                <p class="">total votes: <span class="ml-0hem">{$voteData.totalVotes}</span></p>
             </div>
         </div>
 

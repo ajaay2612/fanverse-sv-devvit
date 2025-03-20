@@ -1,13 +1,15 @@
 <script>
-
+    import CurrentFrame from '$lib/stores/CurrentFrame';
     let createCards = [
         {
             name: "tournament bracket",
             pic: "/images/create-page/tb.svg",
+            to:"pickems"
         },
         {
             name: "rankings",
             pic: "/images/create-page/r.svg",
+            to:"ranking"
         },
         {
             name: "scoreboard",
@@ -25,7 +27,9 @@
     <h1 class="text-[0.7em] font-inter-italic font-bold text-center">What Will You Create?</h1>
     <div class="w-[500px] grid grid-cols-2 gap-[0.5em]">
         {#each createCards as card}
-        <button class="cursor-pointer pb-[0.5em] pt-[0.3em] border border-preHover hover:border-white justify-center gap-[0.68em] flex flex-col items-center">
+        <button 
+        on:click={() => $CurrentFrame = card.to}
+        class="cursor-pointer pb-[0.5em] pt-[0.3em] border border-preHover hover:border-white justify-center gap-[0.68em] flex flex-col items-center">
             <div class="space-y-[0.18em]">
                 <p class="capitalize text-pri text-center text-[0.55em] font-inter-italic font-bold">{card.name}</p>
                 <div class="w-[3.2em] mx-auto">

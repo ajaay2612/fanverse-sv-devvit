@@ -104,6 +104,30 @@ Devvit.addCustomPostType({
                     return points;
                 }
 
+                function calculateTotalPoints(voteArray) {
+                    // Initialize the result array
+                    const totalPoints = [];
+                    
+                    // Process each subarray
+                    for (let i = 0; i < voteArray.length; i++) {
+                      // Skip empty subarrays or undefined elements
+                      if (!voteArray[i]) {
+                        totalPoints[i] = 0;
+                        continue;
+                      }
+                      
+                      // Calculate the sum of points in this subarray
+                      const pointsSum = voteArray[i].reduce((sum, vote) => {
+                        return sum + (vote.points || 0);
+                      }, 0);
+                      
+                      // Add to the result array
+                      totalPoints[i] = pointsSum;
+                    }
+                    
+                    return totalPoints;
+                  }
+
                 switch (message.type) {
                     case 'addImage':
                         context.ui.showForm(imageUploadForm);
@@ -259,6 +283,60 @@ Devvit.addCustomPostType({
 
 
                         break;
+                    case 'setVoteDataRanking':
+                        let postDataStringVoteRank = await context.redis.get(`postData_${postId}`);
+                        if (!postDataStringVoteRank) {
+                            console.error('Post data not found');
+                            return;
+                        }
+
+                        let postDataFromStringVoteRank = JSON.parse(postDataStringVoteRank);
+                        
+                        let finalVoteDataRankArray = postDataFromStringVoteRank.allPostData.finalVoteDataRankArray || []
+
+                        // Ensure the array at the index exists
+                        if (!finalVoteDataRankArray[voteData.index]) {
+                            finalVoteDataRankArray[voteData.index] = [];
+                        }
+
+                        // Check if the user already exists in this array
+                        const existingUserIndex = finalVoteDataRankArray[voteData.index].findIndex(item => item.name === voteData.userName);
+
+                        if (existingUserIndex !== -1) {
+                            // User exists, replace their entry with new points value
+                            finalVoteDataRankArray[voteData.index][existingUserIndex] = {
+                                name: voteData.userName,
+                                points: voteData.upVote ? 1 : -1
+                            };
+                        } else {
+                            // User doesn't exist, add them to the array
+                            finalVoteDataRankArray[voteData.index].push({
+                                name: voteData.userName, 
+                                points: voteData.upVote ? 1 : -1
+                            });
+                        }
+
+                        console.log("finalVoteDataRankArray",finalVoteDataRankArray)
+
+                        let finalVoteDataRankArrayPoints = calculateTotalPoints(finalVoteDataRankArray);
+                        console.log("finalVoteDataRankArrayPoints",finalVoteDataRankArrayPoints)
+                        
+                        postDataFromStringVoteRank.allPostData.finalVoteDataRankArray = finalVoteDataRankArray;
+                        postDataFromStringVoteRank.allPostData.finalVoteDataRankArrayPoints = finalVoteDataRankArrayPoints;
+
+
+                        await context.redis.set(`postData_${postId}`, JSON.stringify(postDataFromStringVoteRank));
+
+                        webView.postMessage({
+                            type: 'voteDataRankedUpdated',
+                            data: {
+                                voteData: finalVoteDataRankArrayPoints,
+                            },
+                        });
+
+                        context.ui.showToast('Vote Submitted!');
+
+                        break
                     case 'setVoteData':
 
                         let postDataString = await context.redis.get(`postData_${postId}`);
@@ -310,7 +388,7 @@ Devvit.addCustomPostType({
 
                         break
 
-               
+            
                     case 'setPostData':
                         // Post the app with the new data
                         const newPost = await context.reddit.submitPost({
@@ -325,6 +403,7 @@ Devvit.addCustomPostType({
                         let postData = {
                             creator_username: username,
                             allPostData : message.data.allPostData,
+                            postType: message?.data?.allPostData?.postType || 'pickems',
                         };
                         await context.redis.set(`postData_${newPost.id}`, JSON.stringify(postData));
 
@@ -395,7 +474,7 @@ Devvit.addCustomPostType({
                         }
                         await getLeaderBoard()
 
-                    
+                        console.log("parsedGameData",parsedGameData)
 
                         webView.postMessage({
                             type: 'initialData',
@@ -405,6 +484,7 @@ Devvit.addCustomPostType({
                                 voteDataFromStringIni: voteDataFromStringIni,
                                 username: username,
                                 isCreator: parsedGameData?.creator_username === username,
+                                postType: Object.keys(parsedGameData).length > 0 ? parsedGameData?.postType || 'pickems' : 'home',
                                 isGameData: Object.keys(parsedGameData).length > 0,
                                 parsedGameData: parsedGameData,
                                 currentCounter: counter,

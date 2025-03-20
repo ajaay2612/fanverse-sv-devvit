@@ -1,14 +1,14 @@
 <script>
     import { fade, scale } from 'svelte/transition';
-    import BoxButton from './BoxButton.svelte';
-    import PostData from '$lib/stores/PostData';
-    import PostDataMulti from '$lib/stores/PostDataMulti';
     import { cubicOut } from 'svelte/easing';
+    import BoxButton from './BoxButton.svelte';
     import General from '$lib/stores/General';
-    import DropDownData from '$lib/stores/DropDownData';
+    import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
+    import PostDataRanking from '$lib/stores/PostDataRanking';
 
-    $: postData = $DropDownData[0].active == 2 ? PostDataMulti :  PostData;
-
+    $: postData = PostDataRanking;
+    
+    // $: console.log('PostDataRanking:', $PostDataRanking);
 
     let showTitleEdit = false;
     let imageFetching = false;
@@ -91,15 +91,15 @@
 on:message={handleMessage}
 on:click={(e) => {!dropDownElement.contains(e.target) ? showTitleEdit = false:'' } }/>
 
-<div bind:this={dropDownElement} class="relative w-fit flex justify-center items-center mx-auto">
+<div bind:this={dropDownElement} class="z-[10] relative w-fit flex justify-center items-center mx-auto">
     <button on:click={$General.mode == "create" ? toggleTitleEdit:""} class="text-[1.2em] xsm:text-[0.7em] lg:text-[0.62em] w-fit mx-auto  relative pr-1hem ">
         <div class="flex justify-center items-center gap-[1.1em]">
             <div class="w-[2.8em]">
                 <img class="w-full h-full" src={$postData.logo} alt="">
             </div>
             <div class="">
-                <p class=" text-center font-inter leading-[1em] font-bold text-pickem-title text-[1.2em]">{$postData.title}</p>
-                <p class="text-center font-inter font-bold text-[0.55em]">{$postData.subTitle}</p>
+                <p class=" text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[1.8em]" } font-bold leading-[1em]  text-pickem-title text-[1.2em]">{$postData.title}</p>
+                <p class="text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[0.81em]" }  font-bold text-[0.55em]">{$postData.subTitle}</p>
             </div>
         </div>
         {#if $General.mode == "create"}
@@ -116,7 +116,7 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showTitleEdit = false:''
     </button>
     
     {#if showTitleEdit}
-        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em] font-inter font-semibold uppercase absolute top-full mt-[0.5em] right-[-5px] bg-[#2a2320]">
+        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em] {$DropDownDataRanking[0]?.active  == 0 ? "font-inter":"font-bigShoulders" }   font-semibold uppercase absolute top-full mt-[0.5em] right-[-5px] bg-[#2a2320]">
             <div class="text-[0.5em] p-[0.5em] space-y-0hem">
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em]">
@@ -135,17 +135,17 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showTitleEdit = false:''
                     {/if}
                 </div>
                 <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em] w-full">
-                    <div class="relative uppercase cursor-pointer px-[0.6em] text-center bg-[#00000046] p-[0.4em]  h-[2.2em]">
+                    <div class="w-full  relative uppercase cursor-pointer px-[0.6em] text-center bg-[#00000046] p-[0.4em]  h-[2.2em]">
                         <div class="relative w-full">
-                            <input bind:value={$postData.title} type="text" placeholder="Enter Title">
+                            <input class="w-full" bind:value={$postData.title} type="text" placeholder="Enter Title">
                         </div>
                     </div>
                 </div>
                 <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em] w-full">
     
-                    <div class="relative uppercase cursor-pointer px-[0.6em] text-center bg-[#00000046] p-[0.4em]  h-[2.2em]">
+                    <div class="w-full relative uppercase cursor-pointer px-[0.6em] text-center bg-[#00000046] p-[0.4em]  h-[2.2em]">
                         <div class="relative w-full">
-                            <input bind:value={$postData.subTitle} type="text" placeholder="Enter Subtitle">
+                            <input class="w-full" bind:value={$postData.subTitle} type="text" placeholder="Enter Subtitle">
                         </div>
                     </div>
                 </div>

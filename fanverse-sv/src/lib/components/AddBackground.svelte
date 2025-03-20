@@ -5,15 +5,23 @@
     import { onMount } from 'svelte';
     import { fade, scale } from 'svelte/transition';
     import { cubicOut } from 'svelte/easing';
+    import PostDataMulti from '$lib/stores/PostDataMulti';
+    import PostDataRanking from '$lib/stores/PostDataRanking';
+    import DropDownData from '$lib/stores/DropDownData';
+    import CurrentFrame from '$lib/stores/CurrentFrame';
+    import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
 
     let value = [25, 100];
     let blurValue = [0, 100];
 
+
+    $: postData = $CurrentFrame == "pickems" ? $DropDownData[0].active == 2 ? PostDataMulti :  PostData : PostDataRanking;
+    
     $: if(value[0]){
-        $PostData.BackgroundImageUrlBrightness = value[0];
+        $postData.BackgroundImageUrlBrightness = value[0];
     }
     $: if(blurValue[0]){
-        $PostData.BackgroundImageUrlBlur = blurValue[0];
+        $postData.BackgroundImageUrlBlur = blurValue[0];
     }
 
     let mounted = false;
@@ -39,7 +47,7 @@
     }
 
     function resetImage() {
-        $PostData.BackgroundImageUrl = '';
+        $postData.BackgroundImageUrl = '';
     }
 
     const handleMessage = (ev) => {
@@ -61,7 +69,7 @@
                         } else {
 
                             console.log('Image exists:', message.data.imageUrl);
-                            $PostData.BackgroundImageUrl = message.data.imageUrl;
+                            $postData.BackgroundImageUrl = message.data.imageUrl;
                             // $ShowLoader = false
 
                         }
@@ -82,7 +90,7 @@
 
     function trimBackgroundImageUrl() {
         // Access the URL from PostData
-        const url = $PostData.BackgroundImageUrl;
+        const url = $postData.BackgroundImageUrl;
         
         // Check if the URL exists
         if (!url) {
@@ -116,7 +124,7 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:''
     </button>
 
     {#if showBgDetails}
-        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em] font-inter font-semibold uppercase absolute top-full mt-[0.5em] left-[-5px] bg-[#2a2320]">
+        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em]  font-semibold {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders" } uppercase absolute top-full mt-[0.5em] left-[-5px] bg-[#2a2320]">
             <div class="text-[0.5em] p-[0.5em] space-y-0hem">
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em]">
@@ -126,7 +134,7 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:''
                         {trimBackgroundImageUrl() || "add bg image"} 
                     </button>
                     <!-- svelte-ignore a11y_consider_explicit_label -->
-                    {#if $PostData.BackgroundImageUrl}
+                    {#if $postData.BackgroundImageUrl}
                         <button on:click={resetImage} class="bg-[#00000046] p-[0.6em] size-[2.2em]">
                             <svg viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3.58203 19.75C2.9862 19.75 2.47613 19.5378 2.05182 19.1135C1.62752 18.6892 1.41536 18.1792 1.41536 17.5833V3.5H0.332031V1.33333H5.7487V0.25H12.2487V1.33333H17.6654V3.5H16.582V17.5833C16.582 18.1792 16.3699 18.6892 15.9456 19.1135C15.5213 19.5378 15.0112 19.75 14.4154 19.75H3.58203ZM14.4154 3.5H3.58203V17.5833H14.4154V3.5ZM5.7487 15.4167H7.91536V5.66667H5.7487V15.4167ZM10.082 15.4167H12.2487V5.66667H10.082V15.4167Z" fill="white"/>
@@ -134,7 +142,7 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:''
                         </button>
                     {/if}
                 </div>
-                {#if $PostData.BackgroundImageUrl}
+                {#if $postData.BackgroundImageUrl}
                     <!-- svelte-ignore a11y_click_events_have_key_events -->
                     <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em]">
                         <!-- svelte-ignore a11y_click_events_have_key_events -->

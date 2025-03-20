@@ -3,10 +3,12 @@
     import Home from '../lib/frames/Home.svelte';
     import RootLayout from '../lib/layout/RootLayout.svelte';
     import PickemsLayout from '../lib/layout/PickemsLayout.svelte';
+    import RankingsLayout from '$lib/layout/RankingsLayout.svelte';
     import Create from '../lib/frames/Create.svelte';
     import General from '$lib/stores/General';
     import PostData from '$lib/stores/PostData';
     import Pickems from '../lib/frames/Pickems.svelte';
+    import Rankings from '$lib/frames/Rankings.svelte';
     import DropDownData from '$lib/stores/DropDownData';
     import VoteData from '$lib/stores/VoteData';
     import ShowLoader from '$lib/stores/ShowLoader';
@@ -17,6 +19,12 @@
     import { setContext } from 'svelte';
     import PostDataMulti from '$lib/stores/PostDataMulti';
     import VoteDataMulti from '$lib/stores/VoteDataMulti';
+
+    import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
+    import PostDataRanking from '$lib/stores/PostDataRanking';
+    import VoteDataRanking from '$lib/stores/VoteDataRanking';
+
+
     let messageOutput = '';
     let mounted = false;
     $ShowLoader = true;
@@ -36,6 +44,41 @@
 
                 if(mounted && !isReinit) return;
 
+                let postType = message?.data?.postType;
+                $CurrentFrame = postType 
+                console.log("postType", postType)
+
+                $General.userName = message?.data?.username;
+                $General.mode = "create";
+
+                if(postType === 'ranking'){
+                    console.log("ranking")
+                    $DropDownDataRanking = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
+                    $PostDataRanking = {...message?.data?.parsedGameData?.allPostData?.postdata}
+                    $General.mode = "afterVote"  
+
+                    $PostDataRanking.isCreator = message?.data?.isCreator
+                    mounted = true;
+                    isReinit = false;
+                    $ShowLoader = false;
+
+                    return;
+                }
+                if(postType === "rankingVote"){
+                    console.log("rankingVote")
+                    $DropDownDataRanking = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
+                    $PostDataRanking = {...message?.data?.parsedGameData?.allPostData?.postdata}
+                    $General.mode = "vote"  
+                    $VoteDataRanking.votesArray = message?.data?.parsedGameData?.allPostData?.finalVoteDataRankArrayPoints || []
+                    
+                    $PostDataRanking.isCreator = message?.data?.isCreator
+                    mounted = true;
+                    isReinit = false;
+                    $ShowLoader = false;
+
+                    return;
+                }
+
                 if (message?.data?.isGameData){
                     $DropDownData = [...message?.data?.parsedGameData?.allPostData?.dropDownData];
                 } 
@@ -44,9 +87,12 @@
                 let postData = $DropDownData[0].active == 2 ? PostDataMulti :  PostData;
                 let voteData = $DropDownData[0].active == 2 ? VoteDataMulti : VoteData
 
-                $General.userName = message?.data?.username;
-                $General.mode = "create";
+                
 
+
+                
+
+               
                 $General.allTeamData = message?.data?.allTeamData;
                 
                 if($DropDownData[0].active == 2){
@@ -202,10 +248,14 @@
             <Create/>
         {/if}
     </RootLayout>
-{:else}
+{:else if $CurrentFrame === 'pickems'}
     <PickemsLayout>
         <Pickems/>
     </PickemsLayout>
+{:else}
+    <RankingsLayout>
+        <Rankings/>
+    </RankingsLayout>
 {/if}
 
 

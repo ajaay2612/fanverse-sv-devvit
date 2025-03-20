@@ -14,7 +14,7 @@
 
     let rounds = Math.log2(noOfTeam) + 1
     
-    $:console.log("PostDataMulti", $PostDataMulti)
+    // $:console.log("PostDataMulti", $PostDataMulti)
 
     // teamnames
     let teamData = []

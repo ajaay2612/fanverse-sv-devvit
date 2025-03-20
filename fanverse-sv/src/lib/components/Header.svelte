@@ -17,8 +17,8 @@
 
     
 
-    $: postData = $DropDownData[0].active == 2 ? $PostDataMulti :  $PostData;
-    $: voteData = $DropDownData[0].active == 2 ? $VoteDataMulti : $VoteData
+    $: postData = $DropDownData[0].active == 2 ? PostDataMulti :  PostData;
+    $: voteData = $DropDownData[0].active == 2 ? VoteDataMulti : VoteData
 
     let showMenu = false;
 
@@ -33,25 +33,27 @@
         console.log("post sent");
         window.parent.postMessage({
             type: 'setPostData',
-            data: { "allPostData" :{"postdata": postData, "dropDownData":$DropDownData} }
+            data: { "allPostData" :{"postdata": $postData, "dropDownData":$DropDownData} }
         }, '*');
     }
 
     function handleVote() {
         console.log("vote sent");
-        voteData.totalVotes = voteData.totalVotes + 1;
+        $voteData.totalVotes = $voteData.totalVotes + 1;
+        // voteData.update(store => ({...store, totalVotes: voteData.totalVotes + 1}));
+
         window.parent.postMessage({
             type: 'setVoteData',
-            data: { "voteData" : voteData }
+            data: { "voteData" : $voteData }
         }, '*');
     }
 
     function handleFinishOff() {
         console.log("finish off sent");
-        console.log(voteData);
+        console.log($voteData);
         window.parent.postMessage({
             type: 'finishOff',
-            data: { "voteData" : voteData }
+            data: { "voteData" : $voteData }
         }, '*');
     }
 
@@ -62,7 +64,8 @@
             const { message } = data;
 
             if (message.type === 'voteDataUpdated') {
-                voteData = message.data.voteData;
+                $voteData = message.data.voteData;
+                // voteData.set(message.data.voteData);
                 $General.mode = "afterVote";
                 refreshData();
             }
@@ -93,7 +96,7 @@
 <div class="text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
     <div class="flex flex-row-reverse justify-between w-full gap-[1em]">
         
-        {#if postData.isCreator && $General.mode != "create"}
+        {#if $postData.isCreator && $General.mode != "create"}
             <button
             on:click={handleFinishOff}
                 class=" cursor-pointer h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
@@ -106,10 +109,10 @@
         {/if}
        
         {#if  $General.mode === "vote" }
-            {#if !postData.isCreator}
+            {#if !$postData.isCreator}
                 <button
-                disabled={!voteData.canVote}
-                on:click={voteData.canVote ? handleVote:""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
+                disabled={!$voteData.canVote}
+                on:click={$voteData.canVote ? handleVote:""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
                     <BoxButton>
                         <div
                         style="transition: none;"
@@ -145,8 +148,8 @@
         {/if}
         {#if $General.mode === "create"}
             <button 
-            disabled={!postData.canPost}
-            on:click={postData.canPost ? handlePost : ""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em]  group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
+            disabled={!$postData.canPost}
+            on:click={$postData.canPost ? handlePost : ""} class="disabled:opacity-50 disabled:cursor-not-allowed h-[0.72em]  group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[2.2em] block ">
                 <BoxButton>
                     <div
                     style="transition: none;"
