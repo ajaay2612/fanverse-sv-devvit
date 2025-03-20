@@ -320,7 +320,7 @@ Devvit.addCustomPostType({
 
                         let finalVoteDataRankArrayPoints = calculateTotalPoints(finalVoteDataRankArray);
                         console.log("finalVoteDataRankArrayPoints",finalVoteDataRankArrayPoints)
-                        
+
                         postDataFromStringVoteRank.allPostData.finalVoteDataRankArray = finalVoteDataRankArray;
                         postDataFromStringVoteRank.allPostData.finalVoteDataRankArrayPoints = finalVoteDataRankArrayPoints;
 
@@ -331,6 +331,7 @@ Devvit.addCustomPostType({
                             type: 'voteDataRankedUpdated',
                             data: {
                                 voteData: finalVoteDataRankArrayPoints,
+                                voteDataArray: finalVoteDataRankArray,
                             },
                         });
 

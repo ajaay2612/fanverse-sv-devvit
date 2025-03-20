@@ -70,6 +70,7 @@
                     $PostDataRanking = {...message?.data?.parsedGameData?.allPostData?.postdata}
                     $General.mode = "vote"  
                     $VoteDataRanking.votesArray = message?.data?.parsedGameData?.allPostData?.finalVoteDataRankArrayPoints || []
+                    $VoteDataRanking.votesArrayData = message?.data?.parsedGameData?.allPostData?.finalVoteDataRankArray || []
                     
                     $PostDataRanking.isCreator = message?.data?.isCreator
                     mounted = true;

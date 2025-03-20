@@ -12,6 +12,16 @@
     // $: console.log($postDataRanking);
 
 
+    $: myVote = $VoteDataRanking?.votesArrayData?.map((vote) => {
+        // find() returns a single object or undefined, not an array
+        let userVote = vote.find((v) => v.name == $General.userName);
+        
+        // Return true for upvote, false for downvote, null for no vote
+        return userVote ? (userVote.points == 1) : null;
+    });
+
+
+
     $: isCreate = $General.mode == "create";
 
     onMount (() => {
@@ -103,6 +113,7 @@
             if (message.type === 'voteDataRankedUpdated') {
                 // voteData = message.data.voteData;
                 $VoteDataRanking.votesArray = message.data.voteData;
+                $VoteDataRanking.votesArrayData = message.data.voteDataArray;
                 // voteData.set(message.data.voteData);
                 // $General.mode = "afterVote";
                 // refreshData();
@@ -131,7 +142,28 @@
             {#each $postDataRanking.allLoadedData as rankers, i}
                 <div class="relative flex justify-center items-center h-[6em] gap-0em">
 
-                    <div class="font-inter-italic absolute left-[calc(100%-3em)] text-[1.45em] bottom-[0em]">{$VoteDataRanking.votesArray[i] || 0}</div>
+                    <div class="flex gap-[0.5em] items-center font-inter-italic absolute left-[calc(100%-3em)] text-[1.45em] bottom-[0em]">
+                        {$VoteDataRanking.votesArray[i] || 0} 
+                        {#if myVote && myVote.length > 0 && myVote[i] !== null}
+                            {#if myVote[i] === true}
+                                <div class="mt-[0.1em] w-[0.6em]">
+                                    <svg viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.5 2L16 9M8.5 2L1 9M8.5 2L8.5 3.32169" stroke="#00B928" stroke-width="3"/>
+                                        <path d="M8.5 11L16 18M8.5 11L1 18M8.5 11L8.5 12.3217" stroke="#00B928" stroke-width="3"/>
+                                    </svg>                                        
+                                </div>
+    
+                            {:else if myVote[i] === false}
+                                <div class="mt-[0.2em] w-[0.6em]">
+                                    <svg viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M8.48438 17L0.984375 10M8.48438 17L15.9844 10M8.48438 17L8.48438 15.6783" stroke="#B92800" stroke-width="3"/>
+                                        <path d="M8.48438 8L0.984375 1M8.48438 8L15.9844 0.999999M8.48438 8L8.48438 6.67831" stroke="#B92800" stroke-width="3"/>
+                                    </svg>                                        
+                                </div>
+                            {/if}
+                        {/if}
+                    
+                    </div>
                     <!-- upvote Downvote -->
                     <div class="flex gap-[0.5em] absolute right-[-2.2em] top-0">
                         <!-- svelte-ignore a11y_consider_explicit_label -->
