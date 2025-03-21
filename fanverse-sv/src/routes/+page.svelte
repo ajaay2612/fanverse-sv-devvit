@@ -100,6 +100,26 @@
 
                     return;
                 }
+                if(postType === 'scoreVotable'){
+                    console.log("scoreVotable")
+                    $DropDownDataScore = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
+                    $PostDataScore = {...message?.data?.parsedGameData?.allPostData?.postdata}
+                    $VoteDataScore = message?.data?.parsedGameData?.allPostData[`${$General.userName}`] || $VoteDataScore
+                    
+                    $PostDataScore.finalVoteArray = message?.data?.voteDataFromStringScore || $PostDataScore.finalVoteArray
+
+                    $General.mode = $VoteDataScore.canVote ? message?.data?.isCreator ? "afterVote" : "vote" : "afterVote"
+
+                    console.log("$VoteDataScore", $VoteDataScore)
+                    console.log("$General.mode",$General.mode)
+
+                    $PostDataScore.isCreator = message?.data?.isCreator
+                    mounted = true;
+                    isReinit = false;
+                    $ShowLoader = false;
+
+                    return;
+                }
 
                 if (message?.data?.isGameData){
                     $DropDownData = [...message?.data?.parsedGameData?.allPostData?.dropDownData];

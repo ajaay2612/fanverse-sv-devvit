@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 const VoteDataRanking = writable({
-    canVote: false,
+    canVote: true,
     votesArray: [0,0],
 });
 

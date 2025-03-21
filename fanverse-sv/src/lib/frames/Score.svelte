@@ -10,10 +10,10 @@
     import TeamPickerDataScore from '../stores/TeamPickerDataScore';
     import ScoreOne from '../components/score/ScoreOne.svelte';
     import ScoreTwo from '../components/score/ScoreTwo.svelte';
-
+    import PostDataScore from '../stores/PostDataScore';
 </script>
 
-<div class="scoreBackgroundBlocksImage h-screen w-full">
+<div class="{$PostDataScore.BackgroundImageUrl ? "scoreBackgroundBlocksImage" : ""} h-screen w-full">
     
     {#if $DropDownDataScore[0]?.active == 0}
         <!-- title -->

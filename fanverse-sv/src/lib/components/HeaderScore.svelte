@@ -32,7 +32,7 @@
         console.log("post sent");
         window.parent.postMessage({
             type: 'setPostData',
-            data: { "allPostData" :{"postdata": postData,  postType: "score" , "dropDownData":$DropDownDataScore} }
+            data: { "allPostData" :{"postdata": postData,   postType: $DropDownDataScore[0].active == 0 ? "score" : "scoreVotable" , "dropDownData":$DropDownDataScore} }
         }, '*');
     }
 
@@ -52,8 +52,8 @@
 
 </script>
 
-<div class=" text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
-    <div class="flex flex-row-reverse justify-between w-full gap-[1em]">
+<div class="mix-blend-difference text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
+    <div class="flex flex-row-reverse justify-start w-full gap-[1em]">
         
         {#if $General.mode === "vote" && $DropDownDataScore[0]?.active == 0}
             {#if postData.isCreator}

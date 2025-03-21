@@ -303,6 +303,39 @@ Devvit.addCustomPostType({
                         context.ui.showToast('Scores Updated!');
 
                         break;
+                    
+                    case 'setVoteDataScore':
+
+                        async function setVoteDataVotable() {
+                            let postDataStringVoteScore = await context.redis.get(`postData_${postId}`);
+                            if (!postDataStringVoteScore) {
+                                console.error('Post data not found');
+                                return;
+                            }
+    
+                            let postDataFromStringVoteScore = JSON.parse(postDataStringVoteScore);
+    
+                            postDataFromStringVoteScore.allPostData[username] = voteData;
+
+                            await context.redis.set(`postData_${postId}`, JSON.stringify(postDataFromStringVoteScore));
+
+
+                            
+                            let voteDataString = await context.redis.get(`voteDataScore_${postId}`);
+                            let voteDataFromString = voteDataString ? JSON.parse(voteDataString) : [0,0];
+                            
+                            voteDataFromString[0] = voteDataFromString[0] ||0 + voteData.votesArray[0] ||0
+                            voteDataFromString[1] = voteDataFromString[1 ||0] + voteData.votesArray[1] ||0
+
+                            await context.redis.set(`voteDataScore_${postId}`, JSON.stringify(voteDataFromString));
+    
+                            console.log("voteDataFromString",voteDataFromString)
+                        }
+
+                        await setVoteDataVotable()
+
+                        break;
+
                     case 'setVoteDataRanking':
                         let postDataStringVoteRank = await context.redis.get(`postData_${postId}`);
                         if (!postDataStringVoteRank) {
@@ -471,6 +504,10 @@ Devvit.addCustomPostType({
                         let allTeamData = await context.redis.get(`allTeamData_${username}`);
                         allTeamData = allTeamData ? JSON.parse(allTeamData) : [];
 
+
+                        let voteDataStringScore = await context.redis.get(`voteDataScore_${postId}`);
+                        let voteDataFromStringScore = voteDataStringScore ? JSON.parse(voteDataStringScore) : [0,0];
+
                         // adding points to user
                 
                         let localLeaderBoard = []
@@ -501,6 +538,7 @@ Devvit.addCustomPostType({
                             type: 'initialData',
                             data: {
                                 localLeaderBoard: localLeaderBoard,
+                                voteDataFromStringScore:voteDataFromStringScore,
                                 leaderBoardGlobal: leaderBoardGlobal,
                                 voteDataFromStringIni: voteDataFromStringIni,
                                 username: username,
