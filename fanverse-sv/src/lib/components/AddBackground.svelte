@@ -11,11 +11,13 @@
     import CurrentFrame from '$lib/stores/CurrentFrame';
     import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
 
+    import PostDataScore from '$lib/stores/PostDataScore';
+
     let value = [25, 100];
     let blurValue = [0, 100];
 
 
-    $: postData = $CurrentFrame == "pickems" ? $DropDownData[0].active == 2 ? PostDataMulti :  PostData : PostDataRanking;
+    $: postData = $CurrentFrame == "pickems" ? $DropDownData[0].active == 2 ? PostDataMulti :  PostData :  $CurrentFrame == "ranking" ? PostDataRanking : PostDataScore;
     
     $: if(value[0]){
         $postData.BackgroundImageUrlBrightness = value[0];

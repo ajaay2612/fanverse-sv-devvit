@@ -4,11 +4,15 @@
     import RootLayout from '../lib/layout/RootLayout.svelte';
     import PickemsLayout from '../lib/layout/PickemsLayout.svelte';
     import RankingsLayout from '$lib/layout/RankingsLayout.svelte';
+    import ScoreLayout from '../lib/layout/ScoreLayout.svelte';
+
+
     import Create from '../lib/frames/Create.svelte';
     import General from '$lib/stores/General';
     import PostData from '$lib/stores/PostData';
     import Pickems from '../lib/frames/Pickems.svelte';
     import Rankings from '$lib/frames/Rankings.svelte';
+    import Score from '../lib/frames/Score.svelte';
     import DropDownData from '$lib/stores/DropDownData';
     import VoteData from '$lib/stores/VoteData';
     import ShowLoader from '$lib/stores/ShowLoader';
@@ -24,6 +28,9 @@
     import PostDataRanking from '$lib/stores/PostDataRanking';
     import VoteDataRanking from '$lib/stores/VoteDataRanking';
 
+    import DropDownDataScore from '$lib/stores/DropDownDataScore';
+    import PostDataScore from '$lib/stores/PostDataScore';
+    import VoteDataScore from '$lib/stores/VoteDataScore';
 
     let messageOutput = '';
     let mounted = false;
@@ -64,6 +71,7 @@
 
                     return;
                 }
+               
                 if(postType === "rankingVote"){
                     console.log("rankingVote")
                     $DropDownDataRanking = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
@@ -73,6 +81,19 @@
                     $VoteDataRanking.votesArrayData = message?.data?.parsedGameData?.allPostData?.finalVoteDataRankArray || []
                     
                     $PostDataRanking.isCreator = message?.data?.isCreator
+                    mounted = true;
+                    isReinit = false;
+                    $ShowLoader = false;
+                    return;
+                }
+                if(postType === 'score'){
+                    console.log("score")
+                    $DropDownDataScore = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
+                    $PostDataScore = {...message?.data?.parsedGameData?.allPostData?.postdata}
+                    $VoteDataScore = message?.data?.parsedGameData?.allPostData?.finalVoteDataScoreArray || $VoteDataScore
+                    $General.mode = "vote"  
+
+                    $PostDataScore.isCreator = message?.data?.isCreator
                     mounted = true;
                     isReinit = false;
                     $ShowLoader = false;
@@ -253,10 +274,14 @@
     <PickemsLayout>
         <Pickems/>
     </PickemsLayout>
-{:else}
+{:else if $CurrentFrame === 'ranking' }
     <RankingsLayout>
         <Rankings/>
     </RankingsLayout>
+{:else}
+    <ScoreLayout>
+        <Score/>
+    </ScoreLayout>
 {/if}
 
 

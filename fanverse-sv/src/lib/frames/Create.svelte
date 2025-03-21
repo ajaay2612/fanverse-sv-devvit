@@ -14,6 +14,7 @@
         {
             name: "scoreboard",
             pic: "/images/create-page/s.svg",
+            to:"score"
         },
         {
             name: "performance",

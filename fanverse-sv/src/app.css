@@ -77,6 +77,11 @@
     --color-ranking-blocks:#18407F;
     --color-ranking-vote:#335993;
 
+    /* scoreBoard */
+    --color-score-grad-one: #2600EB;
+    --color-score-grad-two: #1801B8;
+    --color-score-shadow: rgba(103, 78, 255, 0.29);
+
     /* color end */
 
     --breakpoint-xsm: 500px;
@@ -196,6 +201,7 @@
     /* ranking style 2 */
 
     .secBlue{
+
         --color-pickem-main-bg:#081E3F;
         --color-ranking-blocks:#18407F;
         --color-ranking-vote:#335993;
@@ -229,7 +235,43 @@
         --color-badge: #a9a9a9;
 
     }
-}
+
+    /* scoreBoard */
+    .scoreDarkBlue{
+        --color-pickem-main-bg: #0d0d0d;
+
+        --color-score-grad-one: #152E56;
+        --color-score-grad-two: #132746;
+        --color-score-shadow: rgba(103, 78, 255, 0.29);
+        --color-badge: #1a72ff;
+        
+    }
+    .scoreBlue{
+        --color-pickem-main-bg: #0d0d0d;
+        --color-score-grad-one: #2600EB;
+        --color-score-grad-two: #1801B8;
+        --color-score-shadow: rgba(103, 78, 255, 0.29);
+        --color-badge: #5093ff;
+    }
+    .scoreLightBlue{
+        --color-pickem-main-bg: #0d0d0d;
+        --color-score-grad-one: #009FCE;
+        --color-score-grad-two: #0078A1;
+        --color-score-shadow: rgba(78, 225, 255, 0.29);
+        --color-badge: #58d8ff;
+        
+    }
+    .scoreGreen{
+        --color-pickem-main-bg: #0d0d0d;
+        --color-score-grad-one: #7AB20D;
+        --color-score-grad-two: #60850C;
+        --color-score-shadow: rgba(78, 255, 143, 0.29);
+        --color-badge: #17c9ae;
+
+    }
+
+
+}   
 
 html {
     -webkit-text-size-adjust: none;
@@ -340,3 +382,6 @@ body {
 }
 
 
+.scoreBackgroundBlocks{
+    background: linear-gradient(180deg, var(--color-score-grad-one) 0%, var(--color-score-grad-two) 100%);
+}

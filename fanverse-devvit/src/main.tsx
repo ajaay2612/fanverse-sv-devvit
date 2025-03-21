@@ -55,6 +55,10 @@ Devvit.addCustomPostType({
             return (await context.reddit.getCurrentUsername()) ?? 'anon';
         });
 
+        const [postData] = useState(async () => {
+            return await context.redis.get(`postData_${context.postId}`);
+        });
+
         // Load latest counter from redis with `useAsync` hook
         const [counter, setCounter] = useState(async () => {
             const redisCount = await context.redis.get(`counter_${context.postId}`);
@@ -281,6 +285,22 @@ Devvit.addCustomPostType({
 
                         context.ui.showToast('Bracket Updated!');
 
+
+                        break;
+                    case 'updateVoteDataScore':
+                        
+                        let postDataStringVoteScore = await context.redis.get(`postData_${postId}`);
+                        if (!postDataStringVoteScore) {
+                            console.error('Post data not found');
+                            return;
+                        }
+
+                        let postDataFromStringVoteScore = JSON.parse(postDataStringVoteScore);
+                        postDataFromStringVoteScore.allPostData.finalVoteDataScoreArray = voteData
+                        
+                        await context.redis.set(`postData_${postId}`, JSON.stringify(postDataFromStringVoteScore));
+
+                        context.ui.showToast('Scores Updated!');
 
                         break;
                     case 'setVoteDataRanking':
