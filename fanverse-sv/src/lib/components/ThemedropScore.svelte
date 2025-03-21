@@ -1,7 +1,7 @@
 <script>    
     import BoxButton from './BoxButton.svelte';
-    import DropDownDataRanking from '../stores/DropDownDataRanking';
-
+    import DropDownDataScore from '../stores/DropDownDataScore';
+    import PostDataScore from '../stores/PostDataScore';
     import { fade } from 'svelte/transition';
     import { cubicOut } from 'svelte/easing';
     export let drop;
@@ -36,32 +36,30 @@
         </BoxButton>
     </div>
     {#if drop.options && showDropDown}
-        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[2.2em] xsm:text-[1em]  w-[4.7em] pointer-events-auto z-[15] absolute top-full mt-[0.5em] left-[-5px]  bg-header-hover">
+        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[white] text-[2.2em] xsm:text-[1em]  w-[4.7em] pointer-events-auto z-[15] absolute top-full mt-[0.5em] right-[-5px]  bg-header-hover">
             
             <div class="z-[17] relative pointer-events-none opacity-50 text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">{drop.name}</div>
-            {#if $DropDownDataRanking[0]?.active == 0}
-                {#if $DropDownDataRanking[1].active == 0}
-                    {#each drop.options as option, i}
-                        <!-- svelte-ignore a11y_no_static_element_interactions -->
-                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                        <div
-                        class:activeTheme={drop.active === i}
-    
-                        on:click={()=>selectOption(i)} class="z-[17] relative  hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">
-                            {option.name}
-                        </div>
-                    {/each}
-                {:else}
-                    {#each drop.optionsTwo as option, i}
-                        <!-- svelte-ignore a11y_no_static_element_interactions -->
-                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                        <div 
-                        class:activeTheme={drop.active === i}
-                        on:click={()=>selectOption(i)} class="z-[17] relative  hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">
-                            {option.name}
-                        </div>
-                    {/each}
-                {/if}
+            {#if $DropDownDataScore[0].active == 0}
+                {#each drop.options as option, i}
+                    <!-- svelte-ignore a11y_no_static_element_interactions -->
+                    <!-- svelte-ignore a11y_click_events_have_key_events -->
+                    <div
+                    class:activeTheme={drop.active === i}
+
+                    on:click={()=>selectOption(i)} class="z-[17] relative  hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">
+                        {option.name}
+                    </div>
+                {/each}
+            {:else}
+                {#each drop.optionsTwo as option, i}
+                    <!-- svelte-ignore a11y_no_static_element_interactions -->
+                    <!-- svelte-ignore a11y_click_events_have_key_events -->
+                    <div 
+                    class:activeTheme={drop.active === i}
+                    on:click={()=>selectOption(i)} class="z-[17] relative  hover:bg-white hover:text-black text-[0.35em] uppercase font-inter-italic font-bold text-center py-[0.8em]">
+                        {option.name}
+                    </div>
+                {/each}
             {/if}
         </div>
     {/if}

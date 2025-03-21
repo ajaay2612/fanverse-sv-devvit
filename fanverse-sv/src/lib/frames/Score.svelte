@@ -13,7 +13,7 @@
     import PostDataScore from '../stores/PostDataScore';
 </script>
 
-<div class="{$PostDataScore.BackgroundImageUrl ? "scoreBackgroundBlocksImage" : ""} h-screen w-full">
+<div class="{$PostDataScore.BackgroundImageUrl && $DropDownDataScore[0].active == 0 ? "scoreBackgroundBlocksImage" : ""} h-screen w-full">
     
     {#if $DropDownDataScore[0]?.active == 0}
         <!-- title -->

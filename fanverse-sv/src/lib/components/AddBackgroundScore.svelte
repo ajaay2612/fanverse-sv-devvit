@@ -10,7 +10,7 @@
     import DropDownData from '$lib/stores/DropDownData';
     import CurrentFrame from '$lib/stores/CurrentFrame';
     import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
-
+    import DropDownDataScore from '$lib/stores/DropDownDataScore';
     import PostDataScore from '$lib/stores/PostDataScore';
 
     let value = [25, 100];
@@ -114,19 +114,19 @@ on:message={handleMessage}
 on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:'' } }/>
 
 
-<div bind:this={dropDownElement}  class=" z-[15] pointer-events-auto  relative">
-    <button on:click={toggleBgDetails} class="cursor-pointer pointer-events-auto  text-[2em] xsm:text-[1em] relative size-[0.72em] block ml-auto">
+<div bind:this={dropDownElement}  class=" {$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "text-[white]":""} z-[15] pointer-events-auto  relative">
+    <button on:click={toggleBgDetails} class="{$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "text-[black]":""}  cursor-pointer pointer-events-auto  text-[2em] xsm:text-[1em] relative size-[0.72em] block ml-auto">
         <BoxButton>
             <div class="leading-0 text-[0.78em] size-[0.8em] absolute top-1/2 left-1/2 -translate-1/2">
                 <svg  viewBox="0 0 15 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0.101562 6.98438H14.8953L10.2723 0.820312L6.57383 5.75156L3.8 2.05313L0.101562 6.98438Z" fill="#fff"/>
+                    <path d="M0.101562 6.98438H14.8953L10.2723 0.820312L6.57383 5.75156L3.8 2.05313L0.101562 6.98438Z" fill="{$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "#000":"#fff"}"/>
                 </svg>
             </div>
         </BoxButton>
     </button>
 
     {#if showBgDetails}
-        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em]  font-semibold {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders" } uppercase absolute top-full mt-[0.5em] left-[-5px] bg-[#2a2320]">
+        <div transition:fade={{duration:400, easing: cubicOut}} class="text-[1.5em] xsm:text-[1em]  font-semibold { $DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders" } uppercase absolute top-full mt-[0.5em] right-[-5px]  bg-[#2a2320]">
             <div class="text-[0.5em] p-[0.5em] space-y-0hem">
                 <!-- svelte-ignore a11y_click_events_have_key_events -->
                 <div transition:scale={{start:0.9, duration:400, easing: cubicOut}} class="flex justify-center items-center gap-[0.5em]">

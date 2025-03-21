@@ -3,7 +3,7 @@
     import BoxButton from './BoxButton.svelte';
     import DropDowns from './DropDowns.svelte';
     import ThemedropScore from './ThemedropScore.svelte';
-    import AddBackground from './AddBackground.svelte';
+    import AddBackgroundScore from './AddBackgroundScore.svelte';
     import { cubicOut } from 'svelte/easing';
     import DropDownDataScore from '../stores/DropDownDataScore';
 
@@ -52,8 +52,8 @@
 
 </script>
 
-<div class="mix-blend-difference text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
-    <div class="flex flex-row-reverse justify-start w-full gap-[1em]">
+<div class="   text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
+    <div class=" {$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "text-[black]":""} flex flex-row-reverse justify-start w-full gap-[1em]">
         
         {#if $General.mode === "vote" && $DropDownDataScore[0]?.active == 0}
             {#if postData.isCreator}
@@ -79,7 +79,7 @@
             </button>
 
             <div class=" flex flex-col-reverse xsm:flex-row-reverse w-fit gap-[1em]">
-                <AddBackground/>
+                <AddBackgroundScore/>
                 
                 <ThemedropScore bind:drop={$DropDownDataScore[1]} />
                 

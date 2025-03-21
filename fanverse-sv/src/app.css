@@ -238,7 +238,7 @@
 
     /* scoreBoard */
     .scoreDarkBlue{
-        --color-pickem-main-bg: #0d0d0d;
+        --color-pickem-main-bg: #ffffff;
 
         --color-score-grad-one: #152E56;
         --color-score-grad-two: #132746;
@@ -247,14 +247,14 @@
         
     }
     .scoreBlue{
-        --color-pickem-main-bg: #0d0d0d;
+        --color-pickem-main-bg: #ffffff;
         --color-score-grad-one: #2600EB;
         --color-score-grad-two: #1801B8;
         --color-score-shadow: rgba(103, 78, 255, 0.29);
         --color-badge: #5093ff;
     }
     .scoreLightBlue{
-        --color-pickem-main-bg: #0d0d0d;
+        --color-pickem-main-bg: #ffffff;
         --color-score-grad-one: #009FCE;
         --color-score-grad-two: #0078A1;
         --color-score-shadow: rgba(78, 225, 255, 0.29);
@@ -262,7 +262,7 @@
         
     }
     .scoreGreen{
-        --color-pickem-main-bg: #0d0d0d;
+        --color-pickem-main-bg: #ffffff;
         --color-score-grad-one: #7AB20D;
         --color-score-grad-two: #60850C;
         --color-score-shadow: rgba(78, 255, 143, 0.29);

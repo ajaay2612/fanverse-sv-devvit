@@ -54,12 +54,12 @@
 
 </script>
 
-<p class="font-bold text-[3.5em] absolute top-[52%] left-1/2 -translate-1/2">
+<p class="{$PostDataScore.BackgroundImageUrl ? "":"text-black"} font-bold text-[3.5em] absolute top-[52%] left-1/2 -translate-1/2">
     VS
 </p>
 
 <button
-    class="px-[1.5em] w-full uppercase h-[80%] justify-between relative text-center flex text-[1.25em] "
+    class="{$PostDataScore.BackgroundImageUrl ? "":"text-black"} px-[1.5em] w-full uppercase h-[80%] justify-between relative text-center flex text-[1.25em] "
 >
     <div class="w-[80%] mx-auto flex justify-center items-center gap-[10em] lg:gap-[10em]">
 
@@ -82,12 +82,12 @@
                                 >
                                     <path
                                         d="M0.511719 11.6797H23.7734"
-                                        stroke="#fff"
+                                        stroke="{$PostDataScore.BackgroundImageUrl ? "#fff":"#000"} "
                                         stroke-width="3"
                                     />
                                     <path
                                         d="M12.1406 23.3125L12.1406 0.0507812"
-                                        stroke="#fff"
+                                        stroke="{$PostDataScore.BackgroundImageUrl ? "#fff":"#000"}"
                                         stroke-width="3"
                                     />
                                 </svg>
