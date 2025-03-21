@@ -4,7 +4,7 @@ const DropDownData = writable([
     {
         name: 'select type',
         options: ['plain', 'votable'],
-        active:1
+        active:0
     },
     {
         name: 'select color',

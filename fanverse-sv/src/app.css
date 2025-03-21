@@ -383,5 +383,16 @@ body {
 
 
 .scoreBackgroundBlocks{
+    clip-path: polygon(100% 0px, 75.75% 100%, 0% 100%, 0 0%);
     background: linear-gradient(180deg, var(--color-score-grad-one) 0%, var(--color-score-grad-two) 100%);
 }
+
+
+.scoreBackgroundBlocksImage{
+    box-shadow: inset 0px 0px 110px 105px var(--color-score-shadow);
+
+}
+
+/* image 603 */
+
+

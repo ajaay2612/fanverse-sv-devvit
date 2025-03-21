@@ -13,7 +13,7 @@
 
 </script>
 
-<div class=" h-screen w-full">
+<div class="scoreBackgroundBlocksImage h-screen w-full">
     
     {#if $DropDownDataScore[0]?.active == 0}
         <!-- title -->
@@ -21,8 +21,6 @@
             {#key $DropDownDataScore[1]?.active}
                 <div transition:fade class="absolute left-0 top-0 w-full h-full scoreBackgroundBlocks"></div>
             {/key}
-
-            <div class="absolute w-[5em] scale-[1.5] translate-y-[2em] translate-x-[2em] h-[5em] bg-pickem-main-bg right-0 rotate-[50deg]"></div>
 
             <div 
             class="p-2em py-1em ">

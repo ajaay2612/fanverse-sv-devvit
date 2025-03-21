@@ -54,7 +54,7 @@
 
 </script>
 
-<p class="font-bold text-[3.5em] absolute top-[52%] left-1/2 -translate-1/2">
+<p class="font-bold text-[3.5em] absolute top-[50%] left-1/2 -translate-1/2">
     VS
 </p>
 
@@ -73,7 +73,7 @@
                     {#if team.teamName == null || team.teamName == ""}
                         <!-- svelte-ignore a11y_click_events_have_key_events -->
                         <!-- svelte-ignore a11y_no_static_element_interactions -->
-                        <div on:click={() => $General.mode == "create" ? create(i) : ""} class="cursor-pointer w-[5em] translate-y-[-63%] flex mx-auto justify-center items-center">
+                        <div on:click={() => $General.mode == "create" ? create(i) : ""} class="cursor-pointer w-[5em] flex mx-auto justify-center items-center">
                             <div class="w-[3em]">
                                 <svg
                                     viewBox="0 0 24 24"
@@ -120,10 +120,6 @@
                                 class="cursor-pointer text-center text-[1.2em] grow">
                                     {team.teamName || "Name"}
                                 </p>
-
-                                <div class="text-[2.6em]">
-                                    <input class="w-full text-center uppercase" type="text" placeholder="points" bind:value={$voteData.votesArray[i]}>
-                                </div>
                             </div>
                         </div>
                     {/if}
@@ -143,12 +139,6 @@
                             />
                         </div>
                     {/if}
-                    <div class="space-y-[0.8em]">
-                        <p class="text-left text-[1.2em] grow">
-                            {team.teamName}
-                        </p>
-                        <p class="text-[2.6em] text-center uppercase">{$voteData?.votesArray[i] || 0}</p>
-                    </div>
                 </div>
             {/if}
         {/each}
