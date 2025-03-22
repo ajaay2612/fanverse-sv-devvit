@@ -11,6 +11,7 @@
     import TeamPickerData from '$lib/stores/TeamPickerData';
     import PostData from '$lib/stores/PostData';
     import { cubicOut } from 'svelte/easing';
+    import General from '$lib/stores/General';
 
     let teams = ["SEN", "DRX", "100T", "C9"];
 
@@ -29,6 +30,8 @@
         <div in:fade={{duration:500}} class=" pickem-main-bg-gradient  translate-y-[10%] h-full w-full absolute top-0 left-0 z-0 pointer-events-none"></div>
         {/key} -->
     
+   
+
     {#if $DropDownData[2].active == 0}
         <div class="flex  items-end h-full w-full  absolute bottom-0  left-0 z-0 pointer-events-none">
             <div class="w-full">
@@ -103,5 +106,9 @@
         
     </div>
 
-
+    {#if $General.mode === "vote"}
+        <p
+        class=" text-white absolute bottom-[1.2em] text-[0.65em] whitespace-nowrap left-1/2 -translate-x-1/2  font-inter-italic  text-center"
+        >Click teams to predict the winner of the bracket</p>
+    {/if}
 </div>

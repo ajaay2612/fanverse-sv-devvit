@@ -138,7 +138,7 @@ Devvit.addCustomPostType({
                 }
 
                 let postTypeObject = {
-                    pickems: "Elimination Bracket - Pickems",
+                    pickems: "Elimination Bracket - PICKE'EMS",
                     ranking: "Team Rankings",
                     rankingVote: "Community Rankings",
                     score: "Scoreboard",

@@ -16,17 +16,22 @@
             pic: "/images/create-page/s.svg",
             to:"score"
         },
-        {
-            name: "performance",
-            pic: "/images/create-page/p.svg",
-        }
+        // {
+        //     name: "performance",
+        //     pic: "/images/create-page/p.svg",
+        // }
     ]
 </script>
 
-<div class="text-[1.12em] h-full w-full flex justify-center flex-col gap-[1em] items-center">
-
-    <h1 class="text-[0.7em] font-inter-italic font-bold text-center">What Will You Create?</h1>
-    <div class="w-[500px] grid grid-cols-2 gap-[0.5em]">
+<div class="text-[1.7em] xsm:text-[1.12em] h-full w-full flex justify-center flex-col gap-[1em] items-center">
+    
+    <div class="relative w-full"
+    >
+        <button on:click={()=> $CurrentFrame = "home"} class="hover:opacity-100 cursor-pointer absolute top-1/2 left-[11%] -translate-y-1/2  font-inter-italic opacity-50 text-[0.5em] font-bold uppercase flex justify-center items-center">&lt; home</button>
+    
+        <h1 class="text-[0.7em] font-inter-italic font-bold text-center">What Will You Create?</h1>
+    </div>
+    <div class="max-w-[800px] flex justify-center items-center flex-wrap gap-[0.5em]">
         {#each createCards as card}
         <button 
         on:click={() => $CurrentFrame = card.to}

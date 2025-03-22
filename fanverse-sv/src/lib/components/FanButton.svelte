@@ -4,6 +4,7 @@
     export let to = '', type = 1;
 
     const navigate = () => {
+        if (!to) return
         $CurrentFrame = to;
     }
 

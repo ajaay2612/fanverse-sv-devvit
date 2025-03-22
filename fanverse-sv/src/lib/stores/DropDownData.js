@@ -22,9 +22,9 @@ const DropDownData = writable([
         optionsTwo: [{name:'blue', class:"blue"}, {name:'green', class:"green"}, {name:'light blue', class:"lBlue"}, {name:'light green', class:"lGreen"}, {name:"purple", class:"purple"}, {name:"dark", class:"dark"}],
         active:0
     },
-    {
-        name: 'select category'
-    },
+    // {
+    //     name: 'select category'
+    // },
 
 ]);
 
