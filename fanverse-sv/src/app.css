@@ -399,8 +399,30 @@ body {
     @apply border-pickem-box-champ border-[0.25em] relative;
 }
 
-.championBox::before {
+.championBox::after {
     content: '';
     @apply absolute -top-[2.5em] left-1/2 -translate-x-1/2 w-[2em] h-[2em] bg-contain bg-no-repeat bg-center;
     background-image: url("/images/pickems/crown.svg");
+}
+
+
+.userAnswerFalse,
+.userAnswerRight{
+    @apply relative;
+}
+
+
+.userAnswerFalse::before,
+.userAnswerRight::before {
+    content: '';
+    @apply absolute -right-[0.9em] top-1/2 -translate-y-1/2 size-[1.5em]  bg-contain bg-no-repeat bg-center;
+    
+    background-image: url("/images/pickems/right.svg");
+}
+.userAnswerFalse::before {
+    background-image: url("/images/pickems/wrong.svg");
+}
+
+.userAnswerRight::before {
+    background-image: url("/images/pickems/right.svg");
 }

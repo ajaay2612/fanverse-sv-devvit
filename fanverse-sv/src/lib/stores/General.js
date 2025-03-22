@@ -11,8 +11,6 @@ const General = writable({
         // {"teamName":"Franky","teamImage":"https://static.wikia.nocookie.net/onepiece/images/8/8c/Franky_Anime_Post_Timeskip_Infobox.png"},
         // {"teamName":"Brook","teamImage":"https://static.wikia.nocookie.net/onepiece/images/4/41/Brook_Anime_Post_Timeskip_Infobox.png"},
         // {"teamName":"Jinbe","teamImage":"https://static.wikia.nocookie.net/onepiece/images/8/81/Jinbe_Anime_Infobox.png"},
-        
-        
     ],
     finalBracketData:[
         // [
@@ -35,7 +33,7 @@ const General = writable({
         // ],
         // [
         //   {
-        //     "team": "luffy",
+        //     "team": "zoro",
         //     "won": true
         //   },
         //   {
@@ -45,7 +43,7 @@ const General = writable({
         // ],
         // [
         //   {
-        //     "team": "luffy",
+        //     "team": "zoro",
         //     "won": null
         //   }
         // ]

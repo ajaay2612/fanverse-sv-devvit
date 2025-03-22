@@ -204,6 +204,7 @@
     $: isAFterVote = $General.mode == "afterVote"
     $: allRightBrackets = $General?.finalBracketData || []
     $: afterVoteUi = []
+    $: afterVoteUiUser = []
 
     function calculateMatchingPoints(userBrackets, finalBrackets) {
         // Initialize points counter
@@ -245,6 +246,29 @@
         return wonArray;
     }
 
+
+    function calculateMatchingPointsForUser(userBrackets, finalBrackets) {
+        
+        let userArray = [];
+
+        console.table(userBrackets)
+
+
+        for (let i = 0; i < userBrackets.length; i++) {
+            userArray.push([])
+            for (let j = 0; j < userBrackets[i].length; j++) {
+                if(userBrackets[i][j].won == true){
+                    userArray[i][j] = afterVoteUi[i][j]
+                }else{
+                    userArray[i][j] = null
+                }
+            }
+        }
+
+        return userArray;
+    }
+
+
     let mounted = false
     onMount(()=>{
         mounted = true
@@ -252,8 +276,12 @@
 
     $: if(mounted && $General.mode == "afterVote" && allRightBrackets && allRightBrackets.length > 0 && brackets && brackets.length > 0){
         afterVoteUi = calculateMatchingPoints(brackets, allRightBrackets)
+        
+        afterVoteUiUser = calculateMatchingPointsForUser(brackets, allRightBrackets)
+        
 
         console.table(afterVoteUi)
+        console.table(afterVoteUiUser)
     }
 
 </script>
@@ -272,11 +300,15 @@
                                 <button 
                                 class:championBox={roundIndex == rounds - 1 && matchIndex == 0}
                                 class:rightWinnerTeam={afterVoteUi && afterVoteUi.length > 0 ?  afterVoteUi[roundIndex][matchIndex] : false}
-
+                                
+       
+                                
                                 class:winnerTeam={brackets[roundIndex][matchIndex].won}
                                 class:loserTeam={!brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
                                 on:click={()=> handleAdvancement(roundIndex,matchIndex) }
-                                class="relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
+                                class="
+                                {afterVoteUiUser && afterVoteUiUser.length > 0 ?  afterVoteUiUser[roundIndex][matchIndex] == true ? "userAnswerRight": afterVoteUiUser[roundIndex][matchIndex] == false ? "userAnswerFalse" : "": ""}
+                                relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
                                     {#if $General.mode == "create" && roundIndex == 0}
                                         {#if showTeamName(roundIndex, matchIndex) == null}
                                             <div class="w-[1.45em]">
