@@ -194,7 +194,7 @@ let champion = null
 
 </script>
 
-<div class="overflow-x-scroll xsm:overflow-hidden h-full w-full px-4em xsm:px-2em py-[2.5em] text-white mb-[5em]  flex justify-center items-center ">
+<div class="overflow-auto xsm:overflow-hidden h-full w-full px-4em xsm:px-2em py-[2.5em] text-white mb-[5em]  flex justify-center items-center ">
     <div class="flex  items-center pb-[2em]">
         <div class="ml-[70em] xsm:m-0 shrink-0">
             <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">

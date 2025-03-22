@@ -102,7 +102,7 @@
                     </BoxButton>
                 </button>
 
-                <button on:click={()=> $CurrentFrame = "create"} class="pointer-events-auto hover:opacity-100 cursor-pointer  font-inter-italic opacity-50 text-[0.5em] font-bold uppercase flex justify-center items-center">&lt; back</button>
+                <button on:click={()=> $CurrentFrame = "create"} class="pointer-events-auto hover:opacity-100 cursor-pointer  font-inter-italic opacity-50 text-[1.5em] leading-[1em] xsm:text-[0.5em] font-bold uppercase flex justify-center items-center">&lt; <span class="hidden xsm:block ml-[0.2em]">back</span></button>
 
             </div>
         {/if}

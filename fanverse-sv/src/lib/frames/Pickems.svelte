@@ -87,7 +87,7 @@
             {/key}
         {:else if elimMethod === 1}
             {#if noOfTeam === 8}
-                <div class="overflow-scroll h-[80vh] w-full text-[1.2em] lg:text-[1.4em]">
+                <div class="overflow-auto h-[80vh] w-full text-[1.2em] lg:text-[1.4em]">
                     <DoubleElimEight />
                 </div>
             {:else}

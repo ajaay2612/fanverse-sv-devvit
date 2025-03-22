@@ -118,7 +118,7 @@
     <div
         class="{noOfTeam == 4
             ? 'text-[1.2em]'
-            : ''} overflow-scroll px-2em py-2em w-full h-full"
+            : ''} overflow-auto px-2em py-2em w-full h-full"
     >
         <div
             class="{noOfTeam == 4
@@ -142,7 +142,7 @@
                         <button
                             class:rightWinnerTeam={isAFterVote && champion == $General?.finalChampion?.champion }
 
-                            class="relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full border-[0.25em] border-pickem-box-champ cursor-pointer"
+                            class="relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full  championBox  cursor-pointer"
                         >
                             <div
                                 class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]"

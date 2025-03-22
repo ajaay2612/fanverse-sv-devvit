@@ -395,4 +395,12 @@ body {
 
 /* image 603 */
 
+.championBox{
+    @apply border-pickem-box-champ border-[0.25em] relative;
+}
 
+.championBox::before {
+    content: '';
+    @apply absolute -top-[2.5em] left-1/2 -translate-x-1/2 w-[2em] h-[2em] bg-contain bg-no-repeat bg-center;
+    background-image: url("/images/pickems/crown.svg");
+}

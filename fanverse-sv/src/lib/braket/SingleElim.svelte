@@ -260,7 +260,7 @@
 
 
     {#key $TeamPickerData.showTeamPicker}
-        <div class="customMatchFont-{noOfTeam} overflow-x-scroll xsm:overflow-visible w-full h-[fit] px-4em xsm:px-2em py-[2.5em] text-white">
+        <div class="customMatchFont-{noOfTeam} overflow-auto xsm:overflow-visible w-full h-[fit] px-4em xsm:px-2em py-[2.5em] text-white">
             <div class="text-[1.4em] w-fit xsm:w-full xsm:text-[0.65em] lg:text-[0.61em] flex gap-[8em] justify-center items-center  h-full">
                 {#each brackets as round, roundIndex}
                     <div class="flex flex-col justify-center h-full w-[14em]">
@@ -270,7 +270,7 @@
                                 
                                 <!-- class:rightLoserTeam={true} -->
                                 <button 
-                                
+                                class:championBox={roundIndex == rounds - 1 && matchIndex == 0}
                                 class:rightWinnerTeam={afterVoteUi && afterVoteUi.length > 0 ?  afterVoteUi[roundIndex][matchIndex] : false}
 
                                 class:winnerTeam={brackets[roundIndex][matchIndex].won}
