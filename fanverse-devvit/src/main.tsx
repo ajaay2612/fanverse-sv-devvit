@@ -56,8 +56,13 @@ Devvit.addCustomPostType({
         });
 
         const [postData] = useState(async () => {
-            return await context.redis.get(`postData_${context.postId}`);
+
+            let postData = JSON.parse(await context.redis.get(`postData_${context.postId}`) || "{}");
+
+            return postData?.allPostData?.postdata ||  null ;
         });
+
+        console.log("postData",postData)
 
         // Load latest counter from redis with `useAsync` hook
         const [counter, setCounter] = useState(async () => {
@@ -130,7 +135,15 @@ Devvit.addCustomPostType({
                     }
                     
                     return totalPoints;
-                  }
+                }
+
+                let postTypeObject = {
+                    pickems: "Elimination Bracket - Pickems",
+                    ranking: "Team Rankings",
+                    rankingVote: "Community Rankings",
+                    score: "Scoreboard",
+                    scoreVotable: "1v1 Head-to-Head Battle"
+                }
 
                 switch (message.type) {
                     case 'addImage':
@@ -446,7 +459,7 @@ Devvit.addCustomPostType({
                     case 'setPostData':
                         // Post the app with the new data
                         const newPost = await context.reddit.submitPost({
-                            title: 'fanverse',
+                            title: postTypeObject[message?.data?.allPostData?.postType || 'pickems'],
                             subredditName: await (await context.reddit.getCurrentSubreddit()).name,
                             preview: (
                             <vstack height="100%" width="100%" alignment="middle center">
@@ -632,40 +645,110 @@ Devvit.addCustomPostType({
             //             <button onPress={() => mount()}>Launch App</button>
             //         </vstack>
             // </zstack>
+            // 
 
             <zstack width="100%" height="100%" alignment="center middle">
-                <image 
-                imageWidth={1000} 
-                imageHeight={1000} 
-                width="100%" 
-                height="100%" 
-                url={`data:image/svg+xml,
-                    <svg width="100%" height="100%" viewBox="0 0 947 681" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0.601562" y="0.09375" width="946.184" height="680.812" fill="#0B0B0B"/>
-                        <rect x="0.601562" y="0.09375" width="946.184" height="680.812" fill="url(#paint0_linear_2807_828)"/>
-                        <defs>
-                        <linearGradient id="paint0_linear_2807_828" x1="473.693" y1="427.932" x2="473.693" y2="680.906" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#411400" stop-opacity="0"/>
-                        <stop offset="1" stop-color="#411400" stop-opacity="0.43"/>
-                        </linearGradient>
-                        </defs>
-                    </svg>
-                `}
-                />
-                <vstack grow alignment="middle center">
-                <image 
-                    url="intro.png" 
-                    // Adjust image size based on device
-                    imageWidth={isMobile ? 200 : 350} 
-                    imageHeight={isMobile ? 650 : 250} 
-                    description="Introduction image" 
-                />
+               
+               
+                <zstack width="100%" height="100%"> 
+                    <image 
+                        imageWidth={491} 
+                        imageHeight={690} 
+                        width="100%" 
+                        height="100%" 
+                        resizeMode="cover"
+                        url={`data:image/svg+xml,
+                            <svg width="100%" height="100%" viewBox="0 0 947 682" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="0.136719" y="0.34375" width="946.184" height="680.812" fill="#0B0B0B"/>
+                                <rect x="0.136719" y="0.34375" width="946.184" height="680.812" fill="url(#paint0_linear_2807_828)"/>
+                                <defs>
+                                <linearGradient id="paint0_linear_2807_828" x1="473.229" y1="428.182" x2="473.229" y2="681.156" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#411400" stop-opacity="0"/>
+                                <stop offset="1" stop-color="#411400" stop-opacity="0.43"/>
+                                </linearGradient>
+                                </defs>
+                            </svg>
+
+                        `}
+                    />
+                </zstack>
+               
+               {postData?.BackgroundImageUrl && 
+        
+                    <zstack width="100%" height="100%"> 
+                        <image 
+                            imageWidth={491} 
+                            imageHeight={690} 
+                            width="100%" 
+                            height="100%" 
+                            resizeMode="cover"
+                            url={postData?.BackgroundImageUrl}
+                        />
+                        <image 
+                            imageWidth={491} 
+                            imageHeight={690} 
+                            width="100%" 
+                            height="100%" 
+                            resizeMode="cover"
+                            url="blur.png" 
+                        />
+                        <hstack 
+                            backgroundColor="#000000b8" 
+                            width="100%" 
+                            height="100%" 
+                        />
+                    </zstack>
+
+                }
+
+
+
+
+
+                <vstack gap="medium" grow alignment="middle center">
+                {!postData ? 
+                    <image 
+                        url="intro.png" 
+                        // Adjust image size based on device
+                        imageWidth={350} 
+                        imageHeight={200} 
+                        description="Introduction image" 
+                    />
+                    :
+                    <image 
+                        url="intro.png"
+                        // Adjust image size based on device
+                        imageWidth={350} 
+                        imageHeight={100} 
+                        description="Introduction image" 
+                    />
+
+                }
+                
+
+                {postData && 
+                    <vstack gap="large">
+                        <spacer />
+                        <hstack gap="large" alignment="center middle">
+                            <image
+                                url={postData.logo}
+                                imageWidth={60}
+                                imageHeight={60}
+                                description="Post image"
+                            />
+                            <vstack alignment="start center">
+                                <text color='#fff' size="xlarge" weight="bold">{postData.title}</text>
+                                <text color='#fff' size="medium">{postData.subTitle}</text>
+                            </vstack>
+                        </hstack>
+                    </vstack>
+                }
                 <spacer />
                 <button 
                     onPress={() => mount()} 
-                    appearance={isMobile ? "primary" : "bordered"} 
+                    appearance="bordered"
                 >
-                    {isMobile ? "Start" : "Launch App"}
+                    {postData ? "View" : "Launch"}
                 </button>
                 </vstack>
             </zstack>

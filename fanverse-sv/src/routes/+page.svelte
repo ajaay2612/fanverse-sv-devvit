@@ -74,6 +74,7 @@
                
                 if(postType === "rankingVote"){
                     console.log("rankingVote")
+                    $CurrentFrame = "ranking" 
                     $DropDownDataRanking = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
                     $PostDataRanking = {...message?.data?.parsedGameData?.allPostData?.postdata}
                     $General.mode = "vote"  
@@ -102,6 +103,8 @@
                 }
                 if(postType === 'scoreVotable'){
                     console.log("scoreVotable")
+                    $CurrentFrame = "score" 
+
                     $DropDownDataScore = [...message?.data?.parsedGameData?.allPostData?.dropDownData];                    
                     $PostDataScore = {...message?.data?.parsedGameData?.allPostData?.postdata}
                     $VoteDataScore = message?.data?.parsedGameData?.allPostData[`${$General.userName}`] || $VoteDataScore

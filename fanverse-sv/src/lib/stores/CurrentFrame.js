@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
 
-const CurrentFrame = writable("score");
+const CurrentFrame = writable("home");
 
 export default CurrentFrame;

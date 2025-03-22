@@ -7,13 +7,13 @@ Devvit.configure({
 
 // Adds a new menu item to the subreddit allowing to create a new post
 Devvit.addMenuItem({
-  label: 'Create New Devvit Post (with Web View)',
+  label: 'Create New Fanverse App',
   location: 'subreddit',
   onPress: async (_event, context) => {
     const { reddit, ui } = context;
     const subreddit = await reddit.getCurrentSubreddit();
     const post = await reddit.submitPost({
-      title: 'Web View Example',
+      title: 'Fanverse: Where Fans Unite',
       subredditName: subreddit.name,
       // The preview appears while the post loads
       preview: (
