@@ -415,7 +415,7 @@ body {
 .userAnswerFalse::before,
 .userAnswerRight::before {
     content: '';
-    @apply absolute -right-[0.9em] top-1/2 -translate-y-1/2 size-[1.5em]  bg-contain bg-no-repeat bg-center;
+    @apply absolute right-[0.3em] top-[0.3em] size-[1.1em]  bg-contain bg-no-repeat bg-center;
     
     background-image: url("/images/pickems/right.svg");
 }

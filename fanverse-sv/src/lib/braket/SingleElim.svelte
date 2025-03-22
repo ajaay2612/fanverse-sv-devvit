@@ -299,7 +299,6 @@
                                 <!-- class:rightLoserTeam={true} -->
                                 <button 
                                 class:championBox={roundIndex == rounds - 1 && matchIndex == 0}
-                                class:rightWinnerTeam={afterVoteUi && afterVoteUi.length > 0 ?  afterVoteUi[roundIndex][matchIndex] : false}
                                 
        
                                 

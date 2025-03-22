@@ -178,25 +178,48 @@
     $: if(brackets){
         $VoteDataMulti.bracketDataLeft = brackets
     }
+    // Store previous value for comparison
+    // let previousBrackets = null;
 
+    // // Function to perform deep comparison
+    // function hasBracketsChanged(newBrackets, oldBrackets) {
+    //     if (!newBrackets || !oldBrackets) return true;
+    //     return JSON.stringify(newBrackets) !== JSON.stringify(oldBrackets);
+    // }
 
+    // // Modified reactive statement that only updates when brackets actually change
+    // $: {
+    //     if (brackets && hasBracketsChanged(brackets, previousBrackets)) {
+    //         // Update the store with a deep copy
+    //         $VoteDataMulti.bracketDataLeft = JSON.parse(JSON.stringify(brackets));
+    //         // Update previous brackets for next comparison
+    //         previousBrackets = JSON.parse(JSON.stringify(brackets));
+    //     }
+    // }
+
+    
     // $:console.log(JSON.stringify(brackets))
     
+    let prevVoteDataMultiLeft = null
+
     $:if($VoteDataMulti.bracketDataLeft && $General.mode == "afterVote"){
-        let isNull = false
+        if(prevVoteDataMultiLeft != JSON.stringify($VoteDataMulti.bracketDataLeft)){
+            
+            let isNull = false
 
-        for(let i = 0; i < $VoteDataMulti.bracketDataLeft[0].length; i++){
-            if($VoteDataMulti.bracketDataLeft[0][i].team == null || $VoteDataMulti.bracketDataLeft[0][i].team == undefined){
-                isNull = true
+            for(let i = 0; i < $VoteDataMulti.bracketDataLeft[0].length; i++){
+                if($VoteDataMulti.bracketDataLeft[0][i].team == null || $VoteDataMulti.bracketDataLeft[0][i].team == undefined){
+                    isNull = true
+                }
             }
+
+            if(!isNull){
+                brackets = $VoteDataMulti.bracketDataLeft
+            }
+
+            prevVoteDataMultiLeft = JSON.stringify($VoteDataMulti.bracketDataLeft)
+            // console.table($VoteDataMulti)
         }
-
-        if(!isNull){
-            brackets = $VoteDataMulti.bracketDataLeft
-        }
-
-        console.table($VoteDataMulti)
-
     }
 
     $: isAFterVote = $General.mode == "afterVote"
@@ -273,16 +296,16 @@
 
   
 
-    $: if(mounted && $General.mode == "afterVote" && allRightBrackets && allRightBrackets.length > 0 && brackets && brackets.length > 0){
+    $: if($General.mode == "afterVote" && allRightBrackets && allRightBrackets.length > 0 && brackets && brackets.length > 0){
         
-        console.table(afterVoteUi)
+        console.log(afterVoteUi)
 
         afterVoteUi = calculateMatchingPoints(brackets, allRightBrackets)
 
         afterVoteUiUser = calculateMatchingPointsForUser(brackets, allRightBrackets)
 
 
-        console.table(afterVoteUi)
+        console.log(afterVoteUi)
     }
 </script>
 
@@ -294,7 +317,7 @@
             {#each round as match, matchIndex }
                 <div class="odd:mt-2em relative">
                     <button 
-                    class:rightWinnerTeam={afterVoteUi && afterVoteUi.length > 0 ?  afterVoteUi[roundIndex][matchIndex] : false}
+                    
 
                     class:winnerTeam={roundIndex == brackets.length-1 ? leftWon : brackets[roundIndex][matchIndex].won}
                     class:loserTeam={roundIndex == brackets.length-1 ? !leftWon && leftWon != null : !brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}

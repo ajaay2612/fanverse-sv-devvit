@@ -142,7 +142,7 @@
                         <button
                             class:rightWinnerTeam={isAFterVote && champion == $General?.finalChampion?.champion }
 
-                            class="{isAFterVote && champion == $General?.finalChampion?.champion ? "userAnswerRight" : "userAnswerWrong" } relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full  championBox  cursor-pointer"
+                            class="{isAFterVote && champion == $General?.finalChampion?.champion ? "userAnswerRight" : "userAnswerFalse" } relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full  championBox  cursor-pointer"
                         >
                             <div
                                 class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]"
