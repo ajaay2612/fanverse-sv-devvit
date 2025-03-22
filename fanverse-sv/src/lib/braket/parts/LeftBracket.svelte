@@ -286,6 +286,8 @@
             }
         }
 
+        userArray[userArray.length-1][0] = userBrackets[userBrackets.length-1][0].team == $General?.finalChampion?.champion ?  true : false
+
         return userArray;
     }
 
@@ -305,6 +307,8 @@
         afterVoteUiUser = calculateMatchingPointsForUser(brackets, allRightBrackets)
 
 
+        console.log(allRightBrackets)
+        
         console.log(afterVoteUi)
     }
 </script>

@@ -263,6 +263,11 @@
             }
         }
 
+        console.table("checking")
+
+        userArray[userArray.length-1][0] = userBrackets[userBrackets.length-1][0].team == $General?.finalChampion?.champion ?  true : false
+
+
         return userArray;
     }
 

@@ -730,13 +730,13 @@ Devvit.addCustomPostType({
                     <vstack gap="large">
                         <spacer />
                         <hstack gap="large" alignment="center middle">
-                            <image
+                            {postData?.logo && postData.logo != "/images/pickems/logo.svg" && <image
                                 url={postData.logo}
                                 imageWidth={60}
                                 imageHeight={60}
                                 description="Post image"
-                            />
-                            <vstack alignment="start center">
+                            />}
+                            <vstack alignment={postData?.logo && postData.logo != "/images/pickems/logo.svg" && "start center" || "center center"}>
                                 <text color='#fff' size="xlarge" weight="bold">{postData.title}</text>
                                 <text color='#fff' size="medium">{postData.subTitle}</text>
                             </vstack>
