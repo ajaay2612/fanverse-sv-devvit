@@ -53,7 +53,7 @@
 </script>
 
 <div class="   text-[0.9em] xsm:text-[1em] pointer-events-none  z-[10] fixed p-[1.2em] h-screen w-full ">
-    <div class=" {$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "text-[black]":""} flex flex-row-reverse justify-start w-full gap-[1em]">
+    <div class=" {$DropDownDataScore[0]?.active  == 0 && !$PostDataScore.BackgroundImageUrl ? "text-[black]":""} flex flex-col xsm:flex-row-reverse items-end xsm:justify-start w-full gap-[1em]">
         
         {#if $General.mode === "vote" && $DropDownDataScore[0]?.active == 0}
             {#if postData.isCreator}

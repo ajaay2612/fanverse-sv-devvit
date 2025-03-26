@@ -68,7 +68,7 @@
     <!-- title -->
     <div 
     style="border-width:{$DropDownData[2].active == 0 ? "" : "0"}; padding-bottom:{$DropDownData[2].active == 0 ? "" : "0"}"
-    class="border-b py-2em xsm:py-1em border-pickem-border-bottom">
+    class="border-b py-2em xsm:py-1em border-pickem-border-bottom ">
         
          <TitleEditor/>
     </div>

@@ -5,6 +5,7 @@
     import VoteDataMulti from "$lib/stores/VoteDataMulti";
     import General from "$lib/stores/General";
     import { mount, onMount } from "svelte";
+    import { fade, scale } from "svelte/transition";
     // $: console.log("$PostDataMulti.canPost ", $PostDataMulti.canPost);
     export let noOfTeam;
 
@@ -112,10 +113,24 @@
 
     $: isAFterVote = $General.mode == "afterVote"
 
+    let containerRef;
+
+    let showTiles = false
+
+    onMount(()=>{
+        setTimeout(() => {
+            showTiles = true
+        }, 100);
+    })
+
+
 </script>
 
-<div class="w-full h-full text-[2.5em] xsm:text-[1em] lg:text-[1.1em]">
+<div 
+
+class="w-full h-full text-[2.5em] xsm:text-[1em] lg:text-[1.1em]">
     <div
+    bind:this={containerRef}
         class="{noOfTeam == 4
             ? 'text-[1.2em]'
             : ''} overflow-auto px-2em py-2em w-full h-full"
@@ -139,30 +154,36 @@
 
                 <div class={noOfTeam == 4 ? "" : ""}>
                     <div class="text-[0.65em] relative mx-auto w-[14em]">
-                        <button
-                            class:rightWinnerTeam={isAFterVote && champion == $General?.finalChampion?.champion }
+                        {#if showTiles}
+                            <button
+                                in:fade={{delay:900, duration: 500}}
 
-                            class="{isAFterVote ? ($General?.finalChampion?.champion && champion) ? champion == $General?.finalChampion?.champion ? "userAnswerRight" : "userAnswerFalse" :"" : ""} relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full  championBox  cursor-pointer"
-                        >
-                            <div
-                                class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]"
+                                class:champActive={champion || $General?.finalChampion?.champion }
+
+                                class:rightWinnerTeam={isAFterVote && champion == $General?.finalChampion?.champion }
+    
+                                class="{isAFterVote ? ($General?.finalChampion?.champion && champion) ? champion == $General?.finalChampion?.champion ? "userAnswerRight" : "userAnswerFalse" :"" : ""} championBox relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center text-[1.25em] font-bold w-full    cursor-pointer"
                             >
-                                {#if championImage}
-                                    <div
-                                        class="rounded-[0.4em] overflow-hidden h-full aspect-square shrink-0"
-                                    >
-                                        <img
-                                            class="w-full h-full object-cover"
-                                            src={championImage}
-                                            alt=""
-                                        />
-                                    </div>
-                                {/if}
-                                <p class="text-center grow">
-                                    {champion || "..."}
-                                </p>
-                            </div>
-                        </button>
+                                <div
+                                    class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]"
+                                >
+                                    {#if championImage}
+                                        <div
+                                            class="rounded-[0.4em] overflow-hidden h-full aspect-square shrink-0"
+                                        >
+                                            <img
+                                                class="w-full h-full object-cover"
+                                                src={championImage}
+                                                alt=""
+                                            />
+                                        </div>
+                                    {/if}
+                                    <p class="text-center grow">
+                                        {champion || "..."}
+                                    </p>
+                                </div>
+                            </button>
+                        {/if}
 
                         <!-- <div
                             class="w-[1px] h-[10.2em] absolute left-1/2 top-full -translate-x-1/2 bg-pickem-title"
@@ -170,12 +191,16 @@
                         <div
                             class="w-[1px] h-[10.2em] absolute left-1/2 bottom-full -translate-x-1/2 bg-pickem-title"
                         ></div> -->
-                        <div
-                            class="w-[9.3em] h-[1px] absolute left-full top-1/2 -translate-y-1/2 bg-pickem-title"
-                        ></div>
-                        <div
-                            class="w-[9.3em] h-[1px] absolute right-full bottom-1/2 -translate-y-1/2 bg-pickem-title"
-                        ></div>
+                        {#if showTiles}
+                            <div
+                            in:fade={{delay:400, duration: 500}}
+                                class="w-[9.3em] h-[1px] absolute left-full top-1/2 -translate-y-1/2 bg-pickem-title"
+                            ></div>
+                            <div
+                            in:fade={{delay:400, duration: 500}}
+                                class="w-[9.3em] h-[1px] absolute right-full bottom-1/2 -translate-y-1/2 bg-pickem-title"
+                            ></div>
+                        {/if}
                     </div>
                 </div>
 

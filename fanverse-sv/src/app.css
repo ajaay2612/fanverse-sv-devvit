@@ -369,11 +369,7 @@ body {
 
 
 
-/* Thin scrollbar for Chrome, Safari, and newer Edge */
-.thin-scrollbar {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-}
+
 
 .hide-scrollbar::-webkit-scrollbar {
     display: none;  /* Chrome, Safari and Opera */
@@ -397,16 +393,26 @@ body {
 
 /* image 603 */
 
-.championBox{
-    @apply border-pickem-box-champ border-[0.25em] relative;
+.championBox {
+    @apply  relative;
+}
+
+.championBox.champActive{
+    @apply border-pickem-box-champ border-[0.25em];
 }
 
 .championBox::after {
     content: '';
-    @apply absolute -top-[2.5em] left-1/2 -translate-x-1/2 w-[2em] h-[2em] bg-contain bg-no-repeat bg-center;
+    @apply absolute -top-[3em] left-1/2 -translate-x-1/2 w-[2em] h-[2em] bg-contain bg-no-repeat bg-center;
     background-image: url("/images/pickems/crown.svg");
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
 }
 
+.championBox.champActive::after {
+    opacity: 1;
+    @apply -top-[2.5em];
+}
 
 .userAnswerFalse,
 .userAnswerRight{
@@ -457,6 +463,10 @@ body {
     background: #555; /* Darker grey when hovered */
 }
 
-
+/* Thin scrollbar for Chrome, Safari, and newer Edge */
+.thin-scrollbar {
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
 
 /* button */

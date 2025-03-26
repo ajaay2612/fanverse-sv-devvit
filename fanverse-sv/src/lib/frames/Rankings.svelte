@@ -47,8 +47,8 @@
     {#if $DropDownDataRanking[0]?.active  == 1}
         <div 
         class="font-bigShoulders py-2em xsm:py-1em ">
-            <div class="absolute top-0 right-0 h-[3.9em] w-[calc(100%-3.9em)] bg-ranking-blocks"></div>
-            <div class="absolute bottom-0 left-0 w-[3.9em] h-[calc(100%-3.9em)] bg-ranking-blocks"></div>
+            <div class=" absolute top-0 right-0 h-[7.2em] xsm:h-[3.9em] w-full xsm:w-[calc(100%-3.9em)] bg-ranking-blocks"></div>
+            <div class="hidden xsm:block absolute bottom-0 left-0 w-[3.9em] h-[calc(100%-3.9em)] bg-ranking-blocks"></div>
                
             <TitleEditorRanking/>
         </div>

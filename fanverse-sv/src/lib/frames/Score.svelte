@@ -17,7 +17,7 @@
     
     {#if $DropDownDataScore[0]?.active == 0}
         <!-- title -->
-        <div class="relative w-[70%]">
+        <div class="relative w-[80%] xsm:w-[75%]">
             {#key $DropDownDataScore[1]?.active}
                 <div transition:fade class="absolute left-0 top-0 w-full h-full scoreBackgroundBlocks"></div>
             {/key}
@@ -25,7 +25,7 @@
             <div 
             class="p-2em py-1em ">
             
-                <div class="text-[1.2em]"><TitleEditorScore/></div>
+                <div class="xsm:text-[1.2em]"><TitleEditorScore/></div>
             </div>
         </div>
     

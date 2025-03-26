@@ -1,10 +1,11 @@
 <script>
-    import { fade, scale } from 'svelte/transition';
+    import { fade, fly, scale } from 'svelte/transition';
     import { cubicOut } from 'svelte/easing';
     import BoxButton from './BoxButton.svelte';
     import General from '$lib/stores/General';
     import DropDownDataRanking from '$lib/stores/DropDownDataRanking';
     import PostDataRanking from '$lib/stores/PostDataRanking';
+    import { onMount } from 'svelte';
 
     $: postData = PostDataRanking;
     
@@ -86,6 +87,14 @@
     };
 
     let dropDownElement = null
+
+    let showTiles = false
+    onMount(()=>{
+        setTimeout(() => {
+            showTiles = true
+        }, 100);
+    })
+
 </script>
 <svelte:window 
 on:message={handleMessage}
@@ -93,15 +102,21 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showTitleEdit = false:''
 
 <div bind:this={dropDownElement} class="z-[10] relative w-fit flex justify-center items-center mx-auto">
     <button on:click={$General.mode == "create" ? toggleTitleEdit:""} class="text-[1.2em] xsm:text-[0.7em] lg:text-[0.62em] w-fit mx-auto  relative  ">
-        <div class="flex justify-center items-center gap-[1.1em]">
+        <div class="noTransition transition-[height] {showTiles ? "h-3em" : "h-1em"} duration-1000 flex justify-center items-center gap-[1.1em]">
             {#if $postData.logo}
-                <div class="w-[2.8em]">
-                    <img class="w-full h-full" src={$postData.logo} alt="">
-                </div>
+                {#if showTiles}
+                    <div in:scale={{start:0.5, duration:800}} class="w-[2.8em]">
+                        <img class="w-full h-full" src={$postData.logo} alt="">
+                    </div>
+                {/if}
             {/if}
             <div class="">
-                <p class=" text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[1.8em]" } font-bold leading-[1em]  text-pickem-title text-[1.2em]">{$postData.title}</p>
-                <p class="text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[0.81em]" }  font-bold text-[0.55em]">{$postData.subTitle}</p>
+                {#if showTiles}
+                    <p in:fly={{y:5, delay:300}} class=" text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[1.8em]" } font-bold leading-[1em]  text-pickem-title text-[1.2em]">{$postData.title}</p>
+                {/if}
+                {#if showTiles}
+                    <p in:fly={{y:5, delay:500}} class="text-center {$DropDownDataRanking[0]?.active  == 0 ? "font-inter ":"font-bigShoulders text-[0.81em]" }  font-bold text-[0.7em]">{$postData.subTitle}</p>
+                {/if}
             </div>
         </div>
         {#if $General.mode == "create"}

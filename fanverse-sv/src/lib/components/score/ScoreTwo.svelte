@@ -4,6 +4,7 @@
     import TeamPickerDataScore from "$lib/stores/TeamPickerDataScore";
     import VoteDataScore from "$lib/stores/VoteDataScore";
     import { mount, onMount } from "svelte";
+    import { fly, scale } from "svelte/transition";
 
     $: postData = PostDataScore;
     $: voteData = VoteDataScore;
@@ -67,35 +68,69 @@
         }, '*');
     }
 
+    let showTiles = false
+    onMount(()=>{
+        setTimeout(() => {
+            showTiles = true
+        }, 100);
+    })
+
 
 </script>
 
 <!-- <div class=" overflow-hidden"> -->
     
     <div 
-        style="clip-path: polygon(0px 100%, 67% 100%, 100% 0%, 0 0)"
-        class="overflow-hidden brightness-[0.5]  absolute w-[60%] h-full top-0 left-0">
+        class="xsm:hidden  overflow-hidden brightness-[0.5]  absolute w-full h-[50%] top-0 left-0">
         {#if $postData?.allLoadedData[0]?.teamImage}
-            <img class="w-full h-full object-cover" src={$postData.allLoadedData[0].teamImage} alt="">
+            {#if showTiles}
+                <img in:fly={{y:40}} class="w-full h-full object-cover object-top" src={$postData.allLoadedData[0].teamImage} alt="">
+            {/if}
+        {/if}
+    </div>
+
+    <div
+        class="xsm:hidden  overflow-hidden brightness-[0.5]   absolute w-full h-[50%] bottom-0 right-0">
+        {#if $postData?.allLoadedData[1]?.teamImage}
+            {#if showTiles}
+                <img in:fly={{y:-40, delay:150}} class="w-full h-full object-cover object-top" src={$postData.allLoadedData[1].teamImage} alt="">
+            {/if}
+        {/if}
+    </div>
+    <div 
+        style="clip-path: polygon(0px 100%, 67% 100%, 100% 0%, 0 0)"
+        class="hidden xsm:block overflow-hidden brightness-[0.5]  absolute w-[60%] h-full top-0 left-0">
+        {#if $postData?.allLoadedData[0]?.teamImage}
+            {#if showTiles}
+                <img in:fly={{x:40}} class="w-full h-full object-cover" src={$postData.allLoadedData[0].teamImage} alt="">
+            {/if}
         {/if}
     </div>
 
     <div
         style="clip-path: polygon(100% 0px, 100% 100%, 0% 100%, 33% 0%)"
-        class="overflow-hidden brightness-[0.5]   absolute w-[60%] h-full top-0 right-0">
+        class="hidden xsm:block overflow-hidden brightness-[0.5]   absolute w-[60%] h-full top-0 right-0">
         {#if $postData?.allLoadedData[1]?.teamImage}
-            <img class="w-full h-full object-cover" src={$postData.allLoadedData[1].teamImage} alt="">
+            {#if showTiles}
+                <img in:fly={{x:-40, delay:150}} class="w-full h-full object-cover" src={$postData.allLoadedData[1].teamImage} alt="">
+            {/if}
         {/if}
     </div>
-    <p class="bg-white aspect-square size-[3em] flex justify-center items-center text-black rounded-full font-bold text-[3.8em] absolute top-[50%] left-1/2 -translate-1/2">
-        VS
-    </p>
+
+
+    {#if showTiles}
+        <p 
+        in:scale={{delay:200, duration:350}}
+        class="bg-badge aspect-square size-[3em] flex justify-center items-center text-black rounded-full font-bold text-[3.8em] absolute top-[50%] left-1/2 -translate-1/2">
+            VS
+        </p>
+    {/if}
 <!-- </div> -->
 
 <button
     class="px-[1.5em] w-full uppercase h-full justify-between relative text-center flex text-[1.25em] "
 >
-    <div class="w-[80%] mx-auto flex justify-center items-center gap-[20em] lg:gap-[25em]">
+    <div class="w-[100%] mx-auto flex flex-col xsm:flex-row justify-center items-center gap-[20em] xsm:gap-[10em] lg:gap-[25em]">
 
        
         {#each $postData.allLoadedData as team, i}
@@ -159,36 +194,42 @@
                     {/if}
                 </div>
             {:else}
-                <div    
-                    class="flex flex-col h-auto w-full gap-[1.8em] items-center p-[0.4em] px-[0.4em]"
-                >
-                    <!-- {#if team.teamImage}
-                        <div
-                            class="rounded-[0.4em] overflow-hidden w-[11em] aspect-square shrink-0"
-                        >
-                            <img
-                                class="w-full h-full object-cover"
-                                src={team.teamImage}
-                                alt=""
-                            />
+                {#if showTiles}
+                    <div    
+                    in:fly={{y:-40, delay:550+(i*100)}}
+                        class="flex flex-col h-auto w-full gap-[1.8em] items-center p-[0.4em] px-[0.4em]"
+                    >
+                        <!-- {#if team.teamImage}
+                            <div
+                                class="rounded-[0.4em] overflow-hidden w-[11em] aspect-square shrink-0"
+                            >
+                                <img
+                                    class="w-full h-full object-cover"
+                                    src={team.teamImage}
+                                    alt=""
+                                />
+                            </div>
+                        {/if} -->
+                        <div class="space-y-[0.45em]">
+                            <p class="text-center font-bold text-[2.1em] grow">
+                                {team.teamName}
+                            </p>
+    
+                            <!-- svelte-ignore a11y_click_events_have_key_events -->
+                            <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+                            <div class="w-full  flex">
+                                <!-- svelte-ignore a11y_no_static_element_interactions -->
+                                <div on:click={()=> handleVote(i)} class=" {$General.mode == "afterVote" ? "bg-white text-black":""} hover:text-black hover:bg-white text-[1.8em] xsm:text-[1.1em] mx-auto capitalize border rounded-full py-[0.25em] min-w-7em px-[1em] whitespace-nowrap font-semibold text-center ">
+                                    {#if $General.mode == "vote"}
+                                        vote
+                                    {:else}
+                                        <div in:fly={{y:20}} class="flex justify-center items-center">{$PostDataScore.finalVoteArray[i] || 0} <div in:fly={{y:20, delay:100}} class="ml-[0.5em] text-[0.8em]">votes</div></div>
+                                    {/if}
+                                </div>
+                            </div>
                         </div>
-                    {/if} -->
-                    <div class="space-y-[0.45em]">
-                        <p class="text-center font-bold text-[2.1em] grow">
-                            {team.teamName}
-                        </p>
-
-                        <!-- svelte-ignore a11y_click_events_have_key_events -->
-                        <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-                        <p on:click={()=> handleVote(i)} class=" {$General.mode == "afterVote" ? "bg-white text-black":""} text-[1.1em] mx-auto capitalize border rounded-full py-[0.25em] min-w-7em px-[1em] whitespace-nowrap font-semibold text-center ">
-                            {#if $General.mode == "vote"}
-                                vote
-                            {:else}
-                                {$PostDataScore.finalVoteArray[i] || 0} <span class="ml-[0.5em] text-[0.8em]">votes</span>
-                            {/if}
-                        </p>
                     </div>
-                </div>
+                {/if}
             {/if}
         {/each}
     </div>

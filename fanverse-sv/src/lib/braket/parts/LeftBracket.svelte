@@ -10,6 +10,7 @@
     export let leftWon=null, champion=null, rightWon=null, championImage=null;
     export let noOfTeam = 4;
     import { createEventDispatcher } from "svelte";
+    import { fade, fly } from 'svelte/transition';
     const dispatch = createEventDispatcher();
 
     let rounds = Math.log2(noOfTeam) + 1
@@ -311,6 +312,13 @@
         
         console.log(afterVoteUi)
     }
+
+    let showTiles = false
+    onMount(()=>{
+        setTimeout(() => {
+            showTiles = true
+        }, 100);
+    })
 </script>
 
 
@@ -320,57 +328,66 @@
         <div class="flex flex-col justify-center h-full w-[14em]">
             {#each round as match, matchIndex }
                 <div class="odd:mt-2em relative">
-                    <button 
-                    
+                    {#if showTiles}
+                        <button 
+                        in:fly={{x:-50,delay:500+(100 * (roundIndex+1)), duration: 500}}
 
-                    class:winnerTeam={roundIndex == brackets.length-1 ? leftWon : brackets[roundIndex][matchIndex].won}
-                    class:loserTeam={roundIndex == brackets.length-1 ? !leftWon && leftWon != null : !brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
-                    on:click={() =>  handleAdvancement(roundIndex,matchIndex) }
-                    class="
-                    {afterVoteUiUser && afterVoteUiUser.length > 0 ?  afterVoteUiUser[roundIndex][matchIndex] == true ? "userAnswerRight": afterVoteUiUser[roundIndex][matchIndex] == false ? "userAnswerFalse" : "": ""}
-                    relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
-                        {#if $General.mode == "create" && roundIndex == 0}
-                            {#if showTeamName(roundIndex, matchIndex) == null}
-                                <div class="w-[1.45em]">
-                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.511719 11.6797H23.7734" stroke="#fff" stroke-width="3"/>
-                                        <path d="M12.1406 23.3125L12.1406 0.0507812" stroke="#fff" stroke-width="3"/>
-                                    </svg>
-                                </div>       
+    
+                        class:winnerTeam={roundIndex == brackets.length-1 ? leftWon : brackets[roundIndex][matchIndex].won}
+                        class:loserTeam={roundIndex == brackets.length-1 ? !leftWon && leftWon != null : !brackets[roundIndex][matchIndex].won && brackets[roundIndex][matchIndex].won != null}
+                        on:click={() =>  handleAdvancement(roundIndex,matchIndex) }
+                        class="
+                        {afterVoteUiUser && afterVoteUiUser.length > 0 ?  afterVoteUiUser[roundIndex][matchIndex] == true ? "userAnswerRight": afterVoteUiUser[roundIndex][matchIndex] == false ? "userAnswerFalse" : "": ""}
+                        relative text-center bg-pickem-box aspect-[5.8/2] flex justify-center  text-[1.25em] font-bold w-full border-l-[0.25em] border-pickem-title cursor-pointer">
+                            {#if $General.mode == "create" && roundIndex == 0}
+                                {#if showTeamName(roundIndex, matchIndex) == null}
+                                    <div class="w-[1.45em]">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M0.511719 11.6797H23.7734" stroke="#fff" stroke-width="3"/>
+                                            <path d="M12.1406 23.3125L12.1406 0.0507812" stroke="#fff" stroke-width="3"/>
+                                        </svg>
+                                    </div>       
+                                {:else}
+                                    <div class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]">
+                                        {#if teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]}
+                                            <div class="rounded-[0.4em] overflow-hidden h-full aspect-square shrink-0"><img class="w-full h-full object-cover" src={teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]} alt=""></div>
+                                        {/if}      
+                                        <p class="text-center grow">{showTeamName(roundIndex, matchIndex)}</p>
+                                    </div>
+                                {/if}                        
                             {:else}
                                 <div class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]">
                                     {#if teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]}
                                         <div class="rounded-[0.4em] overflow-hidden h-full aspect-square shrink-0"><img class="w-full h-full object-cover" src={teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]} alt=""></div>
-                                    {/if}      
-                                    <p class="text-center grow">{showTeamName(roundIndex, matchIndex)}</p>
-                                </div>
-                            {/if}                        
-                        {:else}
-                            <div class="flex h-auto w-full justify-between items-center p-[0.3em] px-[0.4em]">
-                                {#if teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]}
-                                    <div class="rounded-[0.4em] overflow-hidden h-full aspect-square shrink-0"><img class="w-full h-full object-cover" src={teamDataImagefinder[`${showTeamName(roundIndex, matchIndex)}`]} alt=""></div>
-                                {/if}
-                                <p class="text-center grow">{showTeamName(roundIndex, matchIndex) || '...' }</p>
-                            </div>    
-                        {/if}
-                    </button>
-                    <div class:hidden={matchIndex % 2 != 0 || roundIndex == rounds - 1 } class="relative leading-0 py-[0.5em] text-center text-[#666]">
-                        <p class="text-[1.1em] ">vs</p>
-                        
-                        <div class="left-full absolute {roundIndex == rounds - 2  ? "w-8em" : "w-4em"} h-[1px] bg-pickem-title">                                
+                                    {/if}
+                                    <p class="text-center grow">{showTeamName(roundIndex, matchIndex) || '...' }</p>
+                                </div>    
+                            {/if}
+                        </button>
+                    {/if}
+                    {#if showTiles}
+                        <div 
+                        in:fade={{delay:900, duration: 500}}
+                        class:hidden={matchIndex % 2 != 0 || roundIndex == rounds - 1 } class="relative leading-0 py-[0.5em] text-center text-[#666]">
+                            <p class="text-[1.1em] ">vs</p>
+                            
+                            <div class="left-full absolute {roundIndex == rounds - 2  ? "w-8em" : "w-4em"} h-[1px] bg-pickem-title">                                
+                            </div>
+                            
+                            <div
+                                class:hidden={roundIndex == 0}
+                                class="right-full absolute w-4em h-[1px] bg-pickem-title">
+                            </div>
+                            
+                            
                         </div>
-                        
                         <div
-                            class:hidden={roundIndex == 0}
-                            class="right-full absolute w-4em h-[1px] bg-pickem-title">
+                            in:fade={{delay:900, duration: 500}}
+
+                            class:hidden={roundIndex > rounds - 3 || matchIndex % 4 != 0}
+                            class="left-[calc(100%+4em-1px)] top-[calc(100%-3px)] absolute w-[1px] h-[12.7em] bg-pickem-title">
                         </div>
-                        
-                        
-                    </div>
-                    <div
-                        class:hidden={roundIndex > rounds - 3 || matchIndex % 4 != 0}
-                        class="left-[calc(100%+4em-1px)] top-[calc(100%-3px)] absolute w-[1px] h-[12.7em] bg-pickem-title">
-                    </div>
+                    {/if}
                 </div>
             {/each}
         </div>
