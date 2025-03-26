@@ -9,14 +9,14 @@
     }
 
 </script>
-
-<button on:click={navigate} class="block cursor-pointer relative w-[7.5em]">
+<!-- noTransition group-hover:-translate-y-[30%]  -->
+<button on:click={navigate} class="group block cursor-pointer relative w-[7.5em]">
     {#if type == 2}
-        <div class="w-[calc(100%+10px)] absolute -top-[5px]  left-[calc(50%-0.05px)] -translate-x-1/2">
-            <div class="w-full h-[0.8em] border-1 border-b-0"></div>     
+        <div class=" w-[calc(100%+10px)] absolute -top-[5px]  left-[calc(50%-0.05px)] -translate-x-1/2">
+            <div class="transition-all w-full h-[0.8em] border-1 border-b-0"></div>     
         </div>
-        <div class="w-[calc(100%+10px)] absolute -bottom-[5px]  left-[calc(50%-0.05px)] -translate-x-1/2">
-            <div class="w-full h-[0.8em] border-1 border-t-0"></div>     
+        <div class=" w-[calc(100%+10px)] absolute -bottom-[5px]  left-[calc(50%-0.05px)] -translate-x-1/2">
+            <div class=" transition-all w-full h-[0.8em] border-1 border-t-0"></div>     
         </div>
     {:else}
         <div class="w-[3.3em] absolute top-[-0.32em] left-1/2 -translate-x-1/2">

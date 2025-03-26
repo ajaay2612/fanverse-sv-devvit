@@ -4,7 +4,7 @@
     import TitleEditorScore from '$lib/components/TitleEditorScore.svelte';
     import { fade } from 'svelte/transition';
     import { cubicOut } from 'svelte/easing';
-
+    import General from '$lib/stores/General';
 
     import TeamPickerScore from '$lib/components/TeamPickerScore.svelte';
     import TeamPickerDataScore from '../stores/TeamPickerDataScore';
@@ -25,21 +25,20 @@
             <div 
             class="p-2em py-1em ">
             
-                <TitleEditorScore/>
+                <div class="text-[1.2em]"><TitleEditorScore/></div>
             </div>
         </div>
     
     {/if}
 
-    <!-- {#if $DropDownDataScore[0]?.active  == 1}
-        <div 
-        class="font-bigShoulders py-2em xsm:py-1em ">
-            <div class="absolute top-0 right-0 h-[3.9em] w-[calc(100%-3.9em)] bg-ranking-blocks"></div>
-            <div class="absolute bottom-0 left-0 w-[3.9em] h-[calc(100%-3.9em)] bg-ranking-blocks"></div>
-               
-            <TitleEditorScore/>
-        </div>
-    {/if} -->
+    {#if $DropDownDataScore[0]?.active  == 1}
+        {#if $General.mode == "create"}
+            <div 
+            class="absolute p-1em ">
+                <TitleEditorScore/>
+            </div>
+        {/if}
+    {/if}
 
 
     <!-- ranking bars-->

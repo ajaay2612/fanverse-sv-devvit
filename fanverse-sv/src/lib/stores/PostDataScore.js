@@ -5,7 +5,7 @@ const PostDataRanking = writable({
     BackgroundImageUrlBrightness:25,
     BackgroundImageUrlBlur:0,
     logo:"/images/pickems/logo.svg",
-    title:"PICKE'EMS",
+    title:"ENTER TITLE",
     subTitle:"SUBTITLE",
     allLoadedData:[
         {"teamName":"","teamImage":""},

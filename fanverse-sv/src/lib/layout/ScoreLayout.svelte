@@ -30,7 +30,7 @@ class="{ $DropDownDataScore[0]?.active == 0 ? $DropDownDataScore[1].options[$Dro
 
     {#if $PostDataScore.BackgroundImageUrl}
         <div 
-        style="filter:brightness({$PostDataScore.BackgroundImageUrlBrightness}%) blur({$PostDataScore.BackgroundImageUrlBlur}px)"
+        style="filter:brightness({Math.max(0, $PostDataScore.BackgroundImageUrlBrightness - 5)}%) blur({Math.max(0, $PostDataScore.BackgroundImageUrlBlur - 5)}px)"
         class=" absolute top-0 left-0 w-full h-full object-cover">
             <img src={$PostDataScore.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
         </div>

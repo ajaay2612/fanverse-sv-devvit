@@ -92,18 +92,20 @@ on:message={handleMessage}
 on:click={(e) => {!dropDownElement.contains(e.target) ? showTitleEdit = false:'' } }/>
 
 <div bind:this={dropDownElement} class="z-[10] relative w-fit flex justify-center items-center ">
-    <button on:click={$General.mode == "create" ? toggleTitleEdit:""} class="text-[1.2em] xsm:text-[0.7em] lg:text-[0.62em] w-fit mx-auto  relative pr-1hem ">
+    <button on:click={$General.mode == "create" ? toggleTitleEdit:""} class="text-[1.2em] xsm:text-[0.7em] lg:text-[0.62em] w-fit mx-auto  relative ">
         <div class="flex justify-center items-center gap-[1.1em]">
-            <div class="w-[2.8em]">
-                <img class="w-full h-full" src={$postData.logo} alt="">
-            </div>
+            {#if $postData.logo}
+                <div class="w-[2.8em]">
+                    <img class="w-full h-full" src={$postData.logo} alt="">
+                </div>
+            {/if}
             <div class="">
                 <p class=" text-center font-inter font-bold leading-[1em]  text-pickem-title text-[1.2em]">{$postData.title}</p>
-                <p class="text-left font-inter  font-bold text-[0.55em]">{$postData.subTitle}</p>
+                <p class="text-left font-inter  font-bold text-[0.6em]">{$postData.subTitle}</p>
             </div>
         </div>
         {#if $General.mode == "create"}
-            <div  class="absolute top-[-0.2em] right-[0] h-[0.55em] size-[0.5em] text-[1.1em] text-center">
+            <div  class="absolute top-[-0.2em] right-[-1em] h-[0.55em] size-[0.5em] text-[1.1em] text-center">
                 <BoxButton>
                     <div class="w-[0.55em] absolute top-1/2 left-1/2 -translate-1/2">
                         <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">

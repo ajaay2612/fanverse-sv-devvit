@@ -139,7 +139,7 @@
 </script>
 <svelte:window on:message={handleMessage}/>
 
-<div class="relative z-[5] h-full w-full pb-4hem pt-2em  font-bold font-bigShoulders uppercase">
+<div class="relative z-[5]  h-full w-full pb-1hem pt-2em  font-bold font-bigShoulders uppercase">
     <div class="h-full w-[90%] mx-auto overflow-auto pt-1em thin-scrollbar ">
         <div class="relative w-[calc(100%-15em)] mx-auto flex">
             <div class="absolute flex flex-col gap-1em left-[2.6em]  ">

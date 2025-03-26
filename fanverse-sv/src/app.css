@@ -109,7 +109,7 @@
     --spacing-10hem: 10.5em;
 }
 
-* {
+*:not(.noTransition) {
     transition: color 500ms ease-out, 
     background-color 500ms ease-out,
     border-color 500ms ease-out,
@@ -117,6 +117,8 @@
     box-shadow 500ms ease-out,
     fill 500ms ease-out;
 }
+
+
 @layer theme {
     .crimson {
         --color-pickem-title: #FF4200;
@@ -426,3 +428,35 @@ body {
 .userAnswerRight::before {
     background-image: url("/images/pickems/right.svg");
 }
+
+
+
+
+/* scrollbar */
+
+/* Webkit browsers (Chrome, Safari, newer versions of Opera) */
+::-webkit-scrollbar {
+    width: 12px; /* Width of the entire scrollbar */
+}
+
+/* Track (the background of the scrollbar) */
+::-webkit-scrollbar-track {
+    background: #f1f1f100; 
+    border-radius: 10px;
+}
+
+/* Thumb (the draggable scrolling handle) */
+::-webkit-scrollbar-thumb {
+    background: #888; /* Dark grey color */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+/* Thumb on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Darker grey when hovered */
+}
+
+
+
+/* button */

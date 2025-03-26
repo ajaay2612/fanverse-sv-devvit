@@ -5,7 +5,7 @@ const PostDataMulti = writable({
     BackgroundImageUrlBrightness:25,
     BackgroundImageUrlBlur:0,
     logo:"/images/pickems/logo.svg",
-    title:"PICKE'EMS",
+    title:"ENTER TITLE",
     subTitle:"SUBTITLE",
     allTeamLoadedDataLeft:[
         // {"teamName":"luffy","teamImage":"https://static.vecteezy.com/system/resources/thumbnails/023/596/383/small/generative-ai-an-neon-gamer-anime-fashion-boy-or-man-wearing-headphones-lost-in-his-music-abstract-background-that-evokes-the-feeling-of-different-genres-of-music-banner-music-concept-photo.jpg"},

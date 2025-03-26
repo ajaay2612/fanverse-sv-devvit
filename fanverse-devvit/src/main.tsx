@@ -61,8 +61,14 @@ Devvit.addCustomPostType({
 
             return postData?.allPostData?.postdata ||  null ;
         });
+        const [postType] = useState(async () => {
 
-        console.log("postData",postData)
+            let postData = JSON.parse(await context.redis.get(`postData_${context.postId}`) || "{}");
+
+            return postData?.postType || 'pickems' ;
+        });
+
+        console.log("postType",postType)
 
         // Load latest counter from redis with `useAsync` hook
         const [counter, setCounter] = useState(async () => {
@@ -673,7 +679,7 @@ Devvit.addCustomPostType({
                     />
                 </zstack>
                
-               {postData?.BackgroundImageUrl && 
+               {postData?.BackgroundImageUrl &&
         
                     <zstack width="100%" height="100%"> 
                         <image 
@@ -684,6 +690,78 @@ Devvit.addCustomPostType({
                             resizeMode="cover"
                             url={postData?.BackgroundImageUrl}
                         />
+                        <image 
+                            imageWidth={491} 
+                            imageHeight={690} 
+                            width="100%" 
+                            height="100%" 
+                            resizeMode="cover"
+                            url="blur.png" 
+                        />
+                        <hstack 
+                            backgroundColor="#000000b8" 
+                            width="100%" 
+                            height="100%" 
+                        />
+                    </zstack>
+                }
+
+                {postData?.allLoadedData && postData?.allLoadedData[0]?.teamImage && postType == "scoreVotable" &&
+                    <zstack width="100%" height="100%"> 
+                        <hstack 
+                        width="100%" 
+                        height="100%" >
+                            <image
+                                imageWidth={491}
+                                imageHeight={690}
+                                width="50%"
+                                height="100%"
+                                resizeMode="cover"
+                                url={postData?.allLoadedData[0]?.teamImage}
+                            />
+                            <image
+                                imageWidth={491}
+                                imageHeight={690}
+                                width="50%"
+                                height="100%"
+                                resizeMode="cover"
+                                url={postData?.allLoadedData[1]?.teamImage}
+                            />
+                        </hstack>
+
+
+                        <image 
+                            imageWidth={491} 
+                            imageHeight={690} 
+                            width="100%" 
+                            height="100%" 
+                            resizeMode="cover"
+                            url="blur.png" 
+                        />
+                        <hstack 
+                            backgroundColor="#000000b8" 
+                            width="100%" 
+                            height="100%" 
+                        />
+                    </zstack>
+
+                }
+                {postData?.allLoadedData && postData?.allLoadedData[0]?.teamImage && postType == "rankingVote" &&
+                    <zstack width="100%" height="100%"> 
+                        <hstack 
+                        width="100%" 
+                        height="100%" >
+                            <image
+                                imageWidth={491}
+                                imageHeight={690}
+                                width="100%"
+                                height="100%"
+                                resizeMode="cover"
+                                url={postData?.allLoadedData[0]?.teamImage}
+                            />
+                        </hstack>
+
+
                         <image 
                             imageWidth={491} 
                             imageHeight={690} 

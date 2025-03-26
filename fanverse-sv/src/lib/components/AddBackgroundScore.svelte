@@ -153,8 +153,8 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:''
                             <div class="absolute pl-[1.3em] top-1/2 left-1/2 -translate-1/2 w-[100%]">
                                 <div class="relative w-full">
                                     {#if mounted}
-                                        <Slider bind:value>
-                                            <span slot="left" class="px-1em text-[0.8em] translate-y-[-0.01em] block">|</span>
+                                        <Slider min="0" max="100" step="5" bind:value>
+                                            <span slot="left" class=" text-[0.8em] rounded-full size-[1.2em] bg-white block"></span>
                                         </Slider>
                                     {/if}
                                 </div>
@@ -174,8 +174,8 @@ on:click={(e) => {!dropDownElement.contains(e.target) ? showBgDetails = false:''
                             <div class="absolute pl-[1.3em] top-1/2 left-1/2 -translate-1/2 w-[100%]">
                                 <div class="relative w-full">
                                     {#if mounted}
-                                        <Slider bind:value={blurValue}>
-                                            <span slot="left" class="text-[0.8em] translate-y-[-0.01em] block">|</span>
+                                        <Slider min="0" max="100" step="5" bind:value={blurValue}>
+                                            <span slot="left" class=" text-[0.8em] rounded-full size-[1.2em] bg-white block"></span>
                                         </Slider>
                                     {/if}
                                 </div>

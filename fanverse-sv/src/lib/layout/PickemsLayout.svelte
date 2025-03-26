@@ -17,7 +17,7 @@ class="{$DropDownData[2].active == 0 ? $DropDownData[3].options[$DropDownData[3]
     {#if postData.BackgroundImageUrl}
         
         <div 
-        style="filter:brightness({postData.BackgroundImageUrlBrightness}%) blur({postData.BackgroundImageUrlBlur}px)"
+        style="filter:brightness({Math.max(0, postData.BackgroundImageUrlBrightness - 5)}%) blur({Math.max(0, postData.BackgroundImageUrlBlur - 5)}px)"
         class=" absolute top-0 left-0 w-full h-full object-cover">
             <img src={postData.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
         </div>

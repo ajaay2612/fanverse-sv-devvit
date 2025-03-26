@@ -30,7 +30,7 @@ class="{ $DropDownDataRanking[0]?.active == 0 ? $DropDownDataRanking[1].active =
 
     {#if $PostDataRanking.BackgroundImageUrl}
         <div 
-        style="filter:brightness({$PostDataRanking.BackgroundImageUrlBrightness}%) blur({$PostDataRanking.BackgroundImageUrlBlur}px)"
+        style="filter:brightness({Math.max(0, $PostDataRanking.BackgroundImageUrlBrightness - 5)}%) blur({Math.max(0, $PostDataRanking.BackgroundImageUrlBlur - 5)}px)"
         class=" absolute top-0 left-0 w-full h-full object-cover">
             <img src={$PostDataRanking.BackgroundImageUrl} class="w-full h-full object-cover" alt="">
         </div>
