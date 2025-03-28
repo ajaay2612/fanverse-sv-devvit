@@ -139,11 +139,23 @@
                 
                 <button
                 on:click={toggleLeaderboard}
-                class="mr-auto h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[5em] block ">
+                class="mr-auto h-[0.72em] group pointer-events-auto z-[20]  text-[2em] xsm:text-[1em] relative w-[1.5em] block ">
                     <BoxButton>
                         <div
                         style="transition: none;"
-                        class=" h-full w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">leaderboard</div>
+                        class=" h-full scale-[1.3] w-full flex justify-center items-center group-hover:bg-white group-hover:text-black  uppercase font-inter-italic font-bold leading-0 text-[0.5em] absolute top-1/2 left-1/2 -translate-x-[calc(50%+1px)] -translate-y-[calc(50%+0.5px)]">
+                        
+                        <div class="w-[1.15em]">
+                            <svg viewBox="0 0 22 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 18H6" stroke="#FFBB00" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M11.75 16C11.75 16.4142 11.4142 16.75 11 16.75C10.5858 16.75 10.25 16.4142 10.25 16H11.75ZM10.25 16V13H11.75V16H10.25Z" fill="#FFBB00"/>
+                                <path d="M9 6H13" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M3.5 11C3.5 11 1 9.3125 1 6.5C1 5.74931 1 5.07877 1 4.49907C1 4.03504 1 3.80302 1.03843 3.60982C1.19624 2.81644 1.81644 2.19624 2.60982 2.03843C2.80302 2 3.03534 2 3.5 2V2C3.96466 2 4.19698 2 4.39018 2.03843C5.18356 2.19624 5.80376 2.81644 5.96157 3.60982C6 3.80302 6 4.03534 6 4.5V5.375" stroke="#FFBB00" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M18.5 11C18.5 11 21 9.3125 21 6.5C21 5.74931 21 5.07877 21 4.49907C21 4.03504 21 3.80302 20.9616 3.60982C20.8038 2.81644 20.1836 2.19624 19.3902 2.03843C19.197 2 18.9647 2 18.5 2V2C18.0353 2 17.803 2 17.6098 2.03843C16.8164 2.19624 16.1962 2.81644 16.0384 3.60982C16 3.80302 16 4.03534 16 4.5V5.375" stroke="#FFBB00" stroke-width="1.5" stroke-linecap="round"/>
+                                <path d="M16 7.56478V3C16 1.89543 15.1046 1 14 1H8C6.89543 1 6 1.89543 6 3V7.56478C6 8.91416 6.68034 10.1726 7.80936 10.9116L10.4523 12.6415C10.785 12.8593 11.215 12.8593 11.5477 12.6415L14.1906 10.9116C15.3197 10.1726 16 8.91416 16 7.56478Z" fill="#FFBB00" stroke="#FFBB00" stroke-width="1.5"/>
+                            </svg>                                
+                        </div>
+                        </div>
                     </BoxButton>
                 </button>
             <!-- </div> -->
